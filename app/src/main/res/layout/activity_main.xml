@@ -33,7 +33,7 @@
         android:layout_height="43dp"
         android:autofillHints="password"
         android:hint="@string/password"
-        android:drawableEnd="@drawable/user_account_icon"
+        android:drawableEnd="@drawable/lock_icon"
         android:drawableTint="@color/gray"
         android:padding="10dp"
         android:layout_marginBottom="30dp"
