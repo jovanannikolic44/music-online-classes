@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="@color/violet">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="160dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="40dp"
+        android:src="@drawable/logo" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:autofillHints="username"
+        android:hint="@string/username"
+        android:drawableEnd="@drawable/user_account_icon"
+        android:drawableTint="@color/gray"
+        android:padding="10dp"
+        android:layout_marginBottom="15dp"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:autofillHints="password"
+        android:hint="@string/password"
+        android:drawableEnd="@drawable/user_account_icon"
+        android:drawableTint="@color/gray"
+        android:padding="10dp"
+        android:layout_marginBottom="30dp"
+        android:inputType="textPassword"/>
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/dark_violet"
+        android:textColor="@color/white"
+        android:text="@string/login"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/forget_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/forgotten_password"
+        android:autoLink="none"
+        android:linksClickable="true"
+        android:textColorLink="@color/black"
+        android:textStyle="bold"
+        android:textSize="15sp"/>
+
+    <Button
+        android:id="@+id/new_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/dark_violet"
+        android:textColor="@color/white"
+        android:layout_marginTop="100dp"
+        android:text="@string/new_account"/>
+
+</LinearLayout>

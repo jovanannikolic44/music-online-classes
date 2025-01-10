@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="@color/violet">
+
+    <EditText
+        android:id="@+id/input_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="firstName"
+        android:hint="@string/name"
+        android:padding="10dp"
+        android:layout_marginBottom="15dp"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/input_surname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="lastName"
+        android:hint="@string/surname"
+        android:padding="10dp"
+        android:layout_marginBottom="15dp"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/input_username"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:autofillHints="username"
+        android:hint="@string/username"
+        android:drawableEnd="@drawable/user_account_icon"
+        android:drawableTint="@color/gray"
+        android:padding="10dp"
+        android:layout_marginBottom="15dp"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/input_password"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:autofillHints="password"
+        android:hint="@string/password"
+        android:drawableEnd="@drawable/user_account_icon"
+        android:drawableTint="@color/gray"
+        android:padding="10dp"
+        android:layout_marginBottom="15dp"
+        android:inputType="textPassword"/>
+
+    <EditText
+        android:id="@+id/input_date"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_marginBottom="15dp"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:drawableEnd="@drawable/calendar_icon"
+        android:drawableTint="@color/gray"
+        android:focusable="false"
+        android:hint="@string/date"
+        android:padding="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_contraintRight_toRightOf="parent" />
+
+    <EditText
+        android:id="@+id/input_email"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:autofillHints="emailAddress"
+        android:hint="@string/email"
+        android:drawableEnd="@drawable/email_icon"
+        android:drawableTint="@color/gray"
+        android:padding="10dp"
+        android:layout_marginBottom="15dp"
+        android:inputType="textEmailAddress"/>
+
+    <EditText
+        android:id="@+id/input_phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:autofillHints="phone"
+        android:hint="@string/phone_number"
+        android:drawableEnd="@drawable/phone_call_icon"
+        android:drawableTint="@color/gray"
+        android:padding="10dp"
+        android:layout_marginBottom="15dp"
+        android:inputType="phone"/>
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <RadioButton
+            android:id="@+id/input_radio_professor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/professor"
+            android:checked="true"
+            android:padding="8dp" />
+
+        <RadioButton
+            android:id="@+id/input_radio_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/student"
+            android:padding="8dp" />
+    </RadioGroup>
+
+    <!-- Ako se klikne na profesora prikaze se, a za ucenika ne -->
+    <EditText
+        android:id="@+id/input_education"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="text"
+        android:hint="@string/education"
+        android:padding="10dp"
+        android:visibility="visible"
+        android:inputType="text"/>
+
+    <Spinner
+        android:id="@+id/input_expertise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        android:padding="10dp"
+        android:visibility="visible"
+        android:layout_marginBottom="30dp"/>
+
+    <Button
+        android:id="@+id/registration_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/dark_violet"
+        android:textColor="@color/white"
+        android:text="@string/registration"/>
+
+</LinearLayout>

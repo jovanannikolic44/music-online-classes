@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">music-online-classes</string>
+    <string name="name">Ime</string>
+    <string name="surname">Prezime</string>
+    <string name="username">Korisnicko ime</string>
+    <string name="password">Lozinka</string>
+    <string name="email">Email</string>
+    <string name="phone_number">+381</string>
+    <string name="date">Izaberi datum</string>
+    <string name="professor">Profesor</string>
+    <string name="student">Ucenik</string>
+    <string name="education">Obrazovanje</string>
+    <string name="registration">Registruj se</string>
+    <string name="login">Prijavi se</string>
+    <string name="forgotten_password">Zaboravili ste lozinku?</string>
+    <string name="new_account">Napravite novi nalog</string>
+    <color name="violet">#9B7EBD</color>
+    <color name="dark_violet">#3B1E54</color>
+</resources>
