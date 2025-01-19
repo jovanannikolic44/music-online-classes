@@ -20,7 +20,7 @@ public class User {
         this.date = "";
         this.email = "";
         this.phoneNumber = "";
-        this.type = "profesor";
+        this.type = "";
         this.education = "";
         this.expertise = "";
     }
