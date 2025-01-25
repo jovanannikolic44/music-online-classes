@@ -13,7 +13,7 @@
         android:layout_height="160dp"
         android:layout_gravity="center"
         android:layout_marginBottom="40dp"
-        android:src="@drawable/logo" />
+        android:src="@drawable/logo"/>
 
     <EditText
         android:id="@+id/username"
@@ -25,7 +25,11 @@
         android:drawableTint="@color/gray"
         android:padding="10dp"
         android:layout_marginBottom="15dp"
-        android:inputType="text"/>
+        android:inputType="text"
+        android:textColorHint="@color/gray"
+        android:textColor="@color/black"
+        android:background="@drawable/edit_text_style"
+        android:textSize="14sp"/>
 
     <EditText
         android:id="@+id/password"
@@ -37,7 +41,11 @@
         android:drawableTint="@color/gray"
         android:padding="10dp"
         android:layout_marginBottom="30dp"
-        android:inputType="textPassword"/>
+        android:inputType="textPassword"
+        android:textColorHint="@color/gray"
+        android:textColor="@color/black"
+        android:background="@drawable/edit_text_style"
+        android:textSize="14sp"/>
 
     <Button
         android:id="@+id/login_button"
@@ -57,7 +65,8 @@
         android:linksClickable="true"
         android:textColorLink="@color/black"
         android:textStyle="bold"
-        android:textSize="15sp"/>
+        android:textSize="15sp"
+        android:textColor="@color/gray"/>
 
     <Button
         android:id="@+id/new_account"

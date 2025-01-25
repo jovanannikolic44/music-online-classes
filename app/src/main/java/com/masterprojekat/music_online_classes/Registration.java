@@ -46,10 +46,10 @@ public class Registration extends AppCompatActivity {
 
         showDateSpinner();
 
-        initializeComponents();
+        register_new_user();
     }
 
-    private void initializeComponents() {
+    private void register_new_user() {
         EditText inputName = findViewById(R.id.input_name);
         EditText inputSurname = findViewById(R.id.input_surname);
         EditText inputUsername = findViewById(R.id.input_username);
@@ -70,11 +70,13 @@ public class Registration extends AppCompatActivity {
             String surname = String.valueOf(inputSurname.getText());
             String username = String.valueOf(inputUsername.getText());
             String password = String.valueOf(inputPassword.getText());
-            String date = "14-08-1992";
+            String date = String.valueOf(inputDate.getText());
             String email = String.valueOf(inputEmail.getText());
             String phoneNumber = String.valueOf(inputPhoneNumber.getText());
+            // radio button
             String type = "ucenik";
             String education = String.valueOf(inputEducation.getText());
+            // spinners
             String expertise = "";
 
             User user = new User(name, surname, username, password, date, email, phoneNumber, type, education, expertise);
@@ -106,7 +108,7 @@ public class Registration extends AppCompatActivity {
                         calendar.set(Calendar.MONTH, month);
                         calendar.set(Calendar.DAY_OF_MONTH, day_of_month);
 
-                        String format = "dd-MMM-yyyy";
+                        String format = "dd-MM-yyyy";
                         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
                         input_date.setText(dateFormat.format(calendar.getTime()));
                     }
