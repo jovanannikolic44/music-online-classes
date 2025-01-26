@@ -78,7 +78,6 @@ public class Registration extends AppCompatActivity {
         inputType.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton selectedButton = (RadioButton) findViewById(checkedId);
             String type = String.valueOf(selectedButton.getText());
-            Toast.makeText(Registration.this, "RadioButton " + type, Toast.LENGTH_SHORT).show();
             if ("Profesor".equals(type)) {
                 inputEducation.setVisibility(View.VISIBLE);
                 inputExpertise.setVisibility(View.VISIBLE);
