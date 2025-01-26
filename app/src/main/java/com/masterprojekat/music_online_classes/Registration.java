@@ -26,6 +26,8 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -101,21 +103,30 @@ public class Registration extends AppCompatActivity {
             RadioButton typeRadioButton = (RadioButton) findViewById(inputType.getCheckedRadioButtonId());
             String type = String.valueOf(typeRadioButton.getText());
             String education = String.valueOf(inputEducation.getText());
+            try {
+                // Checks
+                String emailRegex = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+                String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+                validateUserInput(emailRegex, email, "Neispravan email format");
+                validateUserInput(passwordRegex, password, "Lozinka mora da ima najmanje 8 karaktera, bar 1 veliko slovo, bar 1 malo slovo, bar 1 broj i bar 1 specijalan karakter");
 
-            User user = new User(name, surname, username, password, date, email, phoneNumber, type, education, expertise);
+                User user = new User(name, surname, username, password, date, email, phoneNumber, type, education, expertise);
 
-            userApi.saveUser(user).enqueue(new Callback<User>() {
-                @Override
-                public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-                    Toast.makeText(Registration.this, "Zahtev za registraciju uspesno poslat!", Toast.LENGTH_SHORT).show();
-                }
+                userApi.saveUser(user).enqueue(new Callback<User>() {
+                    @Override
+                    public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+                        Toast.makeText(Registration.this, "Zahtev za registraciju uspesno poslat!", Toast.LENGTH_SHORT).show();
+                    }
 
-                @Override
-                public void onFailure(@NonNull Call<User> call, @NonNull Throwable throwable) {
-                    Toast.makeText(Registration.this, "User saving failed!", Toast.LENGTH_SHORT).show();
-                    Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, "Greska!", throwable);
-                }
-            });
+                    @Override
+                    public void onFailure(@NonNull Call<User> call, @NonNull Throwable throwable) {
+                        Toast.makeText(Registration.this, "User saving failed!", Toast.LENGTH_SHORT).show();
+                        Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, "Greska!", throwable);
+                    }
+                });
+            } catch(IllegalArgumentException e) {
+                Toast.makeText(Registration.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -145,5 +156,13 @@ public class Registration extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.expertise_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         inputExpertiseSpinner.setAdapter(adapter);
+    }
+
+    private void validateUserInput(String regex, String userInput, String message) {
+        Pattern validationPattern = Pattern.compile(regex);
+        Matcher validationMatcher = validationPattern.matcher(userInput);
+        if(!validationMatcher.matches()) {
+            throw new IllegalArgumentException(message);
+        }
     }
 }
