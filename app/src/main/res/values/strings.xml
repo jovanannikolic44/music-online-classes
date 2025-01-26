@@ -15,8 +15,14 @@
     <string name="forgotten_password">Zaboravili ste lozinku?</string>
     <string name="new_account">Napravite novi nalog</string>
     <string-array name="expertise_array">
-        <item>Oblast poducavanja</item>
+        <item>Gitara</item>
+        <item>Violina</item>
+        <item>Harfa</item>
+        <item>Klavir</item>
+        <item>Harmonika</item>
+        <item>Truba</item>
+        <item>Saksofon</item>
+        <item>Bubanj</item>
+        <item>Pevanje</item>
     </string-array>
-    <color name="violet">#9B7EBD</color>
-    <color name="dark_violet">#3B1E54</color>
 </resources>
