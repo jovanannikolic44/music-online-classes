@@ -14,6 +14,7 @@
     <string name="login">Prijavi se</string>
     <string name="forgotten_password">Zaboravili ste lozinku?</string>
     <string name="new_account">Napravite novi nalog</string>
+    <string name="chane_password">Promenite lozinku</string>
     <string-array name="expertise_array">
         <item>Gitara</item>
         <item>Violina</item>

@@ -21,9 +21,14 @@ import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.UserAPI;
 import com.masterprojekat.music_online_classes.models.User;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -37,8 +42,11 @@ import retrofit2.Response;
 public class Registration extends AppCompatActivity {
 
     final Calendar calendar = Calendar.getInstance();
-    EditText input_date;
+//    EditText input_date;
     private String expertise = "";
+
+    private final RetrofitService retrofitService = new RetrofitService();
+    private final UserAPI userApi = retrofitService.getRetrofit().create(UserAPI.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,9 +97,6 @@ public class Registration extends AppCompatActivity {
             }
         });
 
-        RetrofitService retrofitService = new RetrofitService();
-        UserAPI userApi = retrofitService.getRetrofit().create(UserAPI.class);
-
         registrationButton.setOnClickListener(view -> {
             String name = String.valueOf(inputName.getText());
             String surname = String.valueOf(inputSurname.getText());
@@ -104,26 +109,73 @@ public class Registration extends AppCompatActivity {
             String type = String.valueOf(typeRadioButton.getText());
             String education = String.valueOf(inputEducation.getText());
             try {
-                // Checks
                 String emailRegex = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
                 String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+                String phoneNumberRegex = "^\\+381\\d{8,9}$";
                 validateUserInput(emailRegex, email, "Neispravan email format");
                 validateUserInput(passwordRegex, password, "Lozinka mora da ima najmanje 8 karaktera, bar 1 veliko slovo, bar 1 malo slovo, bar 1 broj i bar 1 specijalan karakter");
+                validateUserInput(phoneNumberRegex, phoneNumber,"Broj telefona mora biti u formatu +381, sa 8 ili 9 dodatnih cifara");
 
-                User user = new User(name, surname, username, password, date, email, phoneNumber, type, education, expertise);
-
-                userApi.saveUser(user).enqueue(new Callback<User>() {
+                userApi.getUserByUsername(username).enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-                        Toast.makeText(Registration.this, "Zahtev za registraciju uspesno poslat!", Toast.LENGTH_SHORT).show();
+                        if (!response.isSuccessful()) {
+                            userApi.checkEmailAndPhoneNumberUniqueness(email, phoneNumber).enqueue(new Callback<Map<String, String>>() {
+
+                                @Override
+                                public void onResponse(@NonNull Call<Map<String, String>> call, @NonNull Response<Map<String, String>> response) {
+                                    if(!response.isSuccessful()) {
+                                        try {
+                                            if(response.errorBody() == null) {
+                                                Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, "Greska pri dohvatanju errorBody()");
+                                                return;
+                                            }
+                                            String errorMessageJson = response.errorBody().string();
+                                            JSONObject jsonObject = new JSONObject(errorMessageJson);
+                                            String error_message = jsonObject.getString("message");
+                                            Toast.makeText(Registration.this, error_message, Toast.LENGTH_SHORT).show();
+
+                                        } catch (IOException | JSONException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                    }
+                                    else {
+                                        User user = new User(name, surname, username, password, date, email, phoneNumber, type, education, expertise, "neaktivan");
+                                        userApi.saveUser(user).enqueue(new Callback<User>() {
+                                            @Override
+                                            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+                                                Toast.makeText(Registration.this, "Zahtev za registraciju uspesno poslat!", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            @Override
+                                            public void onFailure(@NonNull Call<User> call, @NonNull Throwable throwable) {
+                                                Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, "Greska pri slanju zahteva za registraciju!", throwable);
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(@NonNull Call<Map<String, String>> call, @NonNull Throwable throwable) {
+                                    Toast.makeText(Registration.this, "Error", Toast.LENGTH_SHORT).show();
+                                    Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, "Greska pri slanju zahteva za proveru jedinstvenosti email-a i broja telefona!", throwable);
+                                }
+                            });
+
+                        } else {
+                            Toast.makeText(Registration.this, "Korisnicko ime je zauzeto.", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<User> call, @NonNull Throwable throwable) {
-                        Toast.makeText(Registration.this, "User saving failed!", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, "Greska!", throwable);
+                        Toast.makeText(Registration.this, "Error", Toast.LENGTH_SHORT).show();
+                        Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, "Greska pri slanju zahteva za proveru jedinstvenosti email-a i broja telefona!", throwable);
                     }
                 });
+
+
+
             } catch(IllegalArgumentException e) {
                 Toast.makeText(Registration.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -131,7 +183,7 @@ public class Registration extends AppCompatActivity {
     }
 
     private void showDateSpinner() {
-        input_date = findViewById(R.id.input_date);
+        EditText input_date = (EditText) findViewById(R.id.input_date);
         input_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

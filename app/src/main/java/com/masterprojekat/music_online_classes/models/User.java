@@ -11,6 +11,7 @@ public class User {
     private String type;
     private String education;
     private String expertise;
+    private String accountStatus;
 
     public User() {
         this.name = "";
@@ -23,9 +24,10 @@ public class User {
         this.type = "";
         this.education = "";
         this.expertise = "";
+        this.accountStatus = "";
     }
 
-    public User(String name, String surname, String username, String password, String date, String email,String phoneNumber, String type, String education, String expertise) {
+    public User(String name, String surname, String username, String password, String date, String email,String phoneNumber, String type, String education, String expertise, String accountStatus) {
         this.name = name;
         this.surname = surname;
         this.username = username;
@@ -36,6 +38,7 @@ public class User {
         this.type = type;
         this.education = education;
         this.expertise = expertise;
+        this.accountStatus = accountStatus;
     }
 
     public String getName() {
@@ -116,5 +119,13 @@ public class User {
 
     public void setExpertise(String expertise) {
         this.expertise = expertise;
+    }
+
+    public String getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(String accountStatus) {
+        this.accountStatus = accountStatus;
     }
 }

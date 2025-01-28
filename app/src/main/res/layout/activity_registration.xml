@@ -106,6 +106,7 @@
         android:layout_height="43dp"
         android:autofillHints="phone"
         android:hint="@string/phone_number"
+        android:text="@string/phone_number"
         android:drawableEnd="@drawable/phone_call_icon"
         android:drawableTint="@color/gray"
         android:padding="10dp"
