@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.UserAPI;
+import com.masterprojekat.music_online_classes.helpers.Validation;
 import com.masterprojekat.music_online_classes.models.User;
 
 import org.json.JSONException;
@@ -31,8 +32,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -108,13 +107,17 @@ public class Registration extends AppCompatActivity {
             RadioButton typeRadioButton = (RadioButton) findViewById(inputType.getCheckedRadioButtonId());
             String type = String.valueOf(typeRadioButton.getText());
             String education = String.valueOf(inputEducation.getText());
+            if(name.isEmpty() || surname.isEmpty() || username.isEmpty() || password.isEmpty() || email.isEmpty()) {
+                Toast.makeText(this, "Ime, prezime, korisnicko ime, lozinka i email su obavezna polja!", Toast.LENGTH_SHORT).show();
+                return;
+            }
             try {
                 String emailRegex = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
                 String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
                 String phoneNumberRegex = "^\\+381\\d{8,9}$";
-                validateUserInput(emailRegex, email, "Neispravan email format");
-                validateUserInput(passwordRegex, password, "Lozinka mora da ima najmanje 8 karaktera, bar 1 veliko slovo, bar 1 malo slovo, bar 1 broj i bar 1 specijalan karakter");
-                validateUserInput(phoneNumberRegex, phoneNumber,"Broj telefona mora biti u formatu +381, sa 8 ili 9 dodatnih cifara");
+                Validation.validateUserInput(emailRegex, email, "Neispravan email format.");
+                Validation.validateUserInput(passwordRegex, password, "Lozinka mora da ima najmanje 8 karaktera, bar 1 veliko slovo, bar 1 malo slovo, bar 1 broj i bar 1 specijalan karakter.");
+                Validation.validateUserInput(phoneNumberRegex, phoneNumber,"Broj telefona mora biti u formatu +381, sa 8 ili 9 dodatnih cifara.");
 
                 userApi.getUserByUsername(username).enqueue(new Callback<User>() {
                     @Override
@@ -208,13 +211,5 @@ public class Registration extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.expertise_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         inputExpertiseSpinner.setAdapter(adapter);
-    }
-
-    private void validateUserInput(String regex, String userInput, String message) {
-        Pattern validationPattern = Pattern.compile(regex);
-        Matcher validationMatcher = validationPattern.matcher(userInput);
-        if(!validationMatcher.matches()) {
-            throw new IllegalArgumentException(message);
-        }
     }
 }

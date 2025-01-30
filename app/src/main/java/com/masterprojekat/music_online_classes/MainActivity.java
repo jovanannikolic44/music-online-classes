@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -21,6 +22,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        TextView forgetPassword = findViewById(R.id.forget_password);
+        forgetPassword.setOnClickListener(view -> {
+            // Open the reset password form URL
+            Intent forgetPasswordIntent = new Intent(this, PasswordReset.class);
+            startActivity(forgetPasswordIntent);
+        });
     }
 
 //    public void login(View view) {
@@ -40,4 +48,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Registration.class);
         startActivity(intent);
     }
+
+//    public void forgotten_password(View view) {
+//        Intent intent = new Intent(this, PasswordReset.class);
+//        startActivity(intent);
+//    }
 }
