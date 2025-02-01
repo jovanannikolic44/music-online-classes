@@ -44,9 +44,9 @@ public class PasswordUpdate extends AppCompatActivity {
     }
 
     private void updatePassword(String token) {
-        EditText newPassword = findViewById(R.id.newPassword);
-        EditText confirmNewPassword = findViewById(R.id.confirmNewPassword);
-        Button resetButton = findViewById(R.id.resetPasswordButton);
+        EditText newPassword = findViewById(R.id.new_password);
+        EditText confirmNewPassword = findViewById(R.id.confirm_new_password);
+        Button resetButton = findViewById(R.id.reset_password_button);
 
         resetButton.setOnClickListener(view -> {
             String password = newPassword.getText().toString();
