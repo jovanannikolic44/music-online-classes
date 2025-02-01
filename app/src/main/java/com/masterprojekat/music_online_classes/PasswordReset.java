@@ -50,11 +50,14 @@ public class PasswordReset extends AppCompatActivity {
                 @Override
                 public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                     Toast.makeText(PasswordReset.this, "Poslat mejl", Toast.LENGTH_LONG).show();
+                    inputEmail.setText("");
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<Void> call, @NonNull Throwable throwable) {
                     Toast.makeText(PasswordReset.this, "Nije poslat mejl", Toast.LENGTH_LONG).show();
+                    Logger.getLogger(PasswordReset.class.getName()).log(Level.SEVERE, "Nije poslat mejl!", throwable);
+                    inputEmail.setText("");
                 }
             });
         });
