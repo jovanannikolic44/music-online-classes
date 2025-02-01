@@ -49,14 +49,14 @@ public class PasswordReset extends AppCompatActivity {
             passwordResetApi.requestPasswordReset(toEmail).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                    Toast.makeText(PasswordReset.this, "Poslat mejl", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PasswordReset.this, "Mail je uspesno poslat!", Toast.LENGTH_LONG).show();
                     inputEmail.setText("");
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<Void> call, @NonNull Throwable throwable) {
-                    Toast.makeText(PasswordReset.this, "Nije poslat mejl", Toast.LENGTH_LONG).show();
-                    Logger.getLogger(PasswordReset.class.getName()).log(Level.SEVERE, "Nije poslat mejl!", throwable);
+                    Toast.makeText(PasswordReset.this, "Greska! Mejl nije poslat!", Toast.LENGTH_LONG).show();
+                    Logger.getLogger(PasswordReset.class.getName()).log(Level.SEVERE, "Greska! Mejl nije poslat!", throwable);
                     inputEmail.setText("");
                 }
             });

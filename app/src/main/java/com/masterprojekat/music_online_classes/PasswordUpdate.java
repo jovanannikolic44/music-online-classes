@@ -13,6 +13,9 @@ import com.masterprojekat.music_online_classes.APIs.PasswordResetAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.helpers.Validation;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,8 +52,8 @@ public class PasswordUpdate extends AppCompatActivity {
         Button resetButton = findViewById(R.id.reset_password_button);
 
         resetButton.setOnClickListener(view -> {
-            String password = newPassword.getText().toString();
-            String confirmPassword = confirmNewPassword.getText().toString();
+            String password = String.valueOf(newPassword.getText());
+            String confirmPassword = String.valueOf(confirmNewPassword.getText());
 
             if (password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(PasswordUpdate.this, "Popunite obavezna polja!", Toast.LENGTH_SHORT).show();
@@ -80,6 +83,7 @@ public class PasswordUpdate extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
                 Toast.makeText(PasswordUpdate.this, "Greska pri slanju zahteva za azuriranje lozinke!", Toast.LENGTH_SHORT).show();
+                Logger.getLogger(PasswordUpdate.class.getName()).log(Level.SEVERE, "Greska pri slanju zahteva za azuriranje lozinke!", throwable);
             }
         });
     }
