@@ -9,9 +9,8 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.masterprojekat.music_online_classes.APIs.EmailAPI;
+import com.masterprojekat.music_online_classes.APIs.PasswordResetAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
-import com.masterprojekat.music_online_classes.APIs.UserAPI;
 import com.masterprojekat.music_online_classes.helpers.Validation;
 
 import java.util.logging.Level;
@@ -23,7 +22,8 @@ import retrofit2.Response;
 
 public class PasswordReset extends AppCompatActivity {
     private final RetrofitService retrofitService = new RetrofitService();
-    private final EmailAPI emailApi = retrofitService.getRetrofit().create(EmailAPI.class);
+    private final PasswordResetAPI passwordResetApi = retrofitService.getRetrofit().create(PasswordResetAPI.class);
+    private final String EMAIL_REGEX = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,28 +40,21 @@ public class PasswordReset extends AppCompatActivity {
 
         sendEmail.setOnClickListener(view -> {
             String toEmail = String.valueOf(inputEmail.getText());
-            String emailRegex = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
             if(toEmail.isEmpty()) {
                 Toast.makeText(this, "Email je obavezno polje!", Toast.LENGTH_SHORT).show();
                 return;
             }
+            Validation.validateUserInput(EMAIL_REGEX, toEmail, "Neispravan email format.");
 
-            Validation.validateUserInput(emailRegex, toEmail, "Neispravan email format.");
-
-            // Poslati na mejl link sa formom za promenu lozinke
-            String subjectEmail = "Resetovanje lozinke";
-            String bodyEmail = "Forma za resetovanje lozinke - ";
-            emailApi.sendEmail(toEmail, subjectEmail, bodyEmail).enqueue(new Callback<Void>() {
+            passwordResetApi.requestPasswordReset(toEmail).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                    Toast.makeText(PasswordReset.this, "Email uspesno poslat", Toast.LENGTH_SHORT).show();
-                    inputEmail.setText("");
+                    Toast.makeText(PasswordReset.this, "Poslat mejl", Toast.LENGTH_LONG).show();
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<Void> call, @NonNull Throwable throwable) {
-                    Logger.getLogger(PasswordReset.class.getName()).log(Level.SEVERE, "Greska pri slanju mejla");
-                    inputEmail.setText("");
+                    Toast.makeText(PasswordReset.this, "Nije poslat mejl", Toast.LENGTH_LONG).show();
                 }
             });
         });
