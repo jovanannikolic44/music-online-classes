@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import kotlin.ParameterName;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -21,7 +22,7 @@ public interface UserAPI {
     Call<User> getUserByUsername(@Query("username") String username);
 
     @GET("/user/check-email-and-phone-number")
-    Call<Map<String, String>> checkEmailAndPhoneNumberUniqueness(@Query("email") String email, @Query("phoneNumber") String phoneNumber);
+    Call<ResponseBody> checkEmailAndPhoneNumberUniqueness(@Query("email") String email, @Query("phoneNumber") String phoneNumber);
 
     @POST("/user/save")
     Call<User> saveUser(@Body User user);

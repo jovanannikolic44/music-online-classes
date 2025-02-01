@@ -21,9 +21,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PasswordReset extends AppCompatActivity {
+    private final String EMAIL_REGEX = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     private final RetrofitService retrofitService = new RetrofitService();
     private final PasswordResetAPI passwordResetApi = retrofitService.getRetrofit().create(PasswordResetAPI.class);
-    private final String EMAIL_REGEX = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

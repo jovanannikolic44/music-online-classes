@@ -19,9 +19,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PasswordUpdate extends AppCompatActivity {
+    private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
     private final RetrofitService retrofitService = new RetrofitService();
     private final PasswordResetAPI passwordResetApi = retrofitService.getRetrofit().create(PasswordResetAPI.class);
-    private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
