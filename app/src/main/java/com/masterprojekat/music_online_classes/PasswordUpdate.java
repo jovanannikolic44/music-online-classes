@@ -1,22 +1,19 @@
 package com.masterprojekat.music_online_classes;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.masterprojekat.music_online_classes.APIs.PasswordResetAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
+import com.masterprojekat.music_online_classes.helpers.Validation;
 
-import java.util.Objects;
-
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,20 +21,25 @@ import retrofit2.Response;
 public class PasswordUpdate extends AppCompatActivity {
     private final RetrofitService retrofitService = new RetrofitService();
     private final PasswordResetAPI passwordResetApi = retrofitService.getRetrofit().create(PasswordResetAPI.class);
+    private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_password_update);
 
-        String token = Objects.requireNonNull(getIntent().getData()).getQueryParameter("token");
-        if(token == null) {
-            Toast.makeText(PasswordUpdate.this, "Link nije ispravan", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
+        setContentView(R.layout.activity_password_update);
 
+        Uri data = getIntent().getData();
+        String token = null;
+        if (data != null) {
+            token = data.getQueryParameter("token");
+            if (token == null) {
+                Toast.makeText(PasswordUpdate.this, "Link nije ispravan", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
+        }
         updatePassword(token);
     }
 
@@ -50,22 +52,23 @@ public class PasswordUpdate extends AppCompatActivity {
             String password = newPassword.getText().toString();
             String confirmPassword = confirmNewPassword.getText().toString();
 
-            if(password.isEmpty() || confirmPassword.isEmpty()) {
+            if (password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(PasswordUpdate.this, "Popunite obavezna polja!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(!password.equals(confirmPassword)) {
+            if (!password.equals(confirmPassword)) {
                 Toast.makeText(PasswordUpdate.this, "Lozinke nisu iste!", Toast.LENGTH_SHORT).show();
                 return;
             }
+            Validation.validateUserInput(PASSWORD_REGEX, password, "Lozinka mora da ima najmanje 8 karaktera, bar 1 veliko slovo, bar 1 malo slovo, bar 1 broj i bar 1 specijalan karakter.");
             updatePasswordApiCall(token, password);
         });
     }
 
     private void updatePasswordApiCall(String token, String password) {
-        passwordResetApi.updatePassword(token, password).enqueue(new Callback<String>() {
+        passwordResetApi.updatePassword(token, password).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(PasswordUpdate.this, "Lozinka je uspesno azurirana!", Toast.LENGTH_LONG).show();
                     finish();
@@ -75,7 +78,7 @@ public class PasswordUpdate extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<String> call, @NonNull Throwable throwable) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
                 Toast.makeText(PasswordUpdate.this, "Greska pri slanju zahteva za azuriranje lozinke!", Toast.LENGTH_SHORT).show();
             }
         });
