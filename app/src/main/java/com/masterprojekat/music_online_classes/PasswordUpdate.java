@@ -2,12 +2,15 @@ package com.masterprojekat.music_online_classes;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.masterprojekat.music_online_classes.APIs.PasswordResetAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
@@ -31,7 +34,10 @@ public class PasswordUpdate extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password_update);
 
-        setContentView(R.layout.activity_password_update);
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        int statusBarColor = ContextCompat.getColor(this, R.color.black);
+        window.setStatusBarColor(statusBarColor);
 
         Uri data = getIntent().getData();
         String token = null;

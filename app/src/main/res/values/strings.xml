@@ -17,6 +17,16 @@
     <string name="change_password">Promenite lozinku</string>
     <string name="new_password">Nova lozinka</string>
     <string name="confirm_new_password">Potvrda nove lozinke</string>
+    <string name="select_preferences">Izaberite instrumente:</string>
+    <string name="guitar">Gitara</string>
+    <string name="violin">Violina</string>
+    <string name="piano">Klavir</string>
+    <string name="harmonica">Harmonika</string>
+    <string name="trumpet">Truba</string>
+    <string name="saxophone">Saksofon</string>
+    <string name="drums">Bubanj</string>
+    <string name="singing">Pevanje</string>
+    <string name="continueText">Nastavite</string>
     <string-array name="expertise_array">
         <item>Gitara</item>
         <item>Violina</item>
