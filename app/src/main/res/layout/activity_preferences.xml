@@ -15,6 +15,7 @@
         android:paddingBottom="16dp"/>
 
     <GridLayout
+        android:id="@+id/instruments_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnCount="2"
@@ -32,6 +33,7 @@
             android:layout_marginStart="10dp">
 
             <ImageView
+                android:id="@+id/guitar_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/elektricna_gitara"
@@ -43,6 +45,7 @@
                 android:scaleType="centerInside"/>
 
             <TextView
+                android:id="@+id/guitar_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/guitar"
@@ -59,6 +62,7 @@
             android:layout_marginStart="20dp">
 
             <ImageView
+                android:id="@+id/violin_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/violina"
@@ -70,6 +74,7 @@
                 android:scaleType="centerInside"/>
 
             <TextView
+                android:id="@+id/violin_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/violin"
@@ -87,6 +92,7 @@
             android:layout_marginStart="10dp">
 
             <ImageView
+                android:id="@+id/piano_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/klavir"
@@ -98,6 +104,7 @@
                 android:scaleType="centerInside"/>
 
             <TextView
+                android:id="@+id/piano_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/piano"
@@ -114,6 +121,7 @@
             android:layout_marginStart="20dp">
 
             <ImageView
+                android:id="@+id/harmonica_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/harmonika"
@@ -125,6 +133,7 @@
                 android:focusable="true"/>
 
             <TextView
+                android:id="@+id/harmonica_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/harmonica"
@@ -142,6 +151,7 @@
             android:layout_marginStart="10dp">
 
             <ImageView
+                android:id="@+id/trumpet_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/truba"
@@ -153,6 +163,7 @@
                 android:scaleType="centerInside"/>
 
             <TextView
+                android:id="@+id/trumpet_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/trumpet"
@@ -169,6 +180,7 @@
             android:layout_marginStart="20dp">
 
             <ImageView
+                android:id="@+id/saxophone_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/saksofon"
@@ -180,6 +192,7 @@
                 android:focusable="true"/>
 
             <TextView
+                android:id="@+id/saxophone_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/saxophone"
@@ -197,6 +210,7 @@
             android:layout_marginStart="10dp">
 
             <ImageView
+                android:id="@+id/drums_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/bubanj"
@@ -208,6 +222,7 @@
                 android:scaleType="centerInside"/>
 
             <TextView
+                android:id="@+id/drums_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/drums"
@@ -224,6 +239,7 @@
             android:layout_marginStart="20dp">
 
             <ImageView
+                android:id="@+id/singing_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/pevanje"
@@ -235,6 +251,7 @@
                 android:focusable="true"/>
 
             <TextView
+                android:id="@+id/singing_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/singing"
