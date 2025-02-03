@@ -1,6 +1,8 @@
 package com.masterprojekat.music_online_classes.models;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String name;
     private String surname;
     private String username;
@@ -12,6 +14,7 @@ public class User {
     private String education;
     private String expertise;
     private String accountStatus;
+    private boolean firstLogIn;
 
     public User() {
         this.name = "";
@@ -25,9 +28,10 @@ public class User {
         this.education = "";
         this.expertise = "";
         this.accountStatus = "";
+        this.firstLogIn = true;
     }
 
-    public User(String name, String surname, String username, String password, String date, String email,String phoneNumber, String type, String education, String expertise, String accountStatus) {
+    public User(String name, String surname, String username, String password, String date, String email,String phoneNumber, String type, String education, String expertise, String accountStatus, boolean fristLogIn) {
         this.name = name;
         this.surname = surname;
         this.username = username;
@@ -39,6 +43,7 @@ public class User {
         this.education = education;
         this.expertise = expertise;
         this.accountStatus = accountStatus;
+        this.firstLogIn = fristLogIn;
     }
 
     public String getName() {
@@ -127,5 +132,13 @@ public class User {
 
     public void setAccountStatus(String accountStatus) {
         this.accountStatus = accountStatus;
+    }
+
+    public boolean isFirstLogIn() {
+        return firstLogIn;
+    }
+
+    public void setFirstLogIn(boolean firstLogIn) {
+        this.firstLogIn = firstLogIn;
     }
 }

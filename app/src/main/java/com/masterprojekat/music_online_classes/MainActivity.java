@@ -86,7 +86,9 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Lozinka nije validna!", Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    // Ovo se prikazuje samo pri prvom log in-u
                     Intent preferencesIntent = new Intent(MainActivity.this, Preferences.class);
+                    preferencesIntent.putExtra("loggedInUser", user);
                     startActivity(preferencesIntent);
                 }
                 else {
