@@ -73,8 +73,9 @@ public class Preferences extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(Preferences.this, "Sacuvane preferencije!", Toast.LENGTH_SHORT).show();
-                    // Go to user profile
+                    Intent userProfileIntent = new Intent(Preferences.this, UserProfile.class);
+                    userProfileIntent.putExtra("loggedInUser", loggedInUser);
+                    startActivity(userProfileIntent);
                 } else {
                     Toast.makeText(Preferences.this, "Neuspesno cuvanje preferencija!", Toast.LENGTH_SHORT).show();
                 }

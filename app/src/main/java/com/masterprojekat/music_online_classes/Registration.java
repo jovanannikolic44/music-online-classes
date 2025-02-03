@@ -148,7 +148,7 @@ public class Registration extends AppCompatActivity {
                                         }
                                     }
                                     else {
-                                        User user = new User(name, surname, username, password, date, email, phoneNumber, type, education, expertise, "neaktivan");
+                                        User user = new User(name, surname, username, password, date, email, phoneNumber, type, education, expertise, "neaktivan", true);
                                         userApi.saveUser(user).enqueue(new Callback<User>() {
                                             @Override
                                             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {

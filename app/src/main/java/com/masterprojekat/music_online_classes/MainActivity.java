@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
         Button newAccountButton = findViewById(R.id.new_account);
         newAccountButton.setOnClickListener(view -> {
-            Intent intent = new Intent(this, Registration.class);
-            startActivity(intent);
+            Intent registrationIntent = new Intent(this, Registration.class);
+            startActivity(registrationIntent);
         });
 
         TextView forgetPassword = findViewById(R.id.forget_password);
@@ -86,10 +86,20 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Lozinka nije validna!", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    // Ovo se prikazuje samo pri prvom log in-u
-                    Intent preferencesIntent = new Intent(MainActivity.this, Preferences.class);
-                    preferencesIntent.putExtra("loggedInUser", user);
-                    startActivity(preferencesIntent);
+                    if("neaktivan".equals(user.getAccountStatus())) {
+                        Toast.makeText(MainActivity.this, "Vas nalog jos uvek nije aktiviran!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if(user.isFirstLogIn()) {
+                        Intent preferencesIntent = new Intent(MainActivity.this, Preferences.class);
+                        preferencesIntent.putExtra("loggedInUser", user);
+                        startActivity(preferencesIntent);
+                    }
+                    else {
+                        Intent userProfileIntent = new Intent(MainActivity.this, UserProfile.class);
+                        userProfileIntent.putExtra("loggedInUser", user);
+                        startActivity(userProfileIntent);
+                    }
                 }
                 else {
                     Toast.makeText(MainActivity.this, "Korisnicko ime nije validno!", Toast.LENGTH_SHORT).show();
