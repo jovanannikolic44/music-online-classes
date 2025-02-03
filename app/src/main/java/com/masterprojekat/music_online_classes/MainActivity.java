@@ -3,6 +3,8 @@ package com.masterprojekat.music_online_classes;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -36,10 +39,15 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        int statusBarColor = ContextCompat.getColor(this, R.color.black);
+        window.setStatusBarColor(statusBarColor);
+
         Button newAccountButton = findViewById(R.id.new_account);
         newAccountButton.setOnClickListener(view -> {
-            Intent intent = new Intent(this, Registration.class);
-            startActivity(intent);
+            Intent registrationIntent = new Intent(this, Registration.class);
+            startActivity(registrationIntent);
         });
 
         TextView forgetPassword = findViewById(R.id.forget_password);
@@ -78,8 +86,20 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Lozinka nije validna!", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    Intent preferencesIntent = new Intent(MainActivity.this, Preferences.class);
-                    startActivity(preferencesIntent);
+                    if("neaktivan".equals(user.getAccountStatus())) {
+                        Toast.makeText(MainActivity.this, "Vas nalog jos uvek nije aktiviran!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if(user.isFirstLogIn()) {
+                        Intent preferencesIntent = new Intent(MainActivity.this, Preferences.class);
+                        preferencesIntent.putExtra("loggedInUser", user);
+                        startActivity(preferencesIntent);
+                    }
+                    else {
+                        Intent userProfileIntent = new Intent(MainActivity.this, UserProfile.class);
+                        userProfileIntent.putExtra("loggedInUser", user);
+                        startActivity(userProfileIntent);
+                    }
                 }
                 else {
                     Toast.makeText(MainActivity.this, "Korisnicko ime nije validno!", Toast.LENGTH_SHORT).show();

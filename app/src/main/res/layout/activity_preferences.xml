@@ -1,10 +1,280 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Preferences">
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_preferences"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingBottom="16dp"/>
+
+    <GridLayout
+        android:id="@+id/instruments_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:alignmentMode="alignMargins"
+        android:useDefaultMargins="true"
+        android:rowCount="4">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginStart="10dp">
+
+            <ImageView
+                android:id="@+id/guitar_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/elektricna_gitara"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/circle_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerInside"
+                android:tag="Guitar"/>
+
+            <TextView
+                android:id="@+id/guitar_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/guitar"
+                android:textSize="11sp"
+                android:textAlignment="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginStart="20dp">
+
+            <ImageView
+                android:id="@+id/violin_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/violina"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/circle_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerInside"
+                android:tag="Violin"/>
+
+            <TextView
+                android:id="@+id/violin_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/violin"
+                android:textSize="11sp"
+                android:textAlignment="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="10dp">
+
+            <ImageView
+                android:id="@+id/piano_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/klavir"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/circle_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerInside"
+                android:tag="Piano"/>
+
+            <TextView
+                android:id="@+id/piano_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/piano"
+                android:textSize="11sp"
+                android:textAlignment="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginStart="20dp">
+
+            <ImageView
+                android:id="@+id/harmonica_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/harmonika"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/circle_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:tag="Harmonica"/>
+
+            <TextView
+                android:id="@+id/harmonica_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/harmonica"
+                android:textSize="11sp"
+                android:textAlignment="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="10dp">
+
+            <ImageView
+                android:id="@+id/trumpet_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/truba"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/circle_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerInside"
+                android:tag="Trumpet"/>
+
+            <TextView
+                android:id="@+id/trumpet_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/trumpet"
+                android:textSize="11sp"
+                android:textAlignment="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginStart="20dp">
+
+            <ImageView
+                android:id="@+id/saxophone_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/saksofon"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/circle_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:tag="Saxophone"/>
+
+            <TextView
+                android:id="@+id/saxophone_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/saxophone"
+                android:textSize="11sp"
+                android:textAlignment="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="10dp">
+
+            <ImageView
+                android:id="@+id/drums_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/bubanj"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/circle_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerInside"
+                android:tag="Drums"/>
+
+            <TextView
+                android:id="@+id/drums_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/drums"
+                android:textSize="11sp"
+                android:textAlignment="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginStart="20dp">
+
+            <ImageView
+                android:id="@+id/singing_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/pevanje"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/circle_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:tag="Singing"/>
+
+            <TextView
+                android:id="@+id/singing_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/singing"
+                android:textSize="11sp"
+                android:textAlignment="center"/>
+        </LinearLayout>
+
+
+    </GridLayout>
+
+    <Button
+        android:id="@+id/continue_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/continueText"
+        android:backgroundTint="@color/dark_violet"
+        android:textColor="@color/white"/>
+</LinearLayout>
