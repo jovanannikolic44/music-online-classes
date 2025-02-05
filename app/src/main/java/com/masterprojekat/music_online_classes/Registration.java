@@ -104,6 +104,7 @@ public class Registration extends AppCompatActivity {
             } else {
                 inputEducation.setVisibility(View.GONE);
                 inputExpertise.setVisibility(View.GONE);
+                expertise = "Nije selektovan";
             }
         });
 
@@ -153,6 +154,14 @@ public class Registration extends AppCompatActivity {
                                             @Override
                                             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                                                 Toast.makeText(Registration.this, "Zahtev za registraciju uspesno poslat!", Toast.LENGTH_SHORT).show();
+                                                inputName.setText("");
+                                                inputSurname.setText("");
+                                                inputUsername.setText("");
+                                                inputPassword.setText("");
+                                                inputDate.setText("");
+                                                inputEmail.setText("");
+                                                inputPhoneNumber.setText("");
+                                                inputEducation.setText("");
                                             }
 
                                             @Override

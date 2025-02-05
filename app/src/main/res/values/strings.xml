@@ -27,6 +27,7 @@
     <string name="drums">Bubanj</string>
     <string name="singing">Pevanje</string>
     <string name="continueText">Nastavite</string>
+    <string name="profile_picture">Profilna slika</string>
     <string-array name="expertise_array">
         <item>Gitara</item>
         <item>Violina</item>
