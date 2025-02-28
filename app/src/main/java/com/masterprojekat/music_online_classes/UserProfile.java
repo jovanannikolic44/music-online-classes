@@ -8,6 +8,7 @@
     import android.view.WindowManager;
     import android.widget.ImageButton;
     import android.widget.ImageView;
+    import android.widget.TextView;
     import android.widget.Toast;
 
     import androidx.activity.EdgeToEdge;
@@ -15,6 +16,7 @@
     import androidx.activity.result.contract.ActivityResultContracts;
     import androidx.annotation.NonNull;
     import androidx.appcompat.app.AppCompatActivity;
+    import androidx.constraintlayout.widget.ConstraintLayout;
     import androidx.core.content.ContextCompat;
     import androidx.core.graphics.Insets;
     import androidx.core.view.ViewCompat;
@@ -77,6 +79,7 @@
                 return;
 
             getProfilePicture();
+            displayProfileInformation();
 
             // Choose image from gallery
             ImageButton changeImage = findViewById(R.id.camera_button);
@@ -133,7 +136,7 @@
                             outputStream.write(response.body().bytes());
 
                             Glide.with(UserProfile.this).load(profilePictureFile)
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profilePicture);
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true ).into(profilePicture);
 
                         } catch(IOException e) {
                             e.printStackTrace();
@@ -147,6 +150,36 @@
                     Logger.getLogger(UserProfile.class.getName()).log(Level.SEVERE, "Greska! Profilna slika nije dobro dohvatcena sa servera!", throwable);
                 }
             });
+        }
+
+        private void displayProfileInformation() {
+            // Drugacije ikonice u zavisnosti od user-a
+            TextView label_username = findViewById(R.id.label_username);
+            TextView label_name = findViewById(R.id.label_name);
+            TextView label_surname = findViewById(R.id.label_surname);
+            TextView label_birth_date = findViewById(R.id.label_birth_date);
+            TextView label_email = findViewById(R.id.label_email);
+            TextView label_phone_number = findViewById(R.id.label_phone_number);
+            TextView label_education = findViewById(R.id.label_education);
+            TextView label_expertise = findViewById(R.id.label_expertise);
+
+            label_username.setText(loggedInUser.getUsername());
+            label_name.setText(loggedInUser.getName());
+            label_surname.setText(loggedInUser.getSurname());
+            label_birth_date.setText(loggedInUser.getDate());
+            label_email.setText(loggedInUser.getEmail());
+            label_phone_number.setText(loggedInUser.getPhoneNumber());
+
+            if("profesor".equals(loggedInUser.getType())){
+                label_education.setText(loggedInUser.getEducation());
+                label_expertise.setText(loggedInUser.getExpertise());
+                label_education.setVisibility(TextView.VISIBLE);
+                label_expertise.setVisibility(TextView.VISIBLE);
+            }
+            else {
+                label_education.setVisibility(TextView.GONE);
+                label_expertise.setVisibility(TextView.GONE);
+            }
         }
 
     }
