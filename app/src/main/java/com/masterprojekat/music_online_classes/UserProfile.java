@@ -6,6 +6,7 @@
     import android.provider.MediaStore;
     import android.view.Window;
     import android.view.WindowManager;
+    import android.widget.EditText;
     import android.widget.ImageButton;
     import android.widget.ImageView;
     import android.widget.TextView;
@@ -18,9 +19,6 @@
     import androidx.appcompat.app.AppCompatActivity;
     import androidx.constraintlayout.widget.ConstraintLayout;
     import androidx.core.content.ContextCompat;
-    import androidx.core.graphics.Insets;
-    import androidx.core.view.ViewCompat;
-    import androidx.core.view.WindowInsetsCompat;
 
     import com.bumptech.glide.Glide;
     import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -29,10 +27,10 @@
     import com.masterprojekat.music_online_classes.models.User;
 
     import java.io.File;
-    import java.io.FileNotFoundException;
     import java.io.FileOutputStream;
     import java.io.IOException;
     import java.io.InputStream;
+    import java.util.ArrayList;
     import java.util.Objects;
     import java.util.logging.Level;
     import java.util.logging.Logger;
@@ -49,13 +47,14 @@
         private final RetrofitService retrofitService = new RetrofitService();
         private final UserAPI userApi = retrofitService.getRetrofit().create(UserAPI.class);
 
-        private Uri imageUri;
         private User loggedInUser;
+        private ArrayList<TextView> profileInfoTextViews = new ArrayList<>();
+        private ArrayList<EditText> profileInfoEditTexts = new ArrayList<>();
 
         // Profile picture from gallery
         private final ActivityResultLauncher<Intent> pickImageFromGallery = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if(result.getResultCode() == RESULT_OK && result.getData() != null) {
-                imageUri = result.getData().getData();
+                Uri imageUri = result.getData().getData();
                 ImageView profilePicture = findViewById(R.id.profile_picture);
                 profilePicture.setImageURI(imageUri);
                 uploadProfilePictureToServer(imageUri);
@@ -86,6 +85,12 @@
             changeImage.setOnClickListener(view -> {
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 pickImageFromGallery.launch(galleryIntent);
+            });
+
+            // Change user data
+            ImageButton changeProfileInfo = findViewById(R.id.change_profile_info);
+            changeProfileInfo.setOnClickListener(view -> {
+                makeFieldsEditable();
             });
         }
         private void uploadProfilePictureToServer(Uri imageUri) {
@@ -156,12 +161,19 @@
             // Drugacije ikonice u zavisnosti od user-a
             TextView label_username = findViewById(R.id.label_username);
             TextView label_name = findViewById(R.id.label_name);
+            profileInfoTextViews.add(label_name);
             TextView label_surname = findViewById(R.id.label_surname);
+            profileInfoTextViews.add(label_surname);
             TextView label_birth_date = findViewById(R.id.label_birth_date);
+            profileInfoTextViews.add(label_birth_date);
             TextView label_email = findViewById(R.id.label_email);
+            profileInfoTextViews.add(label_email);
             TextView label_phone_number = findViewById(R.id.label_phone_number);
+            profileInfoTextViews.add(label_phone_number);
             TextView label_education = findViewById(R.id.label_education);
+//            profileInfoTextViews.add(label_education);
             TextView label_expertise = findViewById(R.id.label_expertise);
+//            profileInfoTextViews.add(label_expertise);
 
             label_username.setText(loggedInUser.getUsername());
             label_name.setText(loggedInUser.getName());
@@ -179,6 +191,20 @@
             else {
                 label_education.setVisibility(TextView.GONE);
                 label_expertise.setVisibility(TextView.GONE);
+            }
+        }
+
+        private void makeFieldsEditable() {
+            ConstraintLayout parentLayoutForProfileInfo = findViewById(R.id.profile_body);
+            for(TextView textView : profileInfoTextViews) {
+                EditText editText = new EditText(UserProfile.this);
+                editText.setLayoutParams(textView.getLayoutParams());
+                editText.setText(textView.getText());
+                editText.setTextSize(18);
+
+                parentLayoutForProfileInfo.removeView(textView);
+                parentLayoutForProfileInfo.addView(editText);
+                profileInfoEditTexts.add(editText);
             }
         }
 
