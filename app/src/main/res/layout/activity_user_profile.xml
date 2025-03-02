@@ -64,9 +64,21 @@
         android:background="@drawable/card_border">
 
         <ImageButton
+            android:id="@+id/change_profile_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/no_image"
+            android:background="@android:color/transparent"
+            android:src="@drawable/arrow_back_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"/>
+
+        <ImageButton
             android:id="@+id/change_profile_info"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:contentDescription="@string/no_image"
             android:background="@android:color/transparent"
             app:layout_constraintTop_toTopOf="parent"
@@ -188,7 +200,8 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginStart="150dp"/>
+            android:layout_marginStart="150dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
             android:id="@+id/education"
@@ -225,7 +238,8 @@
             app:layout_constraintTop_toBottomOf="@id/education"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_margin="10dp"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
             android:id="@+id/label_expertise"
@@ -238,7 +252,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_marginStart="150dp"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -4,11 +4,14 @@
     import android.net.Uri;
     import android.os.Bundle;
     import android.provider.MediaStore;
+    import android.util.TypedValue;
+    import android.view.View;
     import android.view.Window;
     import android.view.WindowManager;
     import android.widget.EditText;
     import android.widget.ImageButton;
     import android.widget.ImageView;
+    import android.widget.LinearLayout;
     import android.widget.TextView;
     import android.widget.Toast;
 
@@ -48,8 +51,8 @@
         private final UserAPI userApi = retrofitService.getRetrofit().create(UserAPI.class);
 
         private User loggedInUser;
-        private ArrayList<TextView> profileInfoTextViews = new ArrayList<>();
-        private ArrayList<EditText> profileInfoEditTexts = new ArrayList<>();
+        private final ArrayList<TextView> profileInfoTextViews = new ArrayList<>();
+        private final ArrayList<EditText> profileInfoEditTexts = new ArrayList<>();
 
         // Profile picture from gallery
         private final ActivityResultLauncher<Intent> pickImageFromGallery = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -200,12 +203,41 @@
                 EditText editText = new EditText(UserProfile.this);
                 editText.setLayoutParams(textView.getLayoutParams());
                 editText.setText(textView.getText());
-                editText.setTextSize(18);
+//                editText.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_text_style));
 
                 parentLayoutForProfileInfo.removeView(textView);
                 parentLayoutForProfileInfo.addView(editText);
                 profileInfoEditTexts.add(editText);
             }
+
+            ImageButton changeProfileButton = findViewById(R.id.change_profile_info);
+            changeProfileButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.save_icon));
+            changeProfileButton.setOnClickListener(view -> {
+                updateUserInformation();
+            });
+
+            ImageButton changeProfileBack = findViewById(R.id.change_profile_back);
+            changeProfileBack.setVisibility(View.VISIBLE);
+            changeProfileBack.setOnClickListener(view -> {
+                switchBackToTextViewsWithNoChanges(parentLayoutForProfileInfo);
+                changeProfileButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.change_profile_info));
+                changeProfileBack.setVisibility(View.GONE);
+            });
+
         }
 
+        private void updateUserInformation() {
+
+        }
+
+        private void switchBackToTextViewsWithNoChanges(ConstraintLayout parentLayout) {
+            for(EditText editText : profileInfoEditTexts) {
+                parentLayout.removeView(editText);
+            }
+            for(TextView textView : profileInfoTextViews) {
+                parentLayout.addView(textView);
+            }
+        }
+
+        // Profilu dodati u log out
     }
