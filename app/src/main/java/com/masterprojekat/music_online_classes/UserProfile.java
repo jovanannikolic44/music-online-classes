@@ -1,17 +1,20 @@
     package com.masterprojekat.music_online_classes;
 
+    import android.content.DialogInterface;
     import android.content.Intent;
+    import android.graphics.Color;
+    import android.graphics.drawable.ColorDrawable;
     import android.net.Uri;
     import android.os.Bundle;
     import android.provider.MediaStore;
-    import android.util.TypedValue;
+    import android.view.LayoutInflater;
     import android.view.View;
     import android.view.Window;
     import android.view.WindowManager;
+    import android.widget.Button;
     import android.widget.EditText;
     import android.widget.ImageButton;
     import android.widget.ImageView;
-    import android.widget.LinearLayout;
     import android.widget.TextView;
     import android.widget.Toast;
 
@@ -19,6 +22,7 @@
     import androidx.activity.result.ActivityResultLauncher;
     import androidx.activity.result.contract.ActivityResultContracts;
     import androidx.annotation.NonNull;
+    import androidx.appcompat.app.AlertDialog;
     import androidx.appcompat.app.AppCompatActivity;
     import androidx.constraintlayout.widget.ConstraintLayout;
     import androidx.core.content.ContextCompat;
@@ -49,6 +53,7 @@
 
     public class UserProfile extends AppCompatActivity {
         private final String EMAIL_REGEX = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
         private final String PHONE_NUMBER_REGEX = "^\\+381\\d{8,9}$";
         private final String DATE_REGEX = "^\\d{2}-\\d{2}-\\d{4}$";
         private final RetrofitService retrofitService = new RetrofitService();
@@ -112,6 +117,12 @@
                 isEditable = false;
                 changeProfileInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.change_profile_info));
                 changeProfileBack.setVisibility(View.GONE);
+            });
+
+            // Change password
+            Button changePasswordButton = findViewById(R.id.change_password);
+            changePasswordButton.setOnClickListener(view -> {
+                enterNewPassword();
             });
         }
         private void uploadProfilePictureToServer(Uri imageUri) {
@@ -314,5 +325,69 @@
             profileInfoEditTexts.clear();
         }
 
+        private void enterNewPassword() {
+            LayoutInflater inflater = getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.change_password_dialog, null);
+
+            EditText oldPasswordInput = dialogView.findViewById(R.id.old_password_input);
+            EditText newPasswordInput = dialogView.findViewById(R.id.new_password_input);
+            EditText confirmNewPasswordInput = dialogView.findViewById(R.id.new_password_confirm_input);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(UserProfile.this);
+            builder.setTitle("Promena lozinke")
+                    .setView(dialogView)
+                    .setPositiveButton("Sacuvaj", null)
+                    .setNegativeButton("Otkazi", null);
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            Window window = dialog.getWindow();
+            if (window != null) {
+                window.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D4BEE4")));
+            }
+
+            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String oldPassword = String.valueOf(oldPasswordInput.getText());
+                    String newPassword = String.valueOf(newPasswordInput.getText());
+                    String confirmNewPassword = String.valueOf(confirmNewPasswordInput.getText());
+
+                    if (oldPassword.isEmpty() || newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
+                        Toast.makeText(UserProfile.this, "Popunite sva prazna polja.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (!loggedInUser.getPassword().equals(oldPassword)) {
+                        Toast.makeText(UserProfile.this, "Stara lozinka je pogresno uneta!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    try {
+                        Validation.validateUserInput(PASSWORD_REGEX, newPassword, "Lozinka mora da ima najmanje 8 karaktera, bar 1 veliko slovo, bar 1 malo slovo, bar 1 broj i bar 1 specijalan karakter.");
+                    } catch (IllegalArgumentException e) {
+                        Toast.makeText(UserProfile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (!confirmNewPassword.equals(newPassword)) {
+                        Toast.makeText(UserProfile.this, "Lozinke se ne poklapaju!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    userApi.updateUserPassword(loggedInUser.getUsername(), newPassword).enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+                            Toast.makeText(UserProfile.this, "Lozinka je azurirana!", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<User> call, @NonNull Throwable throwable) {
+                            Toast.makeText(UserProfile.this, "Greska pri azuriranju lozinke!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+        }
         // Profilu dodati u log out
     }

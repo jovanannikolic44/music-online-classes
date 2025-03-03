@@ -33,6 +33,9 @@ public interface UserAPI {
     @POST("/user/update-info")
     Call<User> updateUserInfo(@Body User user);
 
+    @POST("/user/update-password")
+   Call<User> updateUserPassword(@Query("username") String username, @Query("newPassword") String newPassword);
+
     @Multipart
     @POST("/user/upload-profile-picture")
     Call<ResponseBody> uploadProfilePicture(@Part MultipartBody.Part file, @Query("username") String username);

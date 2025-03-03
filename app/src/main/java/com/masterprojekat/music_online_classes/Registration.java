@@ -127,75 +127,72 @@ public class Registration extends AppCompatActivity {
                 Validation.validateUserInput(EMAIL_REGEX, email, "Neispravan email format.");
                 Validation.validateUserInput(PASSWORD_REGEX, password, "Lozinka mora da ima najmanje 8 karaktera, bar 1 veliko slovo, bar 1 malo slovo, bar 1 broj i bar 1 specijalan karakter.");
                 Validation.validateUserInput(PHONE_NUMBER_REGEX, phoneNumber,"Broj telefona mora biti u formatu +381, sa 8 ili 9 dodatnih cifara.");
-
-                userApi.getUserByUsername(username).enqueue(new Callback<User>() {
-                    @Override
-                    public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-                        if (!response.isSuccessful()) {
-                            userApi.checkEmailAndPhoneNumberUniqueness(email, phoneNumber).enqueue(new Callback<ResponseBody>() {
-                                @Override
-                                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                                    if(!response.isSuccessful()) {
-                                        try {
-                                            if(response.errorBody() == null) {
-                                                Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, "Greska pri dohvatanju errorBody()");
-                                                return;
-                                            }
-                                            String errorMessage = response.errorBody().string();
-                                            Toast.makeText(Registration.this, errorMessage, Toast.LENGTH_SHORT).show();
-
-                                        } catch (IOException e) {
-                                            throw new RuntimeException(e);
-                                        }
-                                    }
-                                    else {
-                                        User user = new User(name, surname, username, password, date, email, phoneNumber, type, education, expertise, "neaktivan", true);
-                                        userApi.saveUser(user).enqueue(new Callback<User>() {
-                                            @Override
-                                            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-                                                Toast.makeText(Registration.this, "Zahtev za registraciju uspesno poslat!", Toast.LENGTH_SHORT).show();
-                                                inputName.setText("");
-                                                inputSurname.setText("");
-                                                inputUsername.setText("");
-                                                inputPassword.setText("");
-                                                inputDate.setText("");
-                                                inputEmail.setText("");
-                                                inputPhoneNumber.setText("");
-                                                inputEducation.setText("");
-                                            }
-
-                                            @Override
-                                            public void onFailure(@NonNull Call<User> call, @NonNull Throwable throwable) {
-                                                Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, "Greska pri slanju zahteva za registraciju!", throwable);
-                                            }
-                                        });
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
-                                    Toast.makeText(Registration.this, "Error", Toast.LENGTH_SHORT).show();
-                                    Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, "Greska pri slanju zahteva za proveru jedinstvenosti email-a i broja telefona!", throwable);
-                                }
-                            });
-
-                        } else {
-                            Toast.makeText(Registration.this, "Korisnicko ime je zauzeto.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<User> call, @NonNull Throwable throwable) {
-                        Toast.makeText(Registration.this, "Error", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, "Greska pri slanju zahteva za proveru jedinstvenosti email-a i broja telefona!", throwable);
-                    }
-                });
-
-
-
             } catch(IllegalArgumentException e) {
                 Toast.makeText(Registration.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
+            userApi.getUserByUsername(username).enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+                    if (!response.isSuccessful()) {
+                        userApi.checkEmailAndPhoneNumberUniqueness(email, phoneNumber).enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                                if(!response.isSuccessful()) {
+                                    try {
+                                        if(response.errorBody() == null) {
+                                            Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, "Greska pri dohvatanju errorBody()");
+                                            return;
+                                        }
+                                        String errorMessage = response.errorBody().string();
+                                        Toast.makeText(Registration.this, errorMessage, Toast.LENGTH_SHORT).show();
+
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+                                else {
+                                    User user = new User(name, surname, username, password, date, email, phoneNumber, type, education, expertise, "neaktivan", true);
+                                    userApi.saveUser(user).enqueue(new Callback<User>() {
+                                        @Override
+                                        public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+                                            Toast.makeText(Registration.this, "Zahtev za registraciju uspesno poslat!", Toast.LENGTH_SHORT).show();
+                                            inputName.setText("");
+                                            inputSurname.setText("");
+                                            inputUsername.setText("");
+                                            inputPassword.setText("");
+                                            inputDate.setText("");
+                                            inputEmail.setText("");
+                                            inputPhoneNumber.setText("");
+                                            inputEducation.setText("");
+                                        }
+
+                                        @Override
+                                        public void onFailure(@NonNull Call<User> call, @NonNull Throwable throwable) {
+                                            Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, "Greska pri slanju zahteva za registraciju!", throwable);
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
+                                Toast.makeText(Registration.this, "Error", Toast.LENGTH_SHORT).show();
+                                Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, "Greska pri slanju zahteva za proveru jedinstvenosti email-a i broja telefona!", throwable);
+                            }
+                        });
+
+                    } else {
+                        Toast.makeText(Registration.this, "Korisnicko ime je zauzeto.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<User> call, @NonNull Throwable throwable) {
+                    Toast.makeText(Registration.this, "Error", Toast.LENGTH_SHORT).show();
+                    Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, "Greska pri slanju zahteva za proveru jedinstvenosti email-a i broja telefona!", throwable);
+                }
+            });
+
         });
     }
 

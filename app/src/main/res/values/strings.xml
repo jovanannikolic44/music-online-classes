@@ -35,6 +35,7 @@
     <string name="date_label">Datum rodjenja:</string>
     <string name="education_label">Obrazovanje:</string>
     <string name="expertise_label">Oblast poducavanja:</string>
+    <string name="old_password">Stara lozinka</string>
     <string-array name="expertise_array">
         <item>Gitara</item>
         <item>Violina</item>
