@@ -15,6 +15,7 @@
     import android.widget.EditText;
     import android.widget.ImageButton;
     import android.widget.ImageView;
+    import android.widget.Spinner;
     import android.widget.TextView;
     import android.widget.Toast;
 
@@ -31,6 +32,7 @@
     import com.bumptech.glide.load.engine.DiskCacheStrategy;
     import com.masterprojekat.music_online_classes.APIs.RetrofitService;
     import com.masterprojekat.music_online_classes.APIs.UserAPI;
+    import com.masterprojekat.music_online_classes.helpers.Spinners;
     import com.masterprojekat.music_online_classes.helpers.Validation;
     import com.masterprojekat.music_online_classes.models.User;
 
@@ -101,22 +103,28 @@
             });
 
             // Change user data
-            ImageButton changeProfileInfo = findViewById(R.id.change_profile_info);
-            ImageButton changeProfileBack = findViewById(R.id.change_profile_back);
-            changeProfileInfo.setOnClickListener(view -> {
-                if (isEditable) {
-                    updateUserInformation();
-                } else {
-                    makeFieldsEditable();
-                    changeProfileInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.save_icon));
-                    changeProfileBack.setVisibility(View.VISIBLE);
-                }
-            });
-            changeProfileBack.setOnClickListener(view -> {
-                switchBackToTextViewsWithNoChanges();
-                isEditable = false;
-                changeProfileInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.change_profile_info));
-                changeProfileBack.setVisibility(View.GONE);
+//            ImageButton changeProfileInfo = findViewById(R.id.change_profile_info);
+//            ImageButton changeProfileBack = findViewById(R.id.change_profile_back);
+//            changeProfileInfo.setOnClickListener(view -> {
+//                if (isEditable) {
+//                    updateUserInformation();
+//                } else {
+//                    makeFieldsEditable();
+//                    changeProfileInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.save_icon));
+//                    changeProfileBack.setVisibility(View.VISIBLE);
+//                }
+//            });
+//            changeProfileBack.setOnClickListener(view -> {
+//                switchBackToTextViewsWithNoChanges();
+//                isEditable = false;
+//                changeProfileInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.change_profile_info));
+//                changeProfileBack.setVisibility(View.GONE);
+//            });
+
+            // Change profile info 2
+            Button changeProfileInformation = findViewById(R.id.change_profile_information);
+            changeProfileInformation.setOnClickListener(view -> {
+                enterNewProfileInfo();
             });
 
             // Change password
@@ -208,6 +216,8 @@
 
             label_username.setText(loggedInUser.getUsername());
             label_name.setText(loggedInUser.getName());
+            System.out.println("LOGGNGGGGGGGGGGG");
+            System.out.println(loggedInUser.getName());
             label_surname.setText(loggedInUser.getSurname());
             label_birth_date.setText(loggedInUser.getDate());
             label_email.setText(loggedInUser.getEmail());
@@ -225,104 +235,191 @@
             }
         }
 
-        private void makeFieldsEditable() {
-            ConstraintLayout parentLayoutForProfileInfo = findViewById(R.id.profile_body);
-            for (TextView textView : profileInfoTextViews) {
-                EditText editText = new EditText(UserProfile.this);
-                editText.setLayoutParams(textView.getLayoutParams());
-                editText.setText(textView.getText());
-                parentLayoutForProfileInfo.removeView(textView);
-                parentLayoutForProfileInfo.addView(editText);
-                profileInfoEditTexts.add(editText);
+//        private void makeFieldsEditable() {
+//            ConstraintLayout parentLayoutForProfileInfo = findViewById(R.id.profile_body);
+//            for (TextView textView : profileInfoTextViews) {
+//                EditText editText = new EditText(UserProfile.this);
+//                editText.setLayoutParams(textView.getLayoutParams());
+//                editText.setText(textView.getText());
+//                parentLayoutForProfileInfo.removeView(textView);
+//                parentLayoutForProfileInfo.addView(editText);
+//                profileInfoEditTexts.add(editText);
+//            }
+//            isEditable = true;
+//        }
+
+//        private void updateUserInformation() {
+//            boolean allFieldsValid = true;
+//            ImageButton changeProfileButton = findViewById(R.id.change_profile_info);
+//            ImageButton changeProfileBack = findViewById(R.id.change_profile_back);
+//
+//            for (int i = 0; i < profileInfoEditTexts.size(); i++) {
+//                EditText editText = profileInfoEditTexts.get(i);
+//                String updatedValue = String.valueOf(editText.getText());
+//                try {
+//                    switch (i) {
+//                        case 0:
+//                            loggedInUser.setName(updatedValue);
+//                            break;
+//                        case 1:
+//                            loggedInUser.setSurname(updatedValue);
+//                            break;
+//                        case 2:
+//                            Validation.validateUserInput(DATE_REGEX, updatedValue, "Neispravan format za datum.");
+//                            loggedInUser.setDate(updatedValue);
+//                            break;
+//                        case 3:
+//                            Validation.validateUserInput(EMAIL_REGEX, updatedValue, "Neispravan email format.");
+//                            loggedInUser.setEmail(updatedValue);
+//                            break;
+//                        case 4:
+//                            Validation.validateUserInput(PHONE_NUMBER_REGEX, updatedValue, "Neispravan format za broj telefona.");
+//                            loggedInUser.setPhoneNumber(updatedValue);
+//                            break;
+//                    }
+//                } catch (IllegalArgumentException e) {
+//                    Toast.makeText(UserProfile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    allFieldsValid = false;
+//                }
+//            }
+//
+//            if (allFieldsValid) {
+//                userApi.updateUserInfo(loggedInUser).enqueue(new Callback<User>() {
+//                    @Override
+//                    public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+//                        switchBackToTextViews();
+//                        changeProfileButton.setImageDrawable(ContextCompat.getDrawable(UserProfile.this, R.drawable.change_profile_info));
+//                        changeProfileBack.setVisibility(View.GONE);
+//                    }
+//
+//                    @Override
+//                    public void onFailure(@NonNull Call<User> call, @NonNull Throwable throwable) {
+//                        Logger.getLogger(UserProfile.class.getName()).log(Level.SEVERE, "Greska! Korisnicki podaci nisu uspesno azurirani!", throwable);
+//                    }
+//                });
+//            } else {
+//                isEditable = true;
+//                changeProfileButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.save_icon));
+//                changeProfileBack.setVisibility(View.VISIBLE);
+//            }
+//        }
+//
+//
+//        private void switchBackToTextViews() {
+//            ConstraintLayout parentLayout = findViewById(R.id.profile_body);
+//            profileInfoTextViews.clear();
+//
+//            for(int i = 0; i < profileInfoEditTexts.size(); i++) {
+//                EditText editText = profileInfoEditTexts.get(i);
+//                TextView textView = new TextView(UserProfile.this);
+//
+//                textView.setLayoutParams(editText.getLayoutParams());
+//                textView.setText(editText.getText().toString());
+//                textView.setTextSize(18);
+//
+//                parentLayout.removeView(editText);
+//                parentLayout.addView(textView);
+//                profileInfoTextViews.add(textView);
+//            }
+//            profileInfoEditTexts.clear();
+//        }
+//
+//        private void switchBackToTextViewsWithNoChanges() {
+//            ConstraintLayout parentLayout = findViewById(R.id.profile_body);
+//            for(EditText editText : profileInfoEditTexts) {
+//                parentLayout.removeView(editText);
+//            }
+//            for(TextView textView : profileInfoTextViews) {
+//                parentLayout.addView(textView);
+//            }
+//            profileInfoEditTexts.clear();
+//        }
+
+        private void enterNewProfileInfo() {
+            System.out.println("Calling enterNewProfileInfo method");
+            LayoutInflater inflater = getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.change_profile_info_dialog, null);
+
+//            EditText inputDate = (EditText) findViewById(R.id.change_date);
+//            Spinners.showDateSpinner(UserProfile.this, inputDate);
+
+//          PROFESOR
+//            Spinner inputExpertiseSpinner = (Spinner) findViewById(R.id.change_expertise);
+//            Spinners.showExpertiseSpinner(UserProfile.this, inputExpertiseSpinner);
+
+            EditText nameInput = dialogView.findViewById(R.id.change_name);
+            nameInput.setText(loggedInUser.getName());
+            EditText surnameInput = dialogView.findViewById(R.id.change_surname);
+            surnameInput.setText(loggedInUser.getSurname());
+            EditText emailInput = dialogView.findViewById(R.id.change_email);
+            emailInput.setText(loggedInUser.getEmail());
+            EditText dateInput = dialogView.findViewById(R.id.change_date);
+            dateInput.setText(loggedInUser.getDate());
+            EditText phoneInput = dialogView.findViewById(R.id.change_phone_number);
+            phoneInput.setText(loggedInUser.getPhoneNumber());
+
+            Spinners.showDateSpinner(UserProfile.this, dateInput);
+
+//            Samo AKO JE PROFESOR
+//            EditText educationInput = dialogView.findViewById(R.id.change_education);
+//            educationInput.setText(loggedInUser.getEducation());
+//            Spinner expertiseInput = (Spinner) findViewById(R.id.change_expertise);
+//            Spinners.showExpertiseSpinner(UserProfile.this, expertiseInput);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(UserProfile.this);
+            builder.setTitle("Promena informacija na profilu")
+                    .setView(dialogView)
+                    .setPositiveButton("Sacuvaj", null)
+                    .setNegativeButton("Otkazi", null);
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            Window window = dialog.getWindow();
+            if (window != null) {
+                window.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D4BEE4")));
             }
-            isEditable = true;
-        }
 
-        private void updateUserInformation() {
-            boolean allFieldsValid = true;
-            ImageButton changeProfileButton = findViewById(R.id.change_profile_info);
-            ImageButton changeProfileBack = findViewById(R.id.change_profile_back);
-
-            for (int i = 0; i < profileInfoEditTexts.size(); i++) {
-                EditText editText = profileInfoEditTexts.get(i);
-                String updatedValue = String.valueOf(editText.getText());
-                try {
-                    switch (i) {
-                        case 0:
-                            loggedInUser.setName(updatedValue);
-                            break;
-                        case 1:
-                            loggedInUser.setSurname(updatedValue);
-                            break;
-                        case 2:
-                            Validation.validateUserInput(DATE_REGEX, updatedValue, "Neispravan format za datum.");
-                            loggedInUser.setDate(updatedValue);
-                            break;
-                        case 3:
-                            Validation.validateUserInput(EMAIL_REGEX, updatedValue, "Neispravan email format.");
-                            loggedInUser.setEmail(updatedValue);
-                            break;
-                        case 4:
-                            Validation.validateUserInput(PHONE_NUMBER_REGEX, updatedValue, "Neispravan format za broj telefona.");
-                            loggedInUser.setPhoneNumber(updatedValue);
-                            break;
+            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String name = String.valueOf(nameInput.getText());
+                    String surname = String.valueOf(surnameInput.getText());
+                    String date = String.valueOf(dateInput.getText());
+                    String email = String.valueOf(emailInput.getText());
+                    String phone_number = String.valueOf(phoneInput.getText());
+                    try {
+                        Validation.validateUserInput(EMAIL_REGEX, email, "Neispravan email format.");
+                        Validation.validateUserInput(PHONE_NUMBER_REGEX, phone_number, "Neispravan format za broj telefona.");
+                    } catch (IllegalArgumentException e) {
+                        Toast.makeText(UserProfile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                } catch (IllegalArgumentException e) {
-                    Toast.makeText(UserProfile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    allFieldsValid = false;
+
+                    loggedInUser.setName(name);
+                    loggedInUser.setSurname(surname);
+                    loggedInUser.setDate(date);
+                    loggedInUser.setEmail(email);
+                    loggedInUser.setPhoneNumber(phone_number);
+
+                    userApi.updateUserInfo(loggedInUser).enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+                            dialog.dismiss();
+                            displayProfileInformation();
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<User> call, @NonNull Throwable throwable) {
+                            Logger.getLogger(UserProfile.class.getName()).log(Level.SEVERE, "Greska! Korisnicki podaci nisu uspesno azurirani!", throwable);
+                        }
+                    });
                 }
-            }
-
-            if (allFieldsValid) {
-                userApi.updateUserInfo(loggedInUser).enqueue(new Callback<User>() {
-                    @Override
-                    public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-                        switchBackToTextViews();
-                        changeProfileButton.setImageDrawable(ContextCompat.getDrawable(UserProfile.this, R.drawable.change_profile_info));
-                        changeProfileBack.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<User> call, @NonNull Throwable throwable) {
-                        Logger.getLogger(UserProfile.class.getName()).log(Level.SEVERE, "Greska! Korisnicki podaci nisu uspesno azurirani!", throwable);
-                    }
-                });
-            } else {
-                isEditable = true;
-                changeProfileButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.save_icon));
-                changeProfileBack.setVisibility(View.VISIBLE);
-            }
+            });
         }
 
-
-        private void switchBackToTextViews() {
-            ConstraintLayout parentLayout = findViewById(R.id.profile_body);
-            profileInfoTextViews.clear();
-
-            for(int i = 0; i < profileInfoEditTexts.size(); i++) {
-                EditText editText = profileInfoEditTexts.get(i);
-                TextView textView = new TextView(UserProfile.this);
-
-                textView.setLayoutParams(editText.getLayoutParams());
-                textView.setText(editText.getText().toString());
-                textView.setTextSize(18);
-
-                parentLayout.removeView(editText);
-                parentLayout.addView(textView);
-                profileInfoTextViews.add(textView);
-            }
-            profileInfoEditTexts.clear();
-        }
-
-        private void switchBackToTextViewsWithNoChanges() {
-            ConstraintLayout parentLayout = findViewById(R.id.profile_body);
-            for(EditText editText : profileInfoEditTexts) {
-                parentLayout.removeView(editText);
-            }
-            for(TextView textView : profileInfoTextViews) {
-                parentLayout.addView(textView);
-            }
-            profileInfoEditTexts.clear();
+        private void displayNewInfo() {
+            // ne moram iz baze, mogu i od loggedUser-a
         }
 
         private void enterNewPassword() {
@@ -367,7 +464,6 @@
                         Validation.validateUserInput(PASSWORD_REGEX, newPassword, "Lozinka mora da ima najmanje 8 karaktera, bar 1 veliko slovo, bar 1 malo slovo, bar 1 broj i bar 1 specijalan karakter.");
                     } catch (IllegalArgumentException e) {
                         Toast.makeText(UserProfile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        return;
                     }
                     if (!confirmNewPassword.equals(newPassword)) {
                         Toast.makeText(UserProfile.this, "Lozinke se ne poklapaju!", Toast.LENGTH_SHORT).show();

@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat;
 
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.UserAPI;
+import com.masterprojekat.music_online_classes.helpers.Spinners;
 import com.masterprojekat.music_online_classes.helpers.Validation;
 import com.masterprojekat.music_online_classes.models.User;
 
@@ -64,8 +65,11 @@ public class Registration extends AppCompatActivity {
         int statusBarColor = ContextCompat.getColor(this, R.color.black);
         window.setStatusBarColor(statusBarColor);
 
-        showDateSpinner();
-        showExpertiseSpinner();
+        EditText inputDate = (EditText) findViewById(R.id.input_date);
+        Spinners.showDateSpinner(Registration.this, inputDate);
+
+        Spinner inputExpertiseSpinner = (Spinner) findViewById(R.id.input_expertise);
+        Spinners.showExpertiseSpinner(Registration.this, inputExpertiseSpinner);
 
         register_new_user();
     }
@@ -194,33 +198,5 @@ public class Registration extends AppCompatActivity {
             });
 
         });
-    }
-
-    private void showDateSpinner() {
-        EditText input_date = (EditText) findViewById(R.id.input_date);
-        input_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new DatePickerDialog(Registration.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int day_of_month) {
-                        calendar.set(Calendar.YEAR, year);
-                        calendar.set(Calendar.MONTH, month);
-                        calendar.set(Calendar.DAY_OF_MONTH, day_of_month);
-
-                        String format = "dd-MM-yyyy";
-                        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
-                        input_date.setText(dateFormat.format(calendar.getTime()));
-                    }
-                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
-    }
-
-    private void showExpertiseSpinner() {
-        Spinner inputExpertiseSpinner = (Spinner) findViewById(R.id.input_expertise);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.expertise_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        inputExpertiseSpinner.setAdapter(adapter);
     }
 }
