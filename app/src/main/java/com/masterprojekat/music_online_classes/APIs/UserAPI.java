@@ -30,6 +30,9 @@ public interface UserAPI {
     @POST("/user/save")
     Call<User> saveUser(@Body User user);
 
+    @POST("/user/update-info")
+    Call<User> updateUserInfo(@Body User user);
+
     @Multipart
     @POST("/user/upload-profile-picture")
     Call<ResponseBody> uploadProfilePicture(@Part MultipartBody.Part file, @Query("username") String username);

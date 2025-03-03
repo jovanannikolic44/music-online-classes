@@ -53,6 +53,7 @@
         private User loggedInUser;
         private final ArrayList<TextView> profileInfoTextViews = new ArrayList<>();
         private final ArrayList<EditText> profileInfoEditTexts = new ArrayList<>();
+        private boolean isEditable = false;
 
         // Profile picture from gallery
         private final ActivityResultLauncher<Intent> pickImageFromGallery = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -92,8 +93,23 @@
 
             // Change user data
             ImageButton changeProfileInfo = findViewById(R.id.change_profile_info);
+            ImageButton changeProfileBack = findViewById(R.id.change_profile_back);
             changeProfileInfo.setOnClickListener(view -> {
-                makeFieldsEditable();
+                if (isEditable) {
+                    updateUserInformation();
+                    changeProfileInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.change_profile_info));
+                    changeProfileBack.setVisibility(View.GONE);
+                } else {
+                    makeFieldsEditable();
+                    changeProfileInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.save_icon));
+                    changeProfileBack.setVisibility(View.VISIBLE);
+                }
+            });
+            changeProfileBack.setOnClickListener(view -> {
+                switchBackToTextViews();
+                isEditable = false;
+                changeProfileInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.change_profile_info));
+                changeProfileBack.setVisibility(View.GONE);
             });
         }
         private void uploadProfilePictureToServer(Uri imageUri) {
@@ -185,7 +201,7 @@
             label_email.setText(loggedInUser.getEmail());
             label_phone_number.setText(loggedInUser.getPhoneNumber());
 
-            if("profesor".equals(loggedInUser.getType())){
+            if("Profesor".equals(loggedInUser.getType())){
                 label_education.setText(loggedInUser.getEducation());
                 label_expertise.setText(loggedInUser.getExpertise());
                 label_education.setVisibility(TextView.VISIBLE);
@@ -199,44 +215,71 @@
 
         private void makeFieldsEditable() {
             ConstraintLayout parentLayoutForProfileInfo = findViewById(R.id.profile_body);
-            for(TextView textView : profileInfoTextViews) {
+            for (TextView textView : profileInfoTextViews) {
                 EditText editText = new EditText(UserProfile.this);
                 editText.setLayoutParams(textView.getLayoutParams());
                 editText.setText(textView.getText());
-//                editText.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_text_style));
-
                 parentLayoutForProfileInfo.removeView(textView);
                 parentLayoutForProfileInfo.addView(editText);
                 profileInfoEditTexts.add(editText);
             }
-
-            ImageButton changeProfileButton = findViewById(R.id.change_profile_info);
-            changeProfileButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.save_icon));
-            changeProfileButton.setOnClickListener(view -> {
-                updateUserInformation();
-            });
-
-            ImageButton changeProfileBack = findViewById(R.id.change_profile_back);
-            changeProfileBack.setVisibility(View.VISIBLE);
-            changeProfileBack.setOnClickListener(view -> {
-                switchBackToTextViewsWithNoChanges(parentLayoutForProfileInfo);
-                changeProfileButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.change_profile_info));
-                changeProfileBack.setVisibility(View.GONE);
-            });
-
+            isEditable = true;
         }
 
         private void updateUserInformation() {
+            for (int i = 0; i < profileInfoEditTexts.size(); i++) {
+                EditText editText = profileInfoEditTexts.get(i);
+                String updatedValue = String.valueOf(editText.getText());
+                switch (i) {
+                    case 0:
+                        loggedInUser.setName(updatedValue);
+                        break;
+                    case 1:
+                        loggedInUser.setSurname(updatedValue);
+                        break;
+                    case 2:
+                        loggedInUser.setDate(updatedValue);
+                        break;
+                    case 3:
+                        loggedInUser.setEmail(updatedValue);
+                        break;
+                    case 4:
+                        loggedInUser.setPhoneNumber(updatedValue);
+                        break;
+                }
+            }
 
+            userApi.updateUserInfo(loggedInUser).enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+                    switchBackToTextViews();
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<User> call, @NonNull Throwable throwable) {
+                    Logger.getLogger(UserProfile.class.getName()).log(Level.SEVERE, "Greska! Korisnicki podaci nisu uspesno azurirani!", throwable);
+                }
+            });
+            isEditable = false;
         }
 
-        private void switchBackToTextViewsWithNoChanges(ConstraintLayout parentLayout) {
-            for(EditText editText : profileInfoEditTexts) {
+        private void switchBackToTextViews() {
+            ConstraintLayout parentLayout = findViewById(R.id.profile_body);
+            profileInfoTextViews.clear();
+
+            for(int i = 0; i < profileInfoEditTexts.size(); i++) {
+                EditText editText = profileInfoEditTexts.get(i);
+                TextView textView = new TextView(UserProfile.this);
+
+                textView.setLayoutParams(editText.getLayoutParams());
+                textView.setText(editText.getText().toString());
+                textView.setTextSize(18);
+
                 parentLayout.removeView(editText);
-            }
-            for(TextView textView : profileInfoTextViews) {
                 parentLayout.addView(textView);
+                profileInfoTextViews.add(textView);
             }
+            profileInfoEditTexts.clear();
         }
 
         // Profilu dodati u log out
