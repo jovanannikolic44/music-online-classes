@@ -20,7 +20,8 @@
             android:layout_height="100dp"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/CircularImage"
-            app:srcCompat="@drawable/profile"            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/profile"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
@@ -258,10 +259,22 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
+        android:id="@+id/change_profile_information"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/change_profile_info"
+        android:backgroundTint="@color/dark_violet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_body" />
+
+    <Button
         android:id="@+id/change_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="80dp"
         android:text="@string/change_password"
         android:backgroundTint="@color/dark_violet"
         app:layout_constraintEnd_toEndOf="parent"
@@ -270,11 +283,11 @@
         app:layout_constraintTop_toBottomOf="@id/profile_body" />
 
     <Button
-        android:id="@+id/change_profile_information"
+        android:id="@+id/log_out"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="@string/change_profile_info"
+        android:layout_marginTop="130dp"
+        android:text="@string/log_out"
         android:backgroundTint="@color/dark_violet"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

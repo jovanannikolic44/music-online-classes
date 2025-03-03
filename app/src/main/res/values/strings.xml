@@ -37,6 +37,7 @@
     <string name="expertise_label">Oblast poducavanja:</string>
     <string name="old_password">Stara lozinka</string>
     <string name="change_profile_info">Promenite informacije na profilu</string>
+    <string name="log_out">Odjava</string>
     <string-array name="expertise_array">
         <item>Gitara</item>
         <item>Violina</item>

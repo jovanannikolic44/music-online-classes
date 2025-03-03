@@ -132,6 +132,13 @@
             changePasswordButton.setOnClickListener(view -> {
                 enterNewPassword();
             });
+
+            Button logOutButon = findViewById(R.id.log_out);
+            logOutButon.setOnClickListener(view -> {
+                Intent logOutIntent = new Intent(UserProfile.this, MainActivity.class);
+                logOutIntent.putExtra("loggedInUser", "");
+                startActivity(logOutIntent);
+            });
         }
         private void uploadProfilePictureToServer(Uri imageUri) {
             File imageFile = new File(getCacheDir(), "profile_picture.jpg");
@@ -485,5 +492,4 @@
                 }
             });
         }
-        // Profilu dodati u log out
     }
