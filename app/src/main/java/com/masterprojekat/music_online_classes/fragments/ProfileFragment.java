@@ -251,7 +251,6 @@ public class ProfileFragment extends Fragment {
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        // Set background color for the dialog window
         Window window = dialog.getWindow();
         if (window != null) {
             window.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D4BEE4")));
