@@ -32,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.UserAPI;
+import com.masterprojekat.music_online_classes.MainActivity;
 import com.masterprojekat.music_online_classes.R;
 import com.masterprojekat.music_online_classes.UserProfile;
 import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
@@ -63,7 +64,6 @@ public class ProfileFragment extends Fragment {
     private final RetrofitService retrofitService = new RetrofitService();
     private final UserAPI userApi = retrofitService.getRetrofit().create(UserAPI.class);
 
-    // Profile picture from gallery
     private final ActivityResultLauncher<Intent> pickImageFromGallery = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if(result.getResultCode() == requireActivity().RESULT_OK && result.getData() != null) {
             Uri imageUri = result.getData().getData();
@@ -85,29 +85,28 @@ public class ProfileFragment extends Fragment {
             getProfilePicture(view, loggedInUser);
             displayProfileInformation(view, loggedInUser);
 
-            // Choose image from gallery
             ImageButton changeImage = requireView().findViewById(R.id.camera_button);
             changeImage.setOnClickListener(viewLocal -> {
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 pickImageFromGallery.launch(galleryIntent);
             });
 
-//            Button changeProfileInformation = requireView().findViewById(R.id.change_profile_information);
-//            changeProfileInformation.setOnClickListener(viewLocal -> {
-//                enterNewProfileInfo(view, loggedInUser);
-//            });
-//
-//            Button changePasswordButton = requireView().findViewById(R.id.change_password);
-//            changePasswordButton.setOnClickListener(viewLocal -> {
-//                enterNewPassword(view, loggedInUser);
-//            });
+            Button changeProfileInformation = requireView().findViewById(R.id.change_profile_information);
+            changeProfileInformation.setOnClickListener(viewLocal -> {
+                enterNewProfileInfo(view, loggedInUser);
+            });
 
-//            Button logOutButon = requireView().findViewById(R.id.log_out);
-//            logOutButon.setOnClickListener(view -> {
-//                Intent logOutIntent = new Intent(UserProfile.this, MainActivity.class);
-//                logOutIntent.putExtra("loggedInUser", "");
-//                startActivity(logOutIntent);
-//            });
+            Button changePasswordButton = requireView().findViewById(R.id.change_password);
+            changePasswordButton.setOnClickListener(viewLocal -> {
+                enterNewPassword(loggedInUser);
+            });
+
+            Button logOutButon = requireView().findViewById(R.id.log_out);
+            logOutButon.setOnClickListener(viewLocal -> {
+                Intent logOutIntent = new Intent(getContext(), MainActivity.class);
+                logOutIntent.putExtra("loggedInUser", "");
+                startActivity(logOutIntent);
+            });
         });
     }
 
@@ -139,7 +138,7 @@ public class ProfileFragment extends Fragment {
 
         userApi.uploadProfilePicture(body, loggedInUser.getUsername()).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+            public void onResponse(@NonNull retrofit2.Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
                 System.out.println(response);
                 if (!response.isSuccessful()) {
                     Toast.makeText(requireContext(), "Greška! Profilna slika nije sačuvana!", Toast.LENGTH_SHORT).show();
@@ -147,7 +146,7 @@ public class ProfileFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(retrofit2.Call<ResponseBody> call, Throwable throwable) {
+            public void onFailure(@NonNull retrofit2.Call<ResponseBody> call, @NonNull Throwable throwable) {
                 Logger.getLogger(ProfileFragment.class.getName()).log(Level.SEVERE, "Greška! Profilna slika nije dobro sačuvana na serveru!", throwable);
             }
         });
@@ -163,7 +162,7 @@ public class ProfileFragment extends Fragment {
 
         userApi.getProfilePicture(loggedInUser.getUsername()).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+            public void onResponse(@NonNull retrofit2.Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     File profilePictureFile = new File(requireActivity().getCacheDir(), "profile_picture.jpg");
                     try (FileOutputStream outputStream = new FileOutputStream(profilePictureFile)) {
@@ -185,7 +184,7 @@ public class ProfileFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(retrofit2.Call<ResponseBody> call, Throwable throwable) {
+            public void onFailure(@NonNull retrofit2.Call<ResponseBody> call, @NonNull Throwable throwable) {
                 Logger.getLogger(ProfileFragment.class.getName()).log(Level.SEVERE, "Greška! Profilna slika nije dohvaćena sa servera!", throwable);
             }
         });
@@ -282,20 +281,20 @@ public class ProfileFragment extends Fragment {
 
             userApi.updateUserInfo(loggedInUser).enqueue(new Callback<User>() {
                 @Override
-                public void onResponse(retrofit2.Call<User> call, retrofit2.Response<User> response) {
+                public void onResponse(@NonNull retrofit2.Call<User> call, @NonNull retrofit2.Response<User> response) {
                     dialog.dismiss();
                     displayProfileInformation(view, loggedInUser);
                 }
 
                 @Override
-                public void onFailure(retrofit2.Call<User> call, Throwable throwable) {
+                public void onFailure(@NonNull retrofit2.Call<User> call, @NonNull Throwable throwable) {
                     Logger.getLogger(ProfileFragment.class.getName()).log(Level.SEVERE, "Greska! Korisnicki podaci nisu uspesno azurirani!", throwable);
                 }
             });
         });
     }
 
-    private void enterNewPassword(View view, User loggedInUser) {
+    private void enterNewPassword(User loggedInUser) {
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.change_password_dialog, null);
 
@@ -344,13 +343,13 @@ public class ProfileFragment extends Fragment {
 
             userApi.updateUserPassword(loggedInUser.getUsername(), newPassword).enqueue(new Callback<User>() {
                 @Override
-                public void onResponse(retrofit2.Call<User> call, retrofit2.Response<User> response) {
+                public void onResponse(@NonNull retrofit2.Call<User> call, @NonNull retrofit2.Response<User> response) {
                     Toast.makeText(requireContext(), "Lozinka je azurirana!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }
 
                 @Override
-                public void onFailure(retrofit2.Call<User> call, Throwable throwable) {
+                public void onFailure(@NonNull retrofit2.Call<User> call, @NonNull Throwable throwable) {
                     Toast.makeText(requireContext(), "Greska pri azuriranju lozinke!", Toast.LENGTH_SHORT).show();
                 }
             });
