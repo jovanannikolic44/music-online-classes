@@ -199,6 +199,8 @@ public class ProfileFragment extends Fragment {
         TextView label_phone_number = view.findViewById(R.id.label_phone_number);
         TextView label_education = view.findViewById(R.id.label_education);
         TextView label_expertise = view.findViewById(R.id.label_expertise);
+        TextView education = view.findViewById(R.id.education);
+        TextView expertise = view.findViewById(R.id.expertise);
 
         label_username.setText(loggedInUser.getUsername());
         label_name.setText(loggedInUser.getName());
@@ -208,6 +210,8 @@ public class ProfileFragment extends Fragment {
         label_phone_number.setText(loggedInUser.getPhoneNumber());
 
         if ("Profesor".equals(loggedInUser.getType())) {
+            education.setVisibility(View.VISIBLE);
+            expertise.setVisibility(View.VISIBLE);
             label_education.setText(loggedInUser.getEducation());
             label_expertise.setText(loggedInUser.getExpertise());
             label_education.setVisibility(View.VISIBLE);
@@ -215,6 +219,8 @@ public class ProfileFragment extends Fragment {
         } else {
             label_education.setVisibility(View.GONE);
             label_expertise.setVisibility(View.GONE);
+            education.setVisibility(View.GONE);
+            expertise.setVisibility(View.GONE);
         }
     }
 
@@ -354,10 +360,6 @@ public class ProfileFragment extends Fragment {
             });
         });
     }
-
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

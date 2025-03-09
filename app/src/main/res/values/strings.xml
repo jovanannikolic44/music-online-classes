@@ -34,7 +34,7 @@
     <string name="phone_number_label">Broj telefona:</string>
     <string name="date_label">Datum rodjenja:</string>
     <string name="education_label">Obrazovanje:</string>
-    <string name="expertise_label">Oblast poducavanja:</string>
+    <string name="expertise_label">Ekspertiza:</string>
     <string name="old_password">Stara lozinka</string>
     <string name="change_profile_info">Promenite informacije na profilu</string>
     <string name="notifications_label">Obavestenja</string>
