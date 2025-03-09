@@ -27,6 +27,22 @@
     <string name="drums">Bubanj</string>
     <string name="singing">Pevanje</string>
     <string name="continueText">Nastavite</string>
+    <string name="no_image">Slika nije ucitana</string>
+    <string name="name_label">Ime:</string>
+    <string name="surname_label">Prezime:</string>
+    <string name="email_label">Email:</string>
+    <string name="phone_number_label">Broj telefona:</string>
+    <string name="date_label">Datum rodjenja:</string>
+    <string name="education_label">Obrazovanje:</string>
+    <string name="expertise_label">Ekspertiza:</string>
+    <string name="old_password">Stara lozinka</string>
+    <string name="change_profile_info">Promenite informacije na profilu</string>
+    <string name="notifications_label">Obavestenja</string>
+    <string name="courses_label">Kursevi</string>
+    <string name="classes_label">Casovi</string>
+    <string name="statistics_label">Statistika</string>
+    <string name="profile_label">Profil</string>
+    <string name="log_out">Odjava</string>
     <string-array name="expertise_array">
         <item>Gitara</item>
         <item>Violina</item>
@@ -38,4 +54,6 @@
         <item>Bubanj</item>
         <item>Pevanje</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

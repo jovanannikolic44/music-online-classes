@@ -120,7 +120,6 @@ public class Preferences extends AppCompatActivity {
                 final String instrmentName = (String) imageView.getTag();
                 TextView finalTextView = textView;
                 imageView.setOnClickListener(v -> {
-                    System.out.println("Instrument name " + instrmentName);
                     if(clickedInstruments.contains(instrmentName)) {
                         clickedInstruments.remove(instrmentName);
                     }
@@ -128,13 +127,21 @@ public class Preferences extends AppCompatActivity {
                         clickedInstruments.add(instrmentName);
                     }
 
-                    if (finalTextView.getTypeface().isBold()) {
-                        finalTextView.setTypeface(null, Typeface.NORMAL);
-                        finalTextView.setTextSize(11);
+                    if (finalTextView != null) {
+                        Typeface currentTypeface = finalTextView.getTypeface();
+                        boolean isBold = currentTypeface != null && currentTypeface.isBold();
+
+                        if (isBold) {
+                            finalTextView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                            finalTextView.setTextSize(11);
+                        } else {
+                            finalTextView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                            finalTextView.setTextSize(14);
+                        }
                     } else {
-                        finalTextView.setTypeface(null, Typeface.BOLD);
-                        finalTextView.setTextSize(14);
+                        System.out.println("TextView is null or has no Typeface: " + instrmentName);
                     }
+
 
                 });
             }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/profile_nav"
+        android:title="@string/profile_label"
+        android:icon="@drawable/user_account_icon"/>
+    <item
+        android:id="@+id/notifications_nav"
+        android:title="@string/notifications_label"
+        android:icon="@drawable/notifications_icon"/>
+    <item
+        android:id="@+id/courses_nav"
+        android:title="@string/courses_label"
+        android:icon="@drawable/education_icon"/>
+    <item
+        android:id="@+id/classes_nav"
+        android:title="@string/classes_label"
+        android:icon="@drawable/calendar_icon"/>
+    <item
+        android:id="@+id/statistics_nav"
+        android:title="@string/statistics_label"
+        android:icon="@drawable/statistics_icon"/>
+</menu>
