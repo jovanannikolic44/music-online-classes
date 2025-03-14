@@ -1,61 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragments.CoursesFragment">
-    
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="15dp">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="60dp"
+        android:paddingStart="20dp"
+        tools:ignore="RtlSymmetry">
 
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/all_courses"
+            android:textSize="20sp"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+            android:textStyle="bold"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginEnd="5dp"
-                    android:contentDescription="@string/no_image"
-                    android:src="@drawable/profesorka_gitare"
-                    android:scaleType="centerCrop"/>
-
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginEnd="5dp"
-                    android:contentDescription="@string/no_image"
-                    android:src="@drawable/elektricna_gitara"
-                    android:scaleType="centerCrop"/>
-
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginEnd="5dp"
-                    android:contentDescription="@string/no_image"
-                    android:src="@drawable/bubanj"
-                    android:scaleType="centerCrop"/>
-
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginEnd="5dp"
-                    android:contentDescription="@string/no_image"
-                    android:src="@drawable/harfa"
-                    android:scaleType="centerCrop"/>
-
-            </LinearLayout>
-
-        </HorizontalScrollView>
-
+        <ImageButton
+            android:id="@+id/courses_buy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/no_image"
+            android:src="@drawable/courses_cart_icon"
+            android:background="@android:color/transparent"
+            android:paddingEnd="20dp"/>
     </LinearLayout>
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:paddingStart="20dp">
+
+        <EditText
+            android:id="@+id/search_courses"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:hint="@string/search_courses"
+            android:background="@drawable/search_edit_text"
+            android:drawableEnd="@drawable/search_icon"
+            android:drawableTint="@color/gray"
+            android:textSize="14sp"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/black"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:alpha="0.7"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"/>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searched_courses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:scrollbars="horizontal"
+        android:overScrollMode="always"/>
+</LinearLayout>

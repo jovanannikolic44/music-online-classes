@@ -43,6 +43,8 @@
     <string name="statistics_label">Statistika</string>
     <string name="profile_label">Profil</string>
     <string name="log_out">Odjava</string>
+    <string name="all_courses">Pregled kurseva</string>
+    <string name="search_courses">Pretrazite kurseve</string>
     <string-array name="expertise_array">
         <item>Gitara</item>
         <item>Violina</item>
