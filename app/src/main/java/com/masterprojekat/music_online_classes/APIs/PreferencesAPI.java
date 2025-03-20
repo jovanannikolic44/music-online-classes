@@ -15,5 +15,5 @@ public interface PreferencesAPI {
     Call<ResponseBody> savePreferences(@Query("username") String username, @Body Set<String> instruments);
 
     @GET("/preferences/get-preferences")
-    Call<ResponseBody> getPreferences(@Query("username") String username);
+    Call<Set<String>> getPreferences(@Query("username") String username);
 }

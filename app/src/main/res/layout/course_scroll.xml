@@ -4,49 +4,57 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp"
-    android:layout_marginEnd="8dp">
+    android:layout_marginEnd="8dp"
+    android:background="@color/light_violet">
 
-    <ImageView
+    <ImageButton
         android:id="@+id/courseImage"
-        android:layout_width="150dp"
+        android:layout_width="170dp"
         android:layout_height="100dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/violina" />
+        android:contentDescription="@string/no_image"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        android:src="@drawable/violina"/>
 
     <TextView
         android:id="@+id/courseName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Course Name"
+        android:text="@string/violin"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:paddingTop="4dp" />
+        android:paddingTop="4dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"/>
 
     <TextView
         android:id="@+id/professorName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Professor Name"
+        android:text="@string/professor"
         android:textSize="14sp"
-        android:textColor="#777777"
-        android:paddingTop="2dp" />
+        android:paddingTop="2dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"/>
 
     <TextView
         android:id="@+id/courseRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="⭐ 4.5"
+        android:text="@string/course_rating"
         android:textSize="14sp"
-        android:paddingTop="2dp" />
+        android:paddingTop="2dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"/>
 
     <TextView
         android:id="@+id/coursePrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="$99.99"
+        android:text="@string/course_price"
         android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="#FF5722"
-        android:paddingTop="2dp" />
+        android:paddingTop="2dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp"/>
 </LinearLayout>

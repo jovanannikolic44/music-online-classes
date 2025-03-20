@@ -24,12 +24,10 @@
     import com.masterprojekat.music_online_classes.models.User;
 
     public class UserProfile extends AppCompatActivity {
-
         ActivityUserProfileBinding binding;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
-            System.out.println("Calling onCreate in UserProfile");
             super.onCreate(savedInstanceState);
             binding = ActivityUserProfileBinding.inflate(getLayoutInflater());
             EdgeToEdge.enable(this);
@@ -43,10 +41,8 @@
             if(loggedInUser == null)
                 return;
 
-            // Give logged in user to Fragment
             SharedViewModel viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
             viewModel.setUser(loggedInUser);
-
 
             binding.bottomNavigationView.setOnItemSelectedListener(item -> {
                 if(item.getItemId() == R.id.profile_nav) {
@@ -66,11 +62,6 @@
                 }
                 return true;
             });
-
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            int statusBarColor = ContextCompat.getColor(this, R.color.black);
-            window.setStatusBarColor(statusBarColor);
         }
 
         private void replaceFragment(Fragment fragment) {

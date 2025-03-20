@@ -45,6 +45,8 @@
     <string name="log_out">Odjava</string>
     <string name="all_courses">Pregled kurseva</string>
     <string name="search_courses">Pretrazite kurseve</string>
+    <string name="course_rating">⭐ 4.5</string>
+    <string name="course_price">Cena kursa</string>
     <string-array name="expertise_array">
         <item>Gitara</item>
         <item>Violina</item>
@@ -56,6 +58,4 @@
         <item>Bubanj</item>
         <item>Pevanje</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

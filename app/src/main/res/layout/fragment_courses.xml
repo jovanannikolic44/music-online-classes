@@ -66,5 +66,15 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:scrollbars="horizontal"
-        android:overScrollMode="always"/>
+        android:overScrollMode="always"
+        android:visibility="gone"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recommended_courses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:scrollbars="horizontal"
+        android:overScrollMode="always"
+        android:visibility="visible"/>
 </LinearLayout>

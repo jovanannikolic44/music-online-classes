@@ -39,11 +39,6 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        int statusBarColor = ContextCompat.getColor(this, R.color.black);
-        window.setStatusBarColor(statusBarColor);
-
         Button newAccountButton = findViewById(R.id.new_account);
         newAccountButton.setOnClickListener(view -> {
             Intent registrationIntent = new Intent(this, Registration.class);

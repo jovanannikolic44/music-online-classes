@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -32,12 +33,8 @@ public class PasswordUpdate extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_password_update);
-
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        int statusBarColor = ContextCompat.getColor(this, R.color.black);
-        window.setStatusBarColor(statusBarColor);
 
         Uri data = getIntent().getData();
         String token = null;

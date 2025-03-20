@@ -53,13 +53,7 @@ public class Preferences extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_preferences);
 
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        int statusBarColor = ContextCompat.getColor(this, R.color.black);
-        window.setStatusBarColor(statusBarColor);
-
         captureClickedPreferences();
-
         Button savePreferences = findViewById(R.id.continue_button);
         savePreferences.setOnClickListener(view -> saveSelectedPreferences());
     }

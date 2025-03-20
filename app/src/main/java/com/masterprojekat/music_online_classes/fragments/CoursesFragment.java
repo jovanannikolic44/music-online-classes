@@ -16,17 +16,22 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.masterprojekat.music_online_classes.APIs.CourseAPI;
+import com.masterprojekat.music_online_classes.APIs.PreferencesAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.R;
 import com.masterprojekat.music_online_classes.helpers.CourseAdapter;
 import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
 import com.masterprojekat.music_online_classes.models.Course;
+import com.masterprojekat.music_online_classes.models.User;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,10 +39,7 @@ import retrofit2.Response;
 public class CoursesFragment extends Fragment {
     private final RetrofitService retrofitService = new RetrofitService();
     private final CourseAPI courseApi = retrofitService.getRetrofit().create(CourseAPI.class);
-
-    private RecyclerView coursesRecyclerView;
-    private CourseAdapter courseAdapter;
-    private List<Course> courseList = new ArrayList<>();
+    private final PreferencesAPI preferencesApi = retrofitService.getRetrofit().create(PreferencesAPI.class);
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -48,40 +50,87 @@ public class CoursesFragment extends Fragment {
             if (loggedInUser == null)
                 return;
 
-            System.out.println("Logged in user " + loggedInUser.getUsername());
             EditText searchCoursesEditText = view.findViewById(R.id.search_courses);
             searchCoursesEditText.setOnEditorActionListener((v, actionId, event) -> {
                 if(actionId == EditorInfo.IME_ACTION_SEARCH) {
                     String inputSearch = String.valueOf(searchCoursesEditText.getText()).trim();
                     if(!inputSearch.isEmpty()) {
-                        search(inputSearch);
+                        displaySearchedCourses(view, inputSearch);
                     }
                     return true;
                 }
                 return false;
             });
+
+            // prikaz preporucenih kurseva
+            displayRecommendedCourses(view, loggedInUser);
+
+            // prikaz najbolje ocenjenih kurseva
+            // prikaz najpristupacnijih kurseva
+            // poslednji put pristupljeni kursevi (do 10 maks)
         });
-
-        coursesRecyclerView = view.findViewById(R.id.searched_courses);
-        coursesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-
-        courseAdapter = new CourseAdapter(getContext(), courseList);
-        coursesRecyclerView.setAdapter(courseAdapter);
     }
 
-    private void search(String inputSearch) {
-        System.out.println("Calling search with " + inputSearch);
+    private void displayRecommendedCourses(View view, User loggedInUser) {
+        List<Course> recommendedCoursesList = new ArrayList<>();
+        RecyclerView recommendedCourses = view.findViewById(R.id.recommended_courses);
+        recommendedCourses.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        CourseAdapter courseAdapter = new CourseAdapter(getContext(), recommendedCoursesList);
+        recommendedCourses.setAdapter(courseAdapter);
+        recommendedCourses.setVisibility(View.VISIBLE);
+
+        // Recommended kursevi se prikazuju na osnovu preferncija
+        // dohvatiti preferencije ulogovanog user-a
+        getUserPreferences(loggedInUser);
+
+    }
+
+    private void getUserPreferences(User loggedInUser) {
+        preferencesApi.getPreferences(loggedInUser.getUsername()).enqueue(new Callback<Set<String>>() {
+
+            @Override
+            public void onResponse(@NonNull Call<Set<String>> call, @NonNull Response<Set<String>> response) {
+                Set<String> preferences = response.body();
+                System.out.println("Preferences");
+                for(String pref : preferences) {
+                    System.out.println(pref);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Set<String>> call, @NonNull Throwable throwable) {
+                System.out.println("REQ error");
+            }
+        });
+    }
+
+    private void displaySearchedCourses(View view, String inputSearch) {
+        List<Course> searchedCoursesList = new ArrayList<>();
+        RecyclerView searchedCourses = view.findViewById(R.id.searched_courses);
+        searchedCourses.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        CourseAdapter searchedCourseAdapter = new CourseAdapter(getContext(), searchedCoursesList);
+        searchedCourses.setAdapter(searchedCourseAdapter);
+
+        searchedCourses.setVisibility(View.VISIBLE);
+        search(searchedCourseAdapter, searchedCoursesList, inputSearch);
+
+        // !!! Ostale staviti na visibility GONE
+    }
+
+    private void search(CourseAdapter searchedCourseAdapter, List<Course> searchedCoursesList, String inputSearch) {
         courseApi.searchCourses(inputSearch).enqueue(new Callback<List<Course>>() {
             @Override
             public void onResponse(@NonNull Call<List<Course>> call, @NonNull Response<List<Course>> response) {
                 List<Course> searchedCourses = response.body();
-                courseList.clear();
+                searchedCoursesList.clear();
                 if(searchedCourses == null) {
                     Toast.makeText(requireContext(), "Ne postoji ni jedan kurs za prikaz!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                courseList.addAll(searchedCourses);
-                courseAdapter.notifyItemRangeInserted(0, searchedCourses.size());
+                searchedCoursesList.addAll(searchedCourses);
+                searchedCourseAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -113,7 +162,6 @@ public class CoursesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_courses, container, false);
     }
 }

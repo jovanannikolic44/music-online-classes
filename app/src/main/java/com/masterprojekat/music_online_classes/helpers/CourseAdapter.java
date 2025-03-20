@@ -1,6 +1,9 @@
 package com.masterprojekat.music_online_classes.helpers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,15 +11,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.masterprojekat.music_online_classes.APIs.CourseAPI;
+import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.R;
 import com.masterprojekat.music_online_classes.models.Course;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
+    private final RetrofitService retrofitService = new RetrofitService();
+    private final CourseAPI courseApi = retrofitService.getRetrofit().create(CourseAPI.class);
     private Context context;
     private List<Course> courseList;
 
@@ -32,15 +45,39 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         return new CourseViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
         Course course = courseList.get(position);
         holder.courseName.setText(course.getName());
-        holder.professorName.setText("Profesor: " + course.getProfessor().getName());
+        holder.professorName.setText("Profesor: " + course.getProfessor().getName() + " " + course.getProfessor().getSurname());
         holder.courseRating.setText("⭐ " + course.getRating());
         holder.coursePrice.setText("RSD" + course.getPrice());
 
-        Glide.with(context).load(course.getCourseImage()).into(holder.courseImage);
+        displayImage(holder, course.getCourseImage());
+    }
+
+    public void displayImage(CourseViewHolder holder, String fullImagePath) {
+        String imageFile = fullImagePath.substring(fullImagePath.lastIndexOf("/") + 1);
+        courseApi.getCourseImage(imageFile).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+
+                    Glide.with(context)
+                            .load(bitmap)
+                            .into(holder.courseImage);
+                } else {
+                    holder.courseImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.broken_image));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull retrofit2.Call<ResponseBody> call, @NonNull Throwable throwable) {
+                System.out.println("Error");
+            }
+        });
     }
 
     @Override

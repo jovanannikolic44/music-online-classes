@@ -34,11 +34,6 @@ public class PasswordReset extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_password_reset);
 
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        int statusBarColor = ContextCompat.getColor(this, R.color.black);
-        window.setStatusBarColor(statusBarColor);
-
         resetForgottenPassword();
     }
 
