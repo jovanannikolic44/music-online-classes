@@ -2,6 +2,7 @@ package com.masterprojekat.music_online_classes.helpers;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -17,8 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.masterprojekat.music_online_classes.APIs.CourseAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
+import com.masterprojekat.music_online_classes.CourseDetails;
 import com.masterprojekat.music_online_classes.R;
 import com.masterprojekat.music_online_classes.models.Course;
+import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.List;
 
@@ -32,10 +35,12 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     private final CourseAPI courseApi = retrofitService.getRetrofit().create(CourseAPI.class);
     private Context context;
     private List<Course> courseList;
+    private User loggedInUser;
 
-    public CourseAdapter(Context context, List<Course> courseList) {
+    public CourseAdapter(Context context, List<Course> courseList, User loggedInUser) {
         this.context = context;
         this.courseList = courseList;
+        this.loggedInUser = loggedInUser;
     }
 
     @NonNull
@@ -55,6 +60,25 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         holder.coursePrice.setText("RSD" + course.getPrice());
 
         displayImage(holder, course.getCourseImage());
+
+        holder.itemView.setOnClickListener(v -> {
+            v.animate()
+                    .scaleX(1.5f)
+                    .scaleY(1.5f)
+                    .setDuration(200)
+                    .withEndAction(() -> {
+                        v.animate()
+                                .scaleX(1f)
+                                .scaleY(1f)
+                                .setDuration(200)
+                                .start();
+                    })
+                    .start();
+            Intent intent = new Intent(v.getContext(), CourseDetails.class);
+            intent.putExtra("loggedInUser", loggedInUser);
+            intent.putExtra("course", course);
+            v.getContext().startActivity(intent);
+        });
     }
 
     public void displayImage(CourseViewHolder holder, String fullImagePath) {

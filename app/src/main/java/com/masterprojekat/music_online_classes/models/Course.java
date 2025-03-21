@@ -1,6 +1,8 @@
 package com.masterprojekat.music_online_classes.models;
 
-public class Course {
+import java.io.Serializable;
+
+public class Course implements Serializable {
     private User professor;
     private String name;
     private String level;
