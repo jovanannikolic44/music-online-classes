@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="185dp"
+    android:orientation="vertical"
+    android:layout_marginEnd="4dp"
+    android:background="@color/light_violet">
+
+    <ImageView
+        android:id="@+id/courseImage"
+        android:layout_width="120dp"
+        android:layout_height="80dp"
+        android:contentDescription="@string/no_image"
+        android:scaleType="fitXY"
+        android:src="@drawable/violina"/>
+
+    <TextView
+        android:id="@+id/courseName"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="@string/violin"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:paddingTop="2dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:minLines="2"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:breakStrategy="simple"
+        android:singleLine="false"/>
+
+    <TextView
+        android:id="@+id/professorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/professor"
+        android:textSize="12sp"
+        android:paddingTop="2dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"/>
+
+    <TextView
+        android:id="@+id/courseRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/course_rating"
+        android:textSize="12sp"
+        android:paddingTop="2dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"/>
+
+    <TextView
+        android:id="@+id/coursePrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/course_price"
+        android:textSize="12sp"
+        android:paddingTop="2dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="4dp"/>
+</LinearLayout>

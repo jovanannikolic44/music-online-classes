@@ -2,9 +2,6 @@ package com.masterprojekat.music_online_classes;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -13,10 +10,6 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.UserAPI;
@@ -38,11 +31,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        int statusBarColor = ContextCompat.getColor(this, R.color.black);
-        window.setStatusBarColor(statusBarColor);
 
         Button newAccountButton = findViewById(R.id.new_account);
         newAccountButton.setOnClickListener(view -> {
@@ -96,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(preferencesIntent);
                     }
                     else {
-                        Intent userProfileIntent = new Intent(MainActivity.this, UserProfile.class);
+                        Intent userProfileIntent = new Intent(MainActivity.this, HomeFragments.class);
                         userProfileIntent.putExtra("loggedInUser", user);
                         startActivity(userProfileIntent);
                     }

@@ -1,61 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.CoursesFragment">
-    
+    android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="15dp">
+        tools:context=".fragments.CoursesFragment">
 
-        <HorizontalScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="60dp"
+            android:paddingStart="20dp"
+            tools:ignore="RtlSymmetry">
 
-            <LinearLayout
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/all_courses"
+                android:textSize="20sp"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:textStyle="bold"/>
+
+            <ImageButton
+                android:id="@+id/courses_buy"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/no_image"
+                android:src="@drawable/courses_cart_icon"
+                android:background="@android:color/transparent"
+                android:paddingEnd="20dp"/>
+        </LinearLayout>
 
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginEnd="5dp"
-                    android:contentDescription="@string/no_image"
-                    android:src="@drawable/profesorka_gitare"
-                    android:scaleType="centerCrop"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:paddingStart="20dp"
+            tools:ignore="RtlSymmetry">
 
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginEnd="5dp"
-                    android:contentDescription="@string/no_image"
-                    android:src="@drawable/elektricna_gitara"
-                    android:scaleType="centerCrop"/>
+            <EditText
+                android:id="@+id/search_courses"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:autofillHints="text"
+                android:hint="@string/search_courses"
+                android:background="@drawable/search_edit_text"
+                android:drawableEnd="@drawable/search_icon"
+                android:drawableTint="@color/gray"
+                android:inputType="text"
+                android:textSize="14sp"
+                android:textColorHint="@color/gray"
+                android:textColor="@color/black"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:alpha="0.7"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:singleLine="true"
+                android:imeOptions="actionSearch"/>
+        </LinearLayout>
 
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginEnd="5dp"
-                    android:contentDescription="@string/no_image"
-                    android:src="@drawable/bubanj"
-                    android:scaleType="centerCrop"/>
+        <TextView
+            android:id="@+id/searched_courses_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_results_s"
+            android:textSize="16sp"
+            android:paddingStart="20dp"
+            android:paddingTop="20dp"
+            android:visibility="gone"
+            tools:ignore="RtlSymmetry" />
 
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginEnd="5dp"
-                    android:contentDescription="@string/no_image"
-                    android:src="@drawable/harfa"
-                    android:scaleType="centerCrop"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searched_courses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:scrollbars="horizontal"
+            android:overScrollMode="always"
+            android:visibility="gone"/>
 
-            </LinearLayout>
+        <TextView
+            android:id="@+id/recommended_courses_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/recommended_courses_s"
+            android:textSize="16sp"
+            android:paddingStart="20dp"
+            android:paddingTop="20dp"
+            android:visibility="visible"
+            tools:ignore="RtlSymmetry" />
 
-        </HorizontalScrollView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recommended_courses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:scrollbars="horizontal"
+            android:overScrollMode="always"
+            android:visibility="visible"/>
 
+        <TextView
+            android:id="@+id/best_rated_courses_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/best_rated_courses_s"
+            android:textSize="16sp"
+            android:paddingStart="20dp"
+            android:visibility="visible"
+            tools:ignore="RtlSymmetry" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/best_rated_courses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:scrollbars="horizontal"
+            android:overScrollMode="always"
+            android:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/cheapest_courses_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cheapest_courses_s"
+            android:textSize="16sp"
+            android:paddingStart="20dp"
+            android:visibility="visible"
+            tools:ignore="RtlSymmetry" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cheapest_courses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="200dp"
+            android:scrollbars="horizontal"
+            android:overScrollMode="always"
+            android:visibility="visible"/>
     </LinearLayout>
-
-</FrameLayout>
+</ScrollView>

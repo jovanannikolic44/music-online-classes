@@ -3,9 +3,6 @@ package com.masterprojekat.music_online_classes.APIs;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.List;
-import java.util.Map;
-
-import kotlin.ParameterName;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;

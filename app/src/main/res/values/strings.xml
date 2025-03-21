@@ -43,6 +43,15 @@
     <string name="statistics_label">Statistika</string>
     <string name="profile_label">Profil</string>
     <string name="log_out">Odjava</string>
+    <string name="all_courses">Pregled kurseva</string>
+    <string name="search_courses">Pretrazite kurseve</string>
+    <string name="course_rating">⭐ 4.5</string>
+    <string name="course_price">Cena kursa</string>
+    <string name="search_results_s">Rezultati pretrage:</string>
+    <string name="recommended_courses_s">Preporuceni kursevi</string>
+    <string name="best_rated_courses_s">Najbolje ocenjeni kursevi</string>
+    <string name="cheapest_courses_s">Najpristupacniji kursevi</string>
+
     <string-array name="expertise_array">
         <item>Gitara</item>
         <item>Violina</item>
@@ -54,6 +63,4 @@
         <item>Bubanj</item>
         <item>Pevanje</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

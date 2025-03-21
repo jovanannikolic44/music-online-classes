@@ -60,11 +60,6 @@ public class Registration extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_registration);
 
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        int statusBarColor = ContextCompat.getColor(this, R.color.black);
-        window.setStatusBarColor(statusBarColor);
-
         EditText inputDate = (EditText) findViewById(R.id.input_date);
         Spinners.showDateSpinner(Registration.this, inputDate);
 

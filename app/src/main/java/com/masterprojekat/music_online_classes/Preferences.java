@@ -2,12 +2,8 @@ package com.masterprojekat.music_online_classes;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -18,21 +14,12 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.chip.Chip;
-import com.masterprojekat.music_online_classes.APIs.PasswordResetAPI;
 import com.masterprojekat.music_online_classes.APIs.PreferencesAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.models.User;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,13 +40,7 @@ public class Preferences extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_preferences);
 
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        int statusBarColor = ContextCompat.getColor(this, R.color.black);
-        window.setStatusBarColor(statusBarColor);
-
         captureClickedPreferences();
-
         Button savePreferences = findViewById(R.id.continue_button);
         savePreferences.setOnClickListener(view -> saveSelectedPreferences());
     }
@@ -73,7 +54,7 @@ public class Preferences extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Intent userProfileIntent = new Intent(Preferences.this, UserProfile.class);
+                    Intent userProfileIntent = new Intent(Preferences.this, HomeFragments.class);
                     userProfileIntent.putExtra("loggedInUser", loggedInUser);
                     startActivity(userProfileIntent);
                 } else {

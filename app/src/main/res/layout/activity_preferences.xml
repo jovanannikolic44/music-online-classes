@@ -30,7 +30,7 @@
             android:gravity="center"
             android:padding="8dp"
             android:layout_marginEnd="80dp"
-            android:layout_marginStart="10dp">
+            android:layout_marginStart="2dp">
 
             <ImageView
                 android:id="@+id/guitar_image"
@@ -43,7 +43,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:scaleType="centerInside"
-                android:tag="Guitar"/>
+                android:tag="Gitara"/>
 
             <TextView
                 android:id="@+id/guitar_text"
@@ -73,7 +73,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:scaleType="centerInside"
-                android:tag="Violin"/>
+                android:tag="Violina"/>
 
             <TextView
                 android:id="@+id/violin_text"
@@ -104,7 +104,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:scaleType="centerInside"
-                android:tag="Piano"/>
+                android:tag="Klavir"/>
 
             <TextView
                 android:id="@+id/piano_text"
@@ -134,7 +134,7 @@
                 android:background="@drawable/circle_background"
                 android:clickable="true"
                 android:focusable="true"
-                android:tag="Harmonica"/>
+                android:tag="Harmonika"/>
 
             <TextView
                 android:id="@+id/harmonica_text"
@@ -165,7 +165,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:scaleType="centerInside"
-                android:tag="Trumpet"/>
+                android:tag="Truba"/>
 
             <TextView
                 android:id="@+id/trumpet_text"
@@ -195,7 +195,7 @@
                 android:background="@drawable/circle_background"
                 android:clickable="true"
                 android:focusable="true"
-                android:tag="Saxophone"/>
+                android:tag="Saksofon"/>
 
             <TextView
                 android:id="@+id/saxophone_text"
@@ -226,7 +226,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:scaleType="centerInside"
-                android:tag="Drums"/>
+                android:tag="Bubanj"/>
 
             <TextView
                 android:id="@+id/drums_text"
@@ -256,7 +256,7 @@
                 android:background="@drawable/circle_background"
                 android:clickable="true"
                 android:focusable="true"
-                android:tag="Singing"/>
+                android:tag="Pevanje"/>
 
             <TextView
                 android:id="@+id/singing_text"
