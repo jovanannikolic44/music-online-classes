@@ -23,7 +23,7 @@
         <!-- android:name=".Courses" -->
         <!-- android:exported="false" /> -->
         <activity
-            android:name=".UserProfile"
+            android:name=".HomeFragments"
             android:exported="false" />
         <activity
             android:name=".Preferences"

@@ -2,19 +2,15 @@
 
     import android.content.Intent;
     import android.os.Bundle;
-    import android.view.Window;
-    import android.view.WindowManager;
 
     import androidx.activity.EdgeToEdge;
-    import androidx.annotation.NonNull;
     import androidx.appcompat.app.AppCompatActivity;
-    import androidx.core.content.ContextCompat;
     import androidx.fragment.app.Fragment;
     import androidx.fragment.app.FragmentManager;
     import androidx.fragment.app.FragmentTransaction;
     import androidx.lifecycle.ViewModelProvider;
 
-    import com.masterprojekat.music_online_classes.databinding.ActivityUserProfileBinding;
+    import com.masterprojekat.music_online_classes.databinding.ActivityHomeFragmentsBinding;
     import com.masterprojekat.music_online_classes.fragments.ClassesFragment;
     import com.masterprojekat.music_online_classes.fragments.CoursesFragment;
     import com.masterprojekat.music_online_classes.fragments.NotificationsFragment;
@@ -23,19 +19,18 @@
     import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
     import com.masterprojekat.music_online_classes.models.User;
 
-    public class UserProfile extends AppCompatActivity {
-        ActivityUserProfileBinding binding;
+    public class HomeFragments extends AppCompatActivity {
+        ActivityHomeFragmentsBinding binding;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            binding = ActivityUserProfileBinding.inflate(getLayoutInflater());
+            binding = ActivityHomeFragmentsBinding.inflate(getLayoutInflater());
             EdgeToEdge.enable(this);
             setContentView(binding.getRoot());
 
             replaceFragment(new ProfileFragment());
 
-            // Get logged in user
             Intent userIntent = getIntent();
             User loggedInUser = (User) userIntent.getSerializableExtra("loggedInUser");
             if(loggedInUser == null)
