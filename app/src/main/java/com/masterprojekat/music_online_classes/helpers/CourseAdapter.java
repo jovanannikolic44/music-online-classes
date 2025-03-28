@@ -33,9 +33,9 @@ import retrofit2.Response;
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
     private final RetrofitService retrofitService = new RetrofitService();
     private final CourseAPI courseApi = retrofitService.getRetrofit().create(CourseAPI.class);
-    private Context context;
-    private List<Course> courseList;
-    private User loggedInUser;
+    private final Context context;
+    private final List<Course> courseList;
+    private final User loggedInUser;
 
     public CourseAdapter(Context context, List<Course> courseList, User loggedInUser) {
         this.context = context;

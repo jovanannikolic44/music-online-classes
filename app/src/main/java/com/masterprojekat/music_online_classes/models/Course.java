@@ -1,8 +1,10 @@
 package com.masterprojekat.music_online_classes.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Course implements Serializable {
+    private int courseId;
     private User professor;
     private String name;
     private String level;
@@ -12,6 +14,15 @@ public class Course implements Serializable {
     private float price;
     private String content;
     private String courseImage;
+    private List<Comment> comments;
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
 
     public User getProfessor() {
         return professor;
@@ -83,5 +94,13 @@ public class Course implements Serializable {
 
     public void setCourseImage(String courseImage) {
         this.courseImage = courseImage;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

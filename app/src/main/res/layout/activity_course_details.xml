@@ -7,7 +7,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:paddingTop="40dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
 
         <ImageButton
             android:id="@+id/course_details_back"
@@ -40,25 +42,27 @@
             android:background="@android:color/transparent"
             app:layout_constraintTop_toBottomOf="@id/course_details_back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"
+            android:scaleType="fitXY"/>
 
         <TextView
             android:id="@+id/course_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/course_name"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/course_image"
             app:layout_constraintStart_toStartOf="parent"
-            android:paddingTop="10dp"/>
+            android:paddingTop="20dp"/>
 
         <TextView
             android:id="@+id/course_professor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/professor"
-            android:textSize="16sp"
+            android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@id/course_name"
             app:layout_constraintStart_toStartOf="parent"
             android:paddingBottom="10dp"/>
@@ -68,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/course_level"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/course_professor"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -77,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/course_level_beginner"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/course_professor"
             app:layout_constraintStart_toEndOf="@id/course_level_label"
             android:layout_marginStart="8dp"/>
@@ -87,7 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/course_instrument"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/course_level_label"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -96,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/piano"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/course_level_value"
             app:layout_constraintStart_toEndOf="@id/course_instrument_label"
             android:layout_marginStart="8dp"/>
@@ -106,7 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/course_rating_s"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/course_instrument_label"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -115,7 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/number"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/course_instrument_value"
             app:layout_constraintStart_toEndOf="@id/course_rating_label"
             android:layout_marginStart="8dp"/>
@@ -125,7 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/course_price"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/course_rating_label"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -134,7 +138,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/number"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/course_rating_value"
             app:layout_constraintStart_toEndOf="@id/course_price_label"
             android:layout_marginStart="8dp"/>
@@ -144,7 +148,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/course_description"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/course_price_label"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -153,7 +157,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/course_description"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/course_description_label"
             app:layout_constraintStart_toStartOf="parent"
             android:paddingBottom="10dp"/>
@@ -163,24 +167,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/course_content"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/course_description_value"
             app:layout_constraintStart_toStartOf="parent"
             android:paddingTop="10dp"/>
 
-        <ExpandableListView
+
+        <TextView
             android:id="@+id/course_content_list"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="1dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/course_content_label"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            android:padding="5dp"
+            android:maxLines="10"
+            android:ellipsize="end"/>
 
         <EditText
             android:id="@+id/course_comment_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:autofillHints="text"
             android:hint="@string/course_comment_input"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
@@ -189,7 +197,7 @@
             android:lines="4"
             android:maxLines="6"
             android:paddingStart="10dp"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/course_content_list"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -214,10 +222,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/course_comments"
-            android:textSize="14sp"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             app:layout_constraintTop_toBottomOf="@id/course_comment_button"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingTop="10dp"/>
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/comments_list"
@@ -226,8 +235,8 @@
             app:layout_constraintTop_toBottomOf="@id/course_comments_label"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp"/>
-
+            android:nestedScrollingEnabled="false"
+            android:paddingBottom="200dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
