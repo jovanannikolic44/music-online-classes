@@ -71,7 +71,6 @@ public class CourseDetails extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if(response.isSuccessful()) {
-                    System.out.println("Kurs uspesno dodat u korpu");
                     Toast.makeText(CourseDetails.this, "Kurs uspesno dodat u korpu!", Toast.LENGTH_SHORT).show();
                 }
                 else {
