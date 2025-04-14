@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -21,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.masterprojekat.music_online_classes.APIs.CourseAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
+import com.masterprojekat.music_online_classes.APIs.UserAPI;
 import com.masterprojekat.music_online_classes.helpers.CommentAdapter;
 import com.masterprojekat.music_online_classes.helpers.CourseAdapter;
 import com.masterprojekat.music_online_classes.models.Comment;
@@ -29,6 +32,8 @@ import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -38,6 +43,7 @@ import retrofit2.Response;
 public class CourseDetails extends AppCompatActivity {
     // Ako je kurs kupljen onda ima i input polje za komentare
     private final RetrofitService retrofitService = new RetrofitService();
+    private final UserAPI userApi = retrofitService.getRetrofit().create(UserAPI.class);
     private final CourseAPI courseApi = retrofitService.getRetrofit().create(CourseAPI.class);
     private User loggedInUser;
     private Course courseToDisplay;
@@ -50,15 +56,38 @@ public class CourseDetails extends AppCompatActivity {
         Intent intent = getIntent();
         loggedInUser = (User) intent.getSerializableExtra("loggedInUser");
         courseToDisplay = (Course) intent.getSerializableExtra("course");
-        System.out.println("Course name " + courseToDisplay.getName());
         if(loggedInUser == null || courseToDisplay == null)
             return;
         displayCourseDetails();
+
+        Button addToCartButton = findViewById(R.id.add_course_to_cart);
+        addToCartButton.setOnClickListener(view -> {
+            addCourseToCart();
+        });
+    }
+
+    private void addCourseToCart() {
+        userApi.addCourseToCart(loggedInUser.getUsername(), courseToDisplay.getCourseId()).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if(response.isSuccessful()) {
+                    System.out.println("Kurs uspesno dodat u korpu");
+                    Toast.makeText(CourseDetails.this, "Kurs uspesno dodat u korpu!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(CourseDetails.this, "Greska! Kurs nije dodat u korpu!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
+                Logger.getLogger(CourseDetails.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dodavanjem kursa u korpu nije uspeo!", throwable);
+            }
+        });
     }
 
     @SuppressLint("SetTextI18n")
     private void displayCourseDetails() {
-        // get all simple fields
         TextView courseNameView = findViewById(R.id.course_name);
         TextView courseProfessorView = findViewById(R.id.course_professor);
         TextView courseLevelView = findViewById(R.id.course_level_value);
@@ -121,7 +150,7 @@ public class CourseDetails extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull retrofit2.Call<ResponseBody> call, @NonNull Throwable throwable) {
-                System.out.println("Error");
+                Logger.getLogger(CourseDetails.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dohvatanjem slike kursa nije uspeo!", throwable);
             }
         });
     }

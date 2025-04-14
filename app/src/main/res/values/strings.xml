@@ -62,6 +62,7 @@
     <string name="recommended_courses_s">Preporuceni kursevi</string>
     <string name="best_rated_courses_s">Najbolje ocenjeni kursevi</string>
     <string name="cheapest_courses_s">Najpristupacniji kursevi</string>
+    <string name="add_to_cart">Dodaj u korpu</string>
 
     <string-array name="expertise_array">
         <item>Gitara</item>
