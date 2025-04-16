@@ -21,7 +21,7 @@
             android:paddingEnd="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="RtlSymmetry" />
+            tools:ignore="RtlSymmetry"/>
 
         <ImageButton
             android:id="@+id/course_details_cart"
@@ -30,6 +30,8 @@
             android:contentDescription="@string/no_image"
             android:src="@drawable/courses_cart_icon"
             android:background="@android:color/transparent"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
@@ -171,7 +173,6 @@
             app:layout_constraintTop_toBottomOf="@id/course_description_value"
             app:layout_constraintStart_toStartOf="parent"
             android:paddingTop="10dp"/>
-
 
         <TextView
             android:id="@+id/course_content_list"

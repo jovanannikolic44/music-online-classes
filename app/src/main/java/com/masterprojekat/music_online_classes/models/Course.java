@@ -14,6 +14,7 @@ public class Course implements Serializable {
     private float price;
     private String content;
     private String courseImage;
+    private transient boolean isSelected = false;
     private List<Comment> comments;
 
     public int getCourseId() {
@@ -102,5 +103,13 @@ public class Course implements Serializable {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

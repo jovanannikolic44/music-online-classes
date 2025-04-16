@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,9 +15,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,12 +23,10 @@ import com.masterprojekat.music_online_classes.APIs.CourseAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.UserAPI;
 import com.masterprojekat.music_online_classes.helpers.CommentAdapter;
-import com.masterprojekat.music_online_classes.helpers.CourseAdapter;
 import com.masterprojekat.music_online_classes.models.Comment;
 import com.masterprojekat.music_online_classes.models.Course;
 import com.masterprojekat.music_online_classes.models.User;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,6 +59,13 @@ public class CourseDetails extends AppCompatActivity {
         Button addToCartButton = findViewById(R.id.add_course_to_cart);
         addToCartButton.setOnClickListener(view -> {
             addCourseToCart();
+        });
+
+        ImageButton cartButton = findViewById(R.id.course_details_cart);
+        cartButton.setOnClickListener(view -> {
+            Intent cartIntent = new Intent(this, Cart.class);
+            cartIntent.putExtra("loggedInUser", loggedInUser);
+            startActivity(cartIntent);
         });
     }
 

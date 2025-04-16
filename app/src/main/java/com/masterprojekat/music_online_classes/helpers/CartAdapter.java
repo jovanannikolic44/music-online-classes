@@ -1,13 +1,12 @@
 package com.masterprojekat.music_online_classes.helpers;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,10 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.masterprojekat.music_online_classes.APIs.CourseAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
-import com.masterprojekat.music_online_classes.CourseDetails;
 import com.masterprojekat.music_online_classes.R;
 import com.masterprojekat.music_online_classes.models.Course;
-import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -32,58 +29,42 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
+public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
+
     private final RetrofitService retrofitService = new RetrofitService();
     private final CourseAPI courseApi = retrofitService.getRetrofit().create(CourseAPI.class);
     private final Context context;
-    private final List<Course> courseList;
-    private final User loggedInUser;
+    private List<Course> courseList;
 
-    public CourseAdapter(Context context, List<Course> courseList, User loggedInUser) {
+    public CartAdapter(Context context, List<Course> courseList) {
         this.context = context;
         this.courseList = courseList;
-        this.loggedInUser = loggedInUser;
     }
 
     @NonNull
     @Override
-    public CourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.course_scroll, parent, false);
-        return new CourseViewHolder(view);
+    public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_item, parent, false);
+        return new CartViewHolder(view);
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
         Course course = courseList.get(position);
+
         holder.courseName.setText(course.getName());
-        holder.professorName.setText("Profesor: " + course.getProfessor().getName() + " " + course.getProfessor().getSurname());
-        holder.courseRating.setText("⭐ " + course.getRating());
+        holder.professorName.setText(course.getProfessor().getName() + " " + course.getProfessor().getSurname());
         holder.coursePrice.setText("RSD" + course.getPrice());
 
         displayImage(holder, course.getCourseImage());
 
-        holder.itemView.setOnClickListener(v -> {
-            v.animate()
-                    .scaleX(1.5f)
-                    .scaleY(1.5f)
-                    .setDuration(200)
-                    .withEndAction(() -> {
-                        v.animate()
-                                .scaleX(1f)
-                                .scaleY(1f)
-                                .setDuration(200)
-                                .start();
-                    })
-                    .start();
-            Intent intent = new Intent(v.getContext(), CourseDetails.class);
-            intent.putExtra("loggedInUser", loggedInUser);
-            intent.putExtra("course", course);
-            v.getContext().startActivity(intent);
+        holder.selectCourseCheckbox.setChecked(course.isSelected());
+        holder.selectCourseCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            course.setSelected(isChecked);
         });
     }
 
-    public void displayImage(CourseViewHolder holder, String fullImagePath) {
+    public void displayImage(CartAdapter.CartViewHolder holder, String fullImagePath) {
         String imageFile = fullImagePath.substring(fullImagePath.lastIndexOf("/") + 1);
         courseApi.getCourseImage(imageFile).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -101,27 +82,31 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
             @Override
             public void onFailure(@NonNull retrofit2.Call<ResponseBody> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CourseAdapter.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dohvatanjem slike kursa nije uspeo!", throwable);
+                Logger.getLogger(CartAdapter.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dohvatanjem slike kursa nije uspeo!", throwable);
             }
         });
     }
+
 
     @Override
     public int getItemCount() {
         return courseList.size();
     }
 
-    public static class CourseViewHolder extends RecyclerView.ViewHolder {
-        ImageView courseImage;
-        TextView courseName, professorName, courseRating, coursePrice;
+    public static class CartViewHolder extends RecyclerView.ViewHolder {
 
-        public CourseViewHolder(@NonNull View itemView) {
+        ImageView courseImage;
+        TextView courseName, professorName, coursePrice;
+        CheckBox selectCourseCheckbox;
+
+        public CartViewHolder(View itemView) {
             super(itemView);
-            courseImage = itemView.findViewById(R.id.courseImage);
-            courseName = itemView.findViewById(R.id.courseName);
-            professorName = itemView.findViewById(R.id.professorName);
-            courseRating = itemView.findViewById(R.id.courseRating);
-            coursePrice = itemView.findViewById(R.id.coursePrice);
+            courseImage = itemView.findViewById(R.id.course_image);
+            courseName = itemView.findViewById(R.id.course_name);
+            professorName = itemView.findViewById(R.id.professor_name);
+            coursePrice = itemView.findViewById(R.id.course_price);
+            selectCourseCheckbox = itemView.findViewById(R.id.select_course_checkbox);
         }
     }
 }
+

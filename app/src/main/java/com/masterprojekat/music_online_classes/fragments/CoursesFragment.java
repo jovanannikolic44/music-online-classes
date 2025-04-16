@@ -1,6 +1,7 @@
 package com.masterprojekat.music_online_classes.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,12 +17,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.masterprojekat.music_online_classes.APIs.CourseAPI;
 import com.masterprojekat.music_online_classes.APIs.PreferencesAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
+import com.masterprojekat.music_online_classes.Cart;
 import com.masterprojekat.music_online_classes.R;
 import com.masterprojekat.music_online_classes.helpers.CourseAdapter;
 import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
@@ -84,17 +87,24 @@ public class CoursesFragment extends Fragment {
             displayRecommendedCourses(view);
             displayBestRatedCourses(view);
             displayCheapestCourses(view);
+
+            ImageButton cartButton = view.findViewById(R.id.courses_buy);
+            cartButton.setOnClickListener(v -> {
+                Intent cartIntent = new Intent(getActivity(), Cart.class);
+                cartIntent.putExtra("loggedInUser", loggedInUser);
+                startActivity(cartIntent);
+            });
         });
     }
 
     private void displayCheapestCourses(View view) {
         List<Course> cheapestCoursesList = new ArrayList<>();
-        RecyclerView recommendedCourses = view.findViewById(R.id.cheapest_courses);
-        recommendedCourses.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        RecyclerView cheapestCourses = view.findViewById(R.id.cheapest_courses);
+        cheapestCourses.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         CourseAdapter courseAdapter = new CourseAdapter(getContext(), cheapestCoursesList, loggedInUser);
-        recommendedCourses.setAdapter(courseAdapter);
-        recommendedCourses.setVisibility(View.VISIBLE);
+        cheapestCourses.setAdapter(courseAdapter);
+        cheapestCourses.setVisibility(View.VISIBLE);
 
         getCheapestCourses(courseAdapter, cheapestCoursesList);
     }
@@ -123,12 +133,12 @@ public class CoursesFragment extends Fragment {
 
     private void displayBestRatedCourses(View view) {
         List<Course> bestRatedCoursesList = new ArrayList<>();
-        RecyclerView recommendedCourses = view.findViewById(R.id.best_rated_courses);
-        recommendedCourses.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        RecyclerView bestRatedCourses = view.findViewById(R.id.best_rated_courses);
+        bestRatedCourses.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         CourseAdapter courseAdapter = new CourseAdapter(getContext(), bestRatedCoursesList, loggedInUser);
-        recommendedCourses.setAdapter(courseAdapter);
-        recommendedCourses.setVisibility(View.VISIBLE);
+        bestRatedCourses.setAdapter(courseAdapter);
+        bestRatedCourses.setVisibility(View.VISIBLE);
 
         getBestRatedCourses(courseAdapter, bestRatedCoursesList);
     }
