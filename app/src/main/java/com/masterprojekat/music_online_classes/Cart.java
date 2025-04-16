@@ -3,6 +3,7 @@ package com.masterprojekat.music_online_classes;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -29,6 +30,8 @@ import retrofit2.Response;
 public class Cart extends AppCompatActivity {
     private final RetrofitService retrofitService = new RetrofitService();
     private final UserAPI userApi = retrofitService.getRetrofit().create(UserAPI.class);
+    private CartAdapter cartAdapter;
+    private List<Course> cartCoursesList = new ArrayList<>();
     private User loggedInUser;
 
     @Override
@@ -41,22 +44,24 @@ public class Cart extends AppCompatActivity {
         if(intent != null && intent.hasExtra("loggedInUser")) {
             loggedInUser = (User) intent.getSerializableExtra("loggedInUser");
         }
-        displayCoursesFromCart();
+        setUpAdapter();
+        getCoursesFromCart();
     }
 
-    private void displayCoursesFromCart() {
-        List<Course> cartCoursesList = new ArrayList<>();
+    private void setUpAdapter() {
         RecyclerView cartCourses = findViewById(R.id.cart_recycler_view);
         cartCourses.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        CartAdapter cartAdapter = new CartAdapter(this, cartCoursesList);
+        cartAdapter = new CartAdapter(this, cartCoursesList);
+        cartAdapter.setOnSelectionChangedListener(totalPrice -> {
+            TextView totalPriceTextView = findViewById(R.id.total_price);
+            totalPriceTextView.setText("RSD " + totalPrice);
+        });
         cartCourses.setAdapter(cartAdapter);
         cartCourses.setVisibility(View.VISIBLE);
-
-        getCoursesFromCart(cartAdapter, cartCoursesList);
     }
 
-    private void getCoursesFromCart(CartAdapter cartAdapter, List<Course> cartCoursesList) {
+    private void getCoursesFromCart() {
         userApi.getCoursesFromCart(loggedInUser.getUsername()).enqueue(new Callback<List<Course>>() {
             @Override
             public void onResponse(@NonNull Call<List<Course>> call, @NonNull Response<List<Course>> response) {
@@ -69,6 +74,11 @@ public class Cart extends AppCompatActivity {
                     }
                     cartCoursesList.addAll(courses);
                     cartAdapter.notifyDataSetChanged();
+
+                    // Initial total calculation (in case any course is already selected)
+                    float initialTotal = cartAdapter.calculateSelectedTotal();
+                    TextView totalPriceTextView = findViewById(R.id.total_price);
+                    totalPriceTextView.setText("RSD " + initialTotal);
                 }
             }
 

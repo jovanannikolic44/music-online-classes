@@ -35,10 +35,20 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     private final CourseAPI courseApi = retrofitService.getRetrofit().create(CourseAPI.class);
     private final Context context;
     private List<Course> courseList;
+    private OnSelectionChangedListener selectionChangedListener;
 
     public CartAdapter(Context context, List<Course> courseList) {
         this.context = context;
         this.courseList = courseList;
+    }
+
+    public void setOnSelectionChangedListener(OnSelectionChangedListener listener) {
+        this.selectionChangedListener = listener;
+    }
+
+    public interface OnSelectionChangedListener {
+        // Callback interface to communicate the total price change from adapter to Cart
+        void onSelectionChanged(float totalPrice);
     }
 
     @NonNull
@@ -61,7 +71,21 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.selectCourseCheckbox.setChecked(course.isSelected());
         holder.selectCourseCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             course.setSelected(isChecked);
+            if (selectionChangedListener != null) {
+                float total = calculateSelectedTotal();
+                selectionChangedListener.onSelectionChanged(total);
+            }
         });
+    }
+
+    public float calculateSelectedTotal() {
+        float totalPrice = 0;
+        for (Course course : courseList) {
+            if (course.isSelected()) {
+                totalPrice += course.getPrice();
+            }
+        }
+        return totalPrice;
     }
 
     public void displayImage(CartAdapter.CartViewHolder holder, String fullImagePath) {
