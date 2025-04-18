@@ -10,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -44,7 +45,7 @@ public interface UserAPI {
     Call<ResponseBody> getProfilePicture(@Query("username") String username);
 
     @POST("/user/purchase-course")
-    Call<String> purchaseCourse(@Query("username") String username, @Query("courseId") int courseId);
+    Call<ResponseBody> purchaseCourse(@Query("username") String username, @Query("courseId") int courseId);
 
     @GET("/user/get-purchased-courses")
     Call<List<Course>> getPurchasedCourses(@Query("username") String username);
@@ -55,6 +56,6 @@ public interface UserAPI {
     @GET("/user/get-courses-from-cart")
     Call<List<Course>> getCoursesFromCart(@Query("username") String username);
 
-    @DELETE("/users/{username}/cart")
+    @HTTP(method = "DELETE", path = "/users/{username}/cart", hasBody = true)
     Call<Void> removeCoursesFromCart(@Path("username") String username, @Body List<Integer> courseIds);
 }

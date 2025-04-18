@@ -20,6 +20,7 @@ import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.R;
 import com.masterprojekat.music_online_classes.models.Course;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -76,6 +77,16 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 selectionChangedListener.onSelectionChanged(total);
             }
         });
+    }
+
+    public List<Course> getSelectedCourses() {
+        List<Course> selected = new ArrayList<>();
+        for (Course course : courseList) {
+            if (course.isSelected()) {
+                selected.add(course);
+            }
+        }
+        return selected;
     }
 
     public float calculateSelectedTotal() {

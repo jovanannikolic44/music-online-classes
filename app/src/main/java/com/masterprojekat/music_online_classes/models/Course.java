@@ -16,6 +16,7 @@ public class Course implements Serializable {
     private String courseImage;
     private transient boolean isSelected = false;
     private List<Comment> comments;
+    private int progress;
 
     public int getCourseId() {
         return courseId;
@@ -111,5 +112,13 @@ public class Course implements Serializable {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
     }
 }

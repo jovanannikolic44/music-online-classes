@@ -13,7 +13,7 @@
         android:layout_height="80dp"
         android:contentDescription="@string/no_image"
         android:scaleType="fitXY"
-        android:src="@drawable/violina"/>
+        android:src="@drawable/broken_image"/>
 
     <TextView
         android:id="@+id/courseName"

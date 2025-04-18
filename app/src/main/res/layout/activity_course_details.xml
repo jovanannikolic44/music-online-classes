@@ -40,7 +40,7 @@
             android:layout_width="0dp"
             android:layout_height="200dp"
             android:contentDescription="@string/no_image"
-            android:src="@drawable/violina"
+            android:src="@drawable/broken_image"
             android:background="@android:color/transparent"
             app:layout_constraintTop_toBottomOf="@id/course_details_back"
             app:layout_constraintStart_toStartOf="parent"
@@ -225,6 +225,19 @@
             android:backgroundTint="@color/dark_violet"
             android:textColor="@color/white"
             android:text="@string/add_to_cart"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/course_comment_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <Button
+            android:id="@+id/reserve_lesson_term"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/dark_violet"
+            android:textColor="@color/white"
+            android:text="@string/add_to_cart"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/course_comment_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

@@ -1,8 +1,10 @@
 package com.masterprojekat.music_online_classes;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,6 +49,62 @@ public class Cart extends AppCompatActivity {
         }
         setUpAdapter();
         getCoursesFromCart();
+
+        Button buyCoursesButton = findViewById(R.id.buy_courses);
+        buyCoursesButton.setOnClickListener(view -> {
+            buyCourses();
+        });
+    }
+
+    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
+    private void buyCourses() {
+        List<Course> selectedCourses = cartAdapter.getSelectedCourses();
+        if (selectedCourses.isEmpty()) {
+            Toast.makeText(Cart.this, "Niste izabrali nijedan kurs.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        List<Integer> purchasedCoursesIds = new ArrayList<>();
+        for (Course course : selectedCourses) {
+            int courseId = course.getCourseId();
+            purchaseCourse(courseId);
+            purchasedCoursesIds.add(courseId);
+        }
+        cartCoursesList.removeAll(selectedCourses);
+        cartAdapter.notifyDataSetChanged();
+
+        float newTotal = cartAdapter.calculateSelectedTotal();
+        TextView totalPriceTextView = findViewById(R.id.total_price);
+        totalPriceTextView.setText("RSD " + newTotal);
+
+        removeCoursesFromCart(purchasedCoursesIds);
+    }
+
+    private void removeCoursesFromCart(List<Integer> purchasedIds) {
+        userApi.removeCoursesFromCart(loggedInUser.getUsername(), purchasedIds).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                Logger.getLogger(Cart.class.getName()).log(Level.INFO, "Kurs je uspesno obrisan!");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable throwable) {
+                Logger.getLogger(Cart.class.getName()).log(Level.SEVERE, "Greska! Zahtev za brisanje kurseva nije uspeo!", throwable);
+            }
+        });
+    }
+
+    private void purchaseCourse(int courseId) {
+        userApi.purchaseCourse(loggedInUser.getUsername(), courseId).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Toast.makeText(Cart.this, "Kurs je uspesno kupljen!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
+                Logger.getLogger(Cart.class.getName()).log(Level.SEVERE, "Greska! Zahtev za kupovinom kursa nije uspeo!", throwable);
+            }
+        });
     }
 
     private void setUpAdapter() {

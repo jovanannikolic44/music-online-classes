@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -56,10 +57,23 @@ public class CourseDetails extends AppCompatActivity {
             return;
         displayCourseDetails();
 
+        boolean isPurchased = checkIfCourseIsPurchased();
         Button addToCartButton = findViewById(R.id.add_course_to_cart);
-        addToCartButton.setOnClickListener(view -> {
-            addCourseToCart();
-        });
+        Button reserveTermButton = findViewById(R.id.reserve_lesson_term);
+        if(!isPurchased) {
+            addToCartButton.setVisibility(View.VISIBLE);
+            reserveTermButton.setVisibility(View.GONE);
+            addToCartButton.setOnClickListener(view -> {
+                addCourseToCart();
+            });
+        }
+        else {
+            addToCartButton.setVisibility(View.GONE);
+            reserveTermButton.setVisibility(View.VISIBLE);
+            reserveTermButton.setOnClickListener(view -> {
+                System.out.println("Rezervisanje termina!");
+            });
+        }
 
         ImageButton cartButton = findViewById(R.id.course_details_cart);
         cartButton.setOnClickListener(view -> {
@@ -67,6 +81,11 @@ public class CourseDetails extends AppCompatActivity {
             cartIntent.putExtra("loggedInUser", loggedInUser);
             startActivity(cartIntent);
         });
+    }
+
+    private boolean checkIfCourseIsPurchased() {
+        // Check if courseToDisplay is purchased for user Username
+        return true;
     }
 
     private void addCourseToCart() {
