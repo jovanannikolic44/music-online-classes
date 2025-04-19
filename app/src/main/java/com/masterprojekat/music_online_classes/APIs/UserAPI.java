@@ -58,4 +58,6 @@ public interface UserAPI {
 
     @HTTP(method = "DELETE", path = "/users/{username}/cart", hasBody = true)
     Call<Void> removeCoursesFromCart(@Path("username") String username, @Body List<Integer> courseIds);
+
+    @GET("/user/is-course-purchased") Call<Boolean> isCoursePurchased(@Query("username") String username, @Query("courseId") int courseId);
 }

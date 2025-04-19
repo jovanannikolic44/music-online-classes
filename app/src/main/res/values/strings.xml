@@ -67,6 +67,7 @@
     <string name="buy_course">Kupi</string>
     <string name="course_progress">Progres:</string>
     <string name="professor_label">Profesor:</string>
+    <string name="current_courses_label">Trenutni kursevi</string>
 
     <string-array name="expertise_array">
         <item>Gitara</item>

@@ -1,15 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragments.StatisticsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="60dp"
+        android:paddingStart="20dp"
+        tools:ignore="RtlSymmetry">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/current_courses_label"
+            android:textSize="20sp"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+            android:textStyle="bold"/>
+
+        <ImageButton
+            android:id="@+id/current_courses_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/no_image"
+            android:src="@drawable/courses_cart_icon"
+            android:background="@android:color/transparent"
+            android:paddingEnd="20dp"/>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/statistics_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:padding="12dp"
-        android:scrollbars="vertical"
-        android:layout_marginTop="30dp"/>
-</FrameLayout>
+        android:scrollbars="vertical"/>
+</LinearLayout>

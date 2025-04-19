@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,24 +57,7 @@ public class CourseDetails extends AppCompatActivity {
         if(loggedInUser == null || courseToDisplay == null)
             return;
         displayCourseDetails();
-
-        boolean isPurchased = checkIfCourseIsPurchased();
-        Button addToCartButton = findViewById(R.id.add_course_to_cart);
-        Button reserveTermButton = findViewById(R.id.reserve_lesson_term);
-        if(!isPurchased) {
-            addToCartButton.setVisibility(View.VISIBLE);
-            reserveTermButton.setVisibility(View.GONE);
-            addToCartButton.setOnClickListener(view -> {
-                addCourseToCart();
-            });
-        }
-        else {
-            addToCartButton.setVisibility(View.GONE);
-            reserveTermButton.setVisibility(View.VISIBLE);
-            reserveTermButton.setOnClickListener(view -> {
-                System.out.println("Rezervisanje termina!");
-            });
-        }
+        addToCartOrReserveTerm();
 
         ImageButton cartButton = findViewById(R.id.course_details_cart);
         cartButton.setOnClickListener(view -> {
@@ -83,9 +67,44 @@ public class CourseDetails extends AppCompatActivity {
         });
     }
 
-    private boolean checkIfCourseIsPurchased() {
-        // Check if courseToDisplay is purchased for user Username
-        return true;
+    private void addToCartOrReserveTerm() {
+        userApi.isCoursePurchased(loggedInUser.getUsername(), courseToDisplay.getCourseId()).enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(@NonNull Call<Boolean> call, @NonNull Response<Boolean> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    boolean isPurchased = response.body();
+                    Button addToCartButton = findViewById(R.id.add_course_to_cart);
+                    Button reserveTermButton = findViewById(R.id.reserve_lesson_term);
+                    TextView commentsLabel = findViewById(R.id.course_comments_label);
+                    ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) commentsLabel.getLayoutParams();
+                    if(!isPurchased) {
+                        addToCartButton.setVisibility(View.VISIBLE);
+                        reserveTermButton.setVisibility(View.GONE);
+                        params.topToBottom = R.id.add_course_to_cart;
+                        addToCartButton.setOnClickListener(view -> {
+                            addCourseToCart();
+                        });
+                    }
+                    else {
+                        addToCartButton.setVisibility(View.GONE);
+                        reserveTermButton.setVisibility(View.VISIBLE);
+                        params.topToBottom = R.id.reserve_lesson_term;
+                        reserveTermButton.setOnClickListener(view -> {
+                            System.out.println("Rezervisanje termina!");
+                        });
+                    }
+                    commentsLabel.setLayoutParams(params);
+                }
+                else {
+                    Toast.makeText(CourseDetails.this, "Greška pri proveri kupovine kursa!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Boolean> call, @NonNull Throwable throwable) {
+                Logger.getLogger(CourseDetails.class.getName()).log(Level.SEVERE, "Greska! Zahtev za proverom obavljene kupovine nije uspeo!", throwable);
+            }
+        });
     }
 
     private void addCourseToCart() {

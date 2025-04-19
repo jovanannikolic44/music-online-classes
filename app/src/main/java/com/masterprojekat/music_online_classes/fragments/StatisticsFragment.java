@@ -1,6 +1,7 @@
 package com.masterprojekat.music_online_classes.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.UserAPI;
@@ -31,6 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+// Zbog progresa bi trebalo pamtiti i fond casova
 public class StatisticsFragment extends Fragment {
     private final RetrofitService retrofitService = new RetrofitService();
     private final UserAPI userApi = retrofitService.getRetrofit().create(UserAPI.class);
@@ -50,6 +54,13 @@ public class StatisticsFragment extends Fragment {
             loggedInUser = user;
             setUpProgressAdapter(view);
             getPurchasedCourses();
+
+            ImageButton currentCoursesCartButton = view.findViewById(R.id.current_courses_cart);
+            currentCoursesCartButton.setOnClickListener(localView -> {
+                Intent cartIntent = new Intent(getActivity(), Cart.class);
+                cartIntent.putExtra("loggedInUser", loggedInUser);
+                startActivity(cartIntent);
+            });
         });
     }
 
