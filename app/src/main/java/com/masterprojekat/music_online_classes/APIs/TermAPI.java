@@ -4,9 +4,11 @@ import com.masterprojekat.music_online_classes.models.Term;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -16,13 +18,13 @@ public interface TermAPI {
     Call<String> createNewTerm(@Body Term term);
 
     @POST("/term/reserve")
-    Call<String> requestTerm(@Field("termId") int termId, @Field("studentUsername") String studentUsername);
+    Call<ResponseBody> requestTerm(@Query("termId") int termId, @Query("studentUsername") String studentUsername, @Query("courseId") int courseId);
 
     @POST("/term/accept")
-    Call<String> acceptTerm(@Field("termId") int termId);
+    Call<ResponseBody> acceptTerm(@Query("termId") int termId);
 
     @POST("/term/decline")
-    Call<String> rejectTerm(@Field("termId") int termId);
+    Call<ResponseBody> rejectTerm(@Query("termId") int termId);
 
     @GET("/term/get-available-terms-for-professor")
     Call<List<Term>> getAllAvailableTermsForProfessor(@Query("professorUsername") String professorUsername);

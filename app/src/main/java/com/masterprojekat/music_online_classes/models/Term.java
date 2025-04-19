@@ -1,14 +1,16 @@
 package com.masterprojekat.music_online_classes.models;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import androidx.annotation.NonNull;
 
-public class Term {
+import java.io.Serializable;
+
+public class Term implements Serializable {
     private int termId;
-    private LocalDate date;
-    private LocalTime time;
+    private String date;
+    private String time;
     private User professor;
     private User student;
+    private Course course;
     private TermStatus status;
 
     public int getTermId() {
@@ -19,20 +21,20 @@ public class Term {
         this.termId = termId;
     }
 
-    public LocalTime getTime() {
-        return time;
-    }
-
-    public void setTime(LocalTime time) {
-        this.time = time;
-    }
-
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public User getProfessor() {
@@ -57,5 +59,19 @@ public class Term {
 
     public void setStatus(TermStatus status) {
         this.status = status;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return date + " " + time;
     }
 }
