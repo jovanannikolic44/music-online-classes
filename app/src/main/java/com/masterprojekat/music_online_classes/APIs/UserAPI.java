@@ -1,5 +1,6 @@
 package com.masterprojekat.music_online_classes.APIs;
 
+import com.masterprojekat.music_online_classes.models.Course;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.List;
@@ -7,10 +8,13 @@ import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface UserAPI {
@@ -40,4 +44,20 @@ public interface UserAPI {
     @GET("/user/get-profile-picture")
     Call<ResponseBody> getProfilePicture(@Query("username") String username);
 
+    @POST("/user/purchase-course")
+    Call<ResponseBody> purchaseCourse(@Query("username") String username, @Query("courseId") int courseId);
+
+    @GET("/user/get-purchased-courses")
+    Call<List<Course>> getPurchasedCourses(@Query("username") String username);
+
+    @POST("/user/add-to-cart-course")
+    Call<ResponseBody> addCourseToCart(@Query("username") String username, @Query("courseId") int courseId);
+
+    @GET("/user/get-courses-from-cart")
+    Call<List<Course>> getCoursesFromCart(@Query("username") String username);
+
+    @HTTP(method = "DELETE", path = "/users/{username}/cart", hasBody = true)
+    Call<Void> removeCoursesFromCart(@Path("username") String username, @Body List<Integer> courseIds);
+
+    @GET("/user/is-course-purchased") Call<Boolean> isCoursePurchased(@Query("username") String username, @Query("courseId") int courseId);
 }

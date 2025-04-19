@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="@color/violet">
+
+    <Spinner
+        android:id="@+id/term_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        android:padding="10dp"
+        android:visibility="visible"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/edit_text_style"
+        android:textSize="14sp"
+        android:textColorHint="@color/gray"
+        android:textColor="@color/black"/>
+
+    <Button
+        android:id="@+id/reserve_term_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/dark_violet"
+        android:textColor="@color/white"
+        android:text="@string/reserve"/>
+
+</LinearLayout>

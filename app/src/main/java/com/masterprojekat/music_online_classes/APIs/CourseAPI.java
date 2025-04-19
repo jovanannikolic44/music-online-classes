@@ -30,4 +30,10 @@ public interface CourseAPI {
 
     @GET("/course/cheapest")
     Call<List<Course>> getCheapestCourses();
+
+    @POST("/course/save-rating")
+    Call<Void> saveCourseRating(@Query("courseId") int courseId, @Query("rating") float rating);
+
+    @GET("/course/get-rating")
+    Call<Float> getCourseRating(@Query("courseId") int courseId);
 }

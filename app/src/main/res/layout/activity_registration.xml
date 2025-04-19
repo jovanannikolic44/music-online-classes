@@ -143,7 +143,6 @@
             android:textColor="@color/black"/>
     </RadioGroup>
 
-    <!-- Ako se klikne na profesora prikaze se, a za ucenika ne -->
     <EditText
         android:id="@+id/input_education"
         android:layout_width="match_parent"

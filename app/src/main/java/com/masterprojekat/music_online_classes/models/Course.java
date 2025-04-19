@@ -1,17 +1,31 @@
 package com.masterprojekat.music_online_classes.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Course implements Serializable {
+    private int courseId;
     private User professor;
     private String name;
     private String level;
     private String instrument;
     private String description;
-    private int rating;
+    private float rating;
     private float price;
     private String content;
     private String courseImage;
+    private transient boolean isSelected = false;
+    private List<Comment> comments;
+    private int progress;
+    private int numberOfClasses;
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
 
     public User getProfessor() {
         return professor;
@@ -53,11 +67,11 @@ public class Course implements Serializable {
         this.description = description;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 
@@ -83,5 +97,37 @@ public class Course implements Serializable {
 
     public void setCourseImage(String courseImage) {
         this.courseImage = courseImage;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
+
+    public int getNumberOfClasses() {
+        return numberOfClasses;
+    }
+
+    public void setNumberOfClasses(int numberOfClasses) {
+        this.numberOfClasses = numberOfClasses;
     }
 }

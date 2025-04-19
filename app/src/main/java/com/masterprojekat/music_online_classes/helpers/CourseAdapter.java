@@ -24,6 +24,8 @@ import com.masterprojekat.music_online_classes.models.Course;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -33,9 +35,9 @@ import retrofit2.Response;
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
     private final RetrofitService retrofitService = new RetrofitService();
     private final CourseAPI courseApi = retrofitService.getRetrofit().create(CourseAPI.class);
-    private Context context;
-    private List<Course> courseList;
-    private User loggedInUser;
+    private final Context context;
+    private final List<Course> courseList;
+    private final User loggedInUser;
 
     public CourseAdapter(Context context, List<Course> courseList, User loggedInUser) {
         this.context = context;
@@ -56,7 +58,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         Course course = courseList.get(position);
         holder.courseName.setText(course.getName());
         holder.professorName.setText("Profesor: " + course.getProfessor().getName() + " " + course.getProfessor().getSurname());
-        holder.courseRating.setText("⭐ " + course.getRating());
+        holder.courseRating.setText("⭐ Ucitavanje");
+        getCourseRating(holder, course);
+
         holder.coursePrice.setText("RSD" + course.getPrice());
 
         displayImage(holder, course.getCourseImage());
@@ -81,6 +85,25 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         });
     }
 
+    private void getCourseRating(CourseViewHolder holder, Course course) {
+        courseApi.getCourseRating(course.getCourseId()).enqueue(new Callback<Float>() {
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void onResponse(@NonNull Call<Float> call, @NonNull Response<Float> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    final float newCourseRating = response.body();
+                    course.setRating(newCourseRating);
+                    holder.courseRating.setText(String.format("%.2f", newCourseRating));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Float> call, @NonNull Throwable throwable) {
+                Logger.getLogger(CourseAdapter.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dodavanjem ocene nije uspeo!", throwable);
+            }
+        });
+    }
+
     public void displayImage(CourseViewHolder holder, String fullImagePath) {
         String imageFile = fullImagePath.substring(fullImagePath.lastIndexOf("/") + 1);
         courseApi.getCourseImage(imageFile).enqueue(new Callback<ResponseBody>() {
@@ -99,7 +122,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
             @Override
             public void onFailure(@NonNull retrofit2.Call<ResponseBody> call, @NonNull Throwable throwable) {
-                System.out.println("Error");
+                Logger.getLogger(CourseAdapter.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dohvatanjem slike kursa nije uspeo!", throwable);
             }
         });
     }
