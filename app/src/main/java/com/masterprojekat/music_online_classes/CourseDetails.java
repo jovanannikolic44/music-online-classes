@@ -85,7 +85,7 @@ public class CourseDetails extends AppCompatActivity {
     }
 
     private void saveComment(Comment commentToAdd) {
-        commentAPI.addComment(commentToAdd).enqueue(new Callback<Void>() {
+        commentAPI.saveComment(commentToAdd).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {

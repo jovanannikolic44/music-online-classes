@@ -12,8 +12,8 @@ import retrofit2.http.Query;
 
 public interface CommentAPI {
 
-    @POST("/comments/add-comment")
-    Call<Void> addComment(@Body Comment comment);
+    @POST("/comments/save-comment")
+    Call<Void> saveComment(@Body Comment comment);
     @GET("/comments/get-all-comments-for-course")
     Call<List<Comment>> getAllCommentsForCourse(@Query("courseId") int courseId);
 }
