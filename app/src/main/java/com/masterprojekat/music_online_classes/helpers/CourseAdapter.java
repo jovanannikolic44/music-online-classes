@@ -58,7 +58,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         Course course = courseList.get(position);
         holder.courseName.setText(course.getName());
         holder.professorName.setText("Profesor: " + course.getProfessor().getName() + " " + course.getProfessor().getSurname());
-        holder.courseRating.setText("⭐ " + course.getRating());
+        holder.courseRating.setText("⭐ Ucitavanje");
+        getCourseRating(holder, course);
+
         holder.coursePrice.setText("RSD" + course.getPrice());
 
         displayImage(holder, course.getCourseImage());
@@ -80,6 +82,25 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             intent.putExtra("loggedInUser", loggedInUser);
             intent.putExtra("course", course);
             v.getContext().startActivity(intent);
+        });
+    }
+
+    private void getCourseRating(CourseViewHolder holder, Course course) {
+        courseApi.getCourseRating(course.getCourseId()).enqueue(new Callback<Float>() {
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void onResponse(@NonNull Call<Float> call, @NonNull Response<Float> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    final float newCourseRating = response.body();
+                    course.setRating(newCourseRating);
+                    holder.courseRating.setText(String.format("%.2f", newCourseRating));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Float> call, @NonNull Throwable throwable) {
+                Logger.getLogger(CourseAdapter.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dodavanjem ocene nije uspeo!", throwable);
+            }
         });
     }
 

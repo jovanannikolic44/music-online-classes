@@ -2,13 +2,17 @@ package com.masterprojekat.music_online_classes;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,12 +79,16 @@ public class CourseDetails extends AppCompatActivity {
                     boolean isPurchased = response.body();
                     Button addToCartButton = findViewById(R.id.add_course_to_cart);
                     Button reserveTermButton = findViewById(R.id.reserve_lesson_term);
+                    EditText courseCommentEditText = findViewById(R.id.course_comment_input);
+                    Button saveCommentButton = findViewById(R.id.course_comment_button);
                     TextView commentsLabel = findViewById(R.id.course_comments_label);
-                    ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) commentsLabel.getLayoutParams();
+                    RatingBar courseRatingBar = findViewById(R.id.course_rating_bar);
                     if(!isPurchased) {
                         addToCartButton.setVisibility(View.VISIBLE);
                         reserveTermButton.setVisibility(View.GONE);
-                        params.topToBottom = R.id.add_course_to_cart;
+                        courseCommentEditText.setVisibility(View.GONE);
+                        saveCommentButton.setVisibility(View.GONE);
+                        courseRatingBar.setVisibility(View.GONE);
                         addToCartButton.setOnClickListener(view -> {
                             addCourseToCart();
                         });
@@ -88,12 +96,24 @@ public class CourseDetails extends AppCompatActivity {
                     else {
                         addToCartButton.setVisibility(View.GONE);
                         reserveTermButton.setVisibility(View.VISIBLE);
-                        params.topToBottom = R.id.reserve_lesson_term;
+                        courseCommentEditText.setVisibility(View.VISIBLE);
+                        saveCommentButton.setVisibility(View.VISIBLE);
+                        courseRatingBar.setVisibility(View.VISIBLE);
+                        courseRatingBar.setProgressTintList(ColorStateList.valueOf(Color.YELLOW));
+                        courseRatingBar.setSecondaryProgressTintList(ColorStateList.valueOf(Color.GRAY));
+                        courseRatingBar.setProgressBackgroundTintList(ColorStateList.valueOf(Color.LTGRAY));
+                        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) commentsLabel.getLayoutParams();
+                        layoutParams.topMargin = 700;
+                        commentsLabel.setLayoutParams(layoutParams);
+                        courseRatingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+                            if(fromUser) {
+                                saveRating(rating);
+                            }
+                        });
                         reserveTermButton.setOnClickListener(view -> {
                             System.out.println("Rezervisanje termina!");
                         });
                     }
-                    commentsLabel.setLayoutParams(params);
                 }
                 else {
                     Toast.makeText(CourseDetails.this, "Greška pri proveri kupovine kursa!", Toast.LENGTH_SHORT).show();
@@ -103,6 +123,49 @@ public class CourseDetails extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<Boolean> call, @NonNull Throwable throwable) {
                 Logger.getLogger(CourseDetails.class.getName()).log(Level.SEVERE, "Greska! Zahtev za proverom obavljene kupovine nije uspeo!", throwable);
+            }
+        });
+    }
+
+    private void getRating() {
+        courseApi.getCourseRating(courseToDisplay.getCourseId()).enqueue(new Callback<Float>() {
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void onResponse(@NonNull Call<Float> call, @NonNull Response<Float> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    final float newCourseRating = response.body();
+                    courseToDisplay.setRating(newCourseRating);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            TextView courseRatingView = findViewById(R.id.course_rating_value);
+                            courseRatingView.setText(String.format("%.2f", newCourseRating));
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Float> call, @NonNull Throwable throwable) {
+                Logger.getLogger(CourseDetails.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dodavanjem ocene nije uspeo!", throwable);
+            }
+        });
+    }
+
+    private void saveRating(float rating_input) {
+        courseApi.saveCourseRating(courseToDisplay.getCourseId(), rating_input).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if(response.isSuccessful()) {
+                    Toast.makeText(CourseDetails.this, "Ocena je uspesno sacuvana!", Toast.LENGTH_SHORT).show();
+                    getRating();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable throwable) {
+                Logger.getLogger(CourseDetails.class.getName()).log(Level.SEVERE, "Greska! Zahtev za cuvanjem ocene nije uspeo!", throwable);
             }
         });
     }
@@ -126,7 +189,7 @@ public class CourseDetails extends AppCompatActivity {
         });
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     private void displayCourseDetails() {
         TextView courseNameView = findViewById(R.id.course_name);
         TextView courseProfessorView = findViewById(R.id.course_professor);
@@ -142,7 +205,7 @@ public class CourseDetails extends AppCompatActivity {
         courseProfessorView.setText(courseToDisplay.getProfessor().getName() + " " + courseToDisplay.getProfessor().getSurname());
         courseLevelView.setText(courseToDisplay.getLevel());
         courseInstrumentView.setText(courseToDisplay.getInstrument());
-        courseRatingView.setText(String.valueOf(courseToDisplay.getRating()));
+        courseRatingView.setText(String.format("%.2f", courseToDisplay.getRating()));
         coursePriceView.setText(String.valueOf(courseToDisplay.getPrice()));
         courseDescriptionView.setText(courseToDisplay.getDescription());
 

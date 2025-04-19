@@ -97,6 +97,17 @@ public class CoursesFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (getView() != null && loggedInUser != null) {
+            displayRecommendedCourses(getView());
+            displayBestRatedCourses(getView());
+            displayCheapestCourses(getView());
+        }
+    }
+
     private void displayCheapestCourses(View view) {
         List<Course> cheapestCoursesList = new ArrayList<>();
         RecyclerView cheapestCourses = view.findViewById(R.id.cheapest_courses);

@@ -10,7 +10,7 @@ public class Course implements Serializable {
     private String level;
     private String instrument;
     private String description;
-    private int rating;
+    private float rating;
     private float price;
     private String content;
     private String courseImage;
@@ -66,11 +66,11 @@ public class Course implements Serializable {
         this.description = description;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 
