@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.masterprojekat.music_online_classes.R;
 import com.masterprojekat.music_online_classes.models.Comment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
@@ -17,7 +18,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     private final List<Comment> commentList;
 
     public CommentAdapter(List<Comment> commentList) {
-        this.commentList = commentList;
+        this.commentList = (commentList != null) ? commentList : new ArrayList<>();
     }
 
     @NonNull

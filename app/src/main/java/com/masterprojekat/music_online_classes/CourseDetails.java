@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.masterprojekat.music_online_classes.APIs.CommentAPI;
 import com.masterprojekat.music_online_classes.APIs.CourseAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.UserAPI;
@@ -43,10 +44,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CourseDetails extends AppCompatActivity {
-    // Ako je kurs kupljen onda ima i input polje za komentare
     private final RetrofitService retrofitService = new RetrofitService();
     private final UserAPI userApi = retrofitService.getRetrofit().create(UserAPI.class);
     private final CourseAPI courseApi = retrofitService.getRetrofit().create(CourseAPI.class);
+    private final CommentAPI commentAPI = retrofitService.getRetrofit().create(CommentAPI.class);
     private User loggedInUser;
     private Course courseToDisplay;
     @Override
@@ -61,13 +62,64 @@ public class CourseDetails extends AppCompatActivity {
         if(loggedInUser == null || courseToDisplay == null)
             return;
         displayCourseDetails();
+        getAllCommentsForCourse();
         addToCartOrReserveTerm();
+
+        Button saveCommentButton = findViewById(R.id.course_comment_button);
+        saveCommentButton.setOnClickListener(view -> {
+            EditText commentInput = findViewById(R.id.course_comment_input);
+            String commentText = String.valueOf(commentInput.getText());
+            Comment comment = new Comment();
+            comment.setAuthor(loggedInUser);
+            comment.setCourse(courseToDisplay);
+            comment.setText(commentText);
+            saveComment(comment);
+        });
 
         ImageButton cartButton = findViewById(R.id.course_details_cart);
         cartButton.setOnClickListener(view -> {
             Intent cartIntent = new Intent(this, Cart.class);
             cartIntent.putExtra("loggedInUser", loggedInUser);
             startActivity(cartIntent);
+        });
+    }
+
+    private void saveComment(Comment commentToAdd) {
+        commentAPI.addComment(commentToAdd).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(CourseDetails.this, "Komentar uspesno sacuvan!", Toast.LENGTH_SHORT).show();
+                    getAllCommentsForCourse();
+                }
+                else {
+                    Toast.makeText(CourseDetails.this, "Greska pri cuvanju komentara!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable throwable) {
+                Logger.getLogger(CourseDetails.class.getName()).log(Level.SEVERE, "Greska! Zahtev za cuvanjem komentara nije uspeo!", throwable);
+            }
+        });
+    }
+
+    private void getAllCommentsForCourse() {
+        commentAPI.getAllCommentsForCourse(courseToDisplay.getCourseId()).enqueue(new Callback<List<Comment>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Comment>> call, @NonNull Response<List<Comment>> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    courseToDisplay.setComments(response.body());
+                    displayCourseComments();
+                } else {
+                    Toast.makeText(CourseDetails.this, "Greska pri ucitavanju komentara!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Comment>> call, @NonNull Throwable throwable) {
+                Logger.getLogger(CourseDetails.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dohvatanje komentara nije uspeo!", throwable);
+            }
         });
     }
 
@@ -208,8 +260,6 @@ public class CourseDetails extends AppCompatActivity {
         courseRatingView.setText(String.format("%.2f", courseToDisplay.getRating()));
         coursePriceView.setText(String.valueOf(courseToDisplay.getPrice()));
         courseDescriptionView.setText(courseToDisplay.getDescription());
-
-        displayCourseComments();
     }
 
     public void displayCourseComments() {

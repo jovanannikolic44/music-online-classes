@@ -6,6 +6,7 @@ public class Comment implements Serializable {
     private int commentId;
     private User author;
     private String text;
+    private Course course;
 
     public int getCommentId() {
         return commentId;
@@ -29,5 +30,13 @@ public class Comment implements Serializable {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 }
