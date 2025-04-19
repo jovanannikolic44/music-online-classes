@@ -17,6 +17,7 @@ public class Course implements Serializable {
     private transient boolean isSelected = false;
     private List<Comment> comments;
     private int progress;
+    private int numberOfClasses;
 
     public int getCourseId() {
         return courseId;
@@ -120,5 +121,13 @@ public class Course implements Serializable {
 
     public void setProgress(int progress) {
         this.progress = progress;
+    }
+
+    public int getNumberOfClasses() {
+        return numberOfClasses;
+    }
+
+    public void setNumberOfClasses(int numberOfClasses) {
+        this.numberOfClasses = numberOfClasses;
     }
 }

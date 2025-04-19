@@ -163,7 +163,10 @@ public class CourseDetails extends AppCompatActivity {
                             }
                         });
                         reserveTermButton.setOnClickListener(view -> {
-                            System.out.println("Rezervisanje termina!");
+                            Intent reserveTermIntent = new Intent(CourseDetails.this, ReserveTerm.class);
+                            reserveTermIntent.putExtra("loggedInUser", loggedInUser);
+                            reserveTermIntent.putExtra("courseToReserve", courseToDisplay);
+                            startActivity(reserveTermIntent);
                         });
                     }
                 }
@@ -250,6 +253,7 @@ public class CourseDetails extends AppCompatActivity {
         TextView courseRatingView = findViewById(R.id.course_rating_value);
         TextView coursePriceView = findViewById(R.id.course_price_value);
         TextView courseDescriptionView = findViewById(R.id.course_description_value);
+        TextView courseClassesNumberView = findViewById(R.id.course_classes_value);
 
         displayCourseImage();
         displayCourseContent();
@@ -260,6 +264,7 @@ public class CourseDetails extends AppCompatActivity {
         courseRatingView.setText(String.format("%.2f", courseToDisplay.getRating()));
         coursePriceView.setText(String.valueOf(courseToDisplay.getPrice()));
         courseDescriptionView.setText(courseToDisplay.getDescription());
+        courseClassesNumberView.setText(String.valueOf(courseToDisplay.getNumberOfClasses()));
     }
 
     public void displayCourseComments() {

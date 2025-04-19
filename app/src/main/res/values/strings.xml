@@ -69,6 +69,7 @@
     <string name="professor_label">Profesor:</string>
     <string name="current_courses_label">Trenutni kursevi</string>
     <string name="reserve_term">Rezervisi termin</string>
+    <string name="classes_number">Broj casova:</string>
 
     <string-array name="expertise_array">
         <item>Gitara</item>
