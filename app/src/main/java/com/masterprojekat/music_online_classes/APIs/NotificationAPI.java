@@ -1,0 +1,14 @@
+package com.masterprojekat.music_online_classes.APIs;
+
+import com.masterprojekat.music_online_classes.models.Notification;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
+
+public interface NotificationAPI {
+    @GET("/notification/get-all-for-student")
+    Call<List<Notification>> getAllNotificationsForStudent(@Query("student_username") String student_username);
+}

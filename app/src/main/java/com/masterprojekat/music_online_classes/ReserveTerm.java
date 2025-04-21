@@ -113,7 +113,6 @@ public class ReserveTerm extends AppCompatActivity {
                     selectedTerm = null;
                 }
                 else {
-                    System.out.println("Response " + response);
                     Toast.makeText(ReserveTerm.this, "Greska pri rezervaciji termina!", Toast.LENGTH_SHORT).show();
                 }
             }
