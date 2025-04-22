@@ -9,9 +9,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.masterprojekat.music_online_classes.APIs.NotificationAPI;
@@ -52,15 +56,64 @@ public class NotificationsFragment extends Fragment {
             loggedInUser = user;
             setUpAdapter(view);
             getAllNotifications();
+
+            EditText searchNotificationEditText = view.findViewById(R.id.notification_search);
+            searchNotificationEditText.setOnEditorActionListener((v, actionId, event) -> {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    String inputSearch = String.valueOf(searchNotificationEditText.getText()).trim();
+                    if (!inputSearch.isEmpty()) {
+                        searchNotifications(inputSearch);
+                    } else {
+                        getAllNotifications();
+                    }
+                    return true;
+                }
+                return false;
+            });
+            searchNotificationEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (s.toString().trim().isEmpty()) {
+                        getAllNotifications();
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
         });
     }
-
     private void setUpAdapter(View view) {
         RecyclerView notificationRecycleView = view.findViewById(R.id.notification_recycler_view);
         notificationRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
         notificationAdapter = new NotificationAdapter(getContext(), notificationsList);
         notificationRecycleView.setAdapter(notificationAdapter);
         notificationRecycleView.setVisibility(View.VISIBLE);
+    }
+
+    public void searchNotifications(String inputSearch) {
+        notificationApi.searchNotifications(loggedInUser.getUsername(), inputSearch).enqueue(new Callback<List<Notification>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Notification>> call, @NonNull Response<List<Notification>> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    List<Notification> allNotifications = response.body();
+                    notificationsList.clear();
+                    notificationsList.addAll(allNotifications);
+                    notificationAdapter.notifyDataSetChanged();
+                }
+                else {
+                    Toast.makeText(requireContext(), "Greska pri pretrazi notifikacija!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Notification>> call, @NonNull Throwable throwable) {
+                Logger.getLogger(NotificationsFragment.class.getName()).log(Level.SEVERE, "Greska! Zahtev za pretragom notifikacija nije uspeo!", throwable);
+            }
+        });
     }
 
     private void getAllNotifications() {

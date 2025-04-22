@@ -64,6 +64,11 @@ public class CoursesFragment extends Fragment {
                     if(!inputSearch.isEmpty()) {
                         displaySearchedCourses(view, inputSearch);
                     }
+                    else {
+                        displayRecommendedCourses(view);
+                        displayBestRatedCourses(view);
+                        displayCheapestCourses(view);
+                    }
                     return true;
                 }
                 return false;
@@ -257,14 +262,18 @@ public class CoursesFragment extends Fragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<List<Course>> call, @NonNull Response<List<Course>> response) {
-                List<Course> searchedCourses = response.body();
-                if(searchedCourses == null) {
-                    Toast.makeText(requireContext(), "Ne postoji ni jedan kurs za prikaz!", Toast.LENGTH_SHORT).show();
-                    return;
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Course> searchedCourses = response.body();
+                    if (searchedCourses.isEmpty()) {
+                        Toast.makeText(requireContext(), "Ne postoji ni jedan kurs za prikaz!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    searchedCoursesList.clear();
+                    searchedCoursesList.addAll(searchedCourses);
+                    searchedCourseAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(requireContext(), "Greska pri prikazivaju kurseva!", Toast.LENGTH_SHORT).show();
                 }
-                searchedCoursesList.clear();
-                searchedCoursesList.addAll(searchedCourses);
-                searchedCourseAdapter.notifyDataSetChanged();
             }
 
             @Override

@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.models.Comment;
 import com.masterprojekat.music_online_classes.models.Notification;
 
 import java.util.List;

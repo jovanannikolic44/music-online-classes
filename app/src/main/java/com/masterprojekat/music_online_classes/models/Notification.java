@@ -14,6 +14,10 @@ public class Notification {
     private String dateAndTime;
     private User student;
 
+    private User professor;
+
+    private Course course;
+
     public int getNotificationId() {
         return notificationId;
     }
@@ -44,6 +48,22 @@ public class Notification {
 
     public void setStudent(User student) {
         this.student = student;
+    }
+
+    public User getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(User professor) {
+        this.professor = professor;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public String getDate() {
