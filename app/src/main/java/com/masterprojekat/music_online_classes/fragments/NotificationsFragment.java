@@ -96,6 +96,7 @@ public class NotificationsFragment extends Fragment {
 
     public void searchNotifications(String inputSearch) {
         notificationApi.searchNotifications(loggedInUser.getUsername(), inputSearch).enqueue(new Callback<List<Notification>>() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<List<Notification>> call, @NonNull Response<List<Notification>> response) {
                 if(response.isSuccessful() && response.body() != null) {

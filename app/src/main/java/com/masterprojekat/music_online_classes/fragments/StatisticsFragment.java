@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.UserAPI;
@@ -36,7 +37,6 @@ import retrofit2.Response;
 public class StatisticsFragment extends Fragment {
     private final RetrofitService retrofitService = new RetrofitService();
     private final UserAPI userApi = retrofitService.getRetrofit().create(UserAPI.class);
-    private ProgressAdater progressAdater;
     private User loggedInUser;
     private List<Course> purchasedCoursesList = new ArrayList<>();
     private ProgressAdater progressAdapter;
@@ -67,13 +67,14 @@ public class StatisticsFragment extends Fragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<List<Course>> call, @NonNull Response<List<Course>> response) {
-                if(response.isSuccessful()) {
-                    List<Course> courses = response.body();
-                    if(courses == null)
-                        return;
+                if(response.isSuccessful() && response.body() != null) {
+                    List<Course> coursesResponseList = response.body();
                     purchasedCoursesList.clear();
-                    purchasedCoursesList.addAll(courses);
+                    purchasedCoursesList.addAll(coursesResponseList);
                     progressAdapter.notifyDataSetChanged();
+                }
+                else {
+                    Toast.makeText(requireContext(), "Greska pri dohvatanju kupljenih kurseva!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -85,11 +86,11 @@ public class StatisticsFragment extends Fragment {
     }
 
     private void setUpProgressAdapter(View view) {
-        RecyclerView progressBarRecycleView = view.findViewById(R.id.statistics_recycler_view);
-        progressBarRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
+        RecyclerView progressBarRecyclerView = view.findViewById(R.id.statistics_recycler_view);
+        progressBarRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         progressAdapter = new ProgressAdater(purchasedCoursesList);
-        progressBarRecycleView.setAdapter(progressAdapter);
-        progressBarRecycleView.setVisibility(View.VISIBLE);
+        progressBarRecyclerView.setAdapter(progressAdapter);
+        progressBarRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
