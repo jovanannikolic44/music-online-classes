@@ -10,11 +10,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.UserAPI;
@@ -27,18 +27,17 @@ import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class StatisticsFragment extends Fragment {
+    private static final String TAG = "StatisticsFragment";
     private final RetrofitService retrofitService = new RetrofitService();
     private final UserAPI userApi = retrofitService.getRetrofit().create(UserAPI.class);
     private User loggedInUser;
-    private List<Course> purchasedCoursesList = new ArrayList<>();
+    private final List<Course> purchasedCoursesList = new ArrayList<>();
     private ProgressAdater progressAdapter;
 
     @Override
@@ -74,13 +73,13 @@ public class StatisticsFragment extends Fragment {
                     progressAdapter.notifyDataSetChanged();
                 }
                 else {
-                    Toast.makeText(requireContext(), "Greska pri dohvatanju kupljenih kurseva!", Toast.LENGTH_SHORT).show();
+                    Log.w(TAG, "Dohvatanje kupljenih kurseva nije uspesno: " + response.code() + " " + response.message());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Course>> call, @NonNull Throwable throwable) {
-                Logger.getLogger(StatisticsFragment.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dohvatanje kupljenih kurseva nije uspeo!", throwable);
+                Log.e(TAG, "Zahtev za dohvatanjem kupljenih kurseva nije uspeo!", throwable);
             }
         });
     }

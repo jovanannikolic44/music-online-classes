@@ -38,7 +38,7 @@ public class ClassesFragment extends Fragment {
     private final RetrofitService retrofitService = new RetrofitService();
     private final TermAPI termApi = retrofitService.getRetrofit().create(TermAPI.class);
     private User loggedInUser;
-    private List<Term> scheduledTermsList = new ArrayList<>();
+    private final List<Term> scheduledTermsList = new ArrayList<>();
     private TermAdapter termAdapter;
 
     @Override
@@ -82,7 +82,7 @@ public class ClassesFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<List<Term>> call, @NonNull Throwable throwable) {
-                Log.e(TAG, "Greska! Zahtev za dohvatanje odabranih termina nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za dohvatanjem odabranih termina nije uspeo!", throwable);
             }
         });
     }

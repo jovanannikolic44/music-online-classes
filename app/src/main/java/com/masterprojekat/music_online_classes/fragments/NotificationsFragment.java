@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +22,7 @@ import android.widget.Toast;
 import com.masterprojekat.music_online_classes.APIs.NotificationAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.ReserveTerm;
 import com.masterprojekat.music_online_classes.helpers.NotificationAdapter;
-import com.masterprojekat.music_online_classes.helpers.ProgressAdater;
 import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
 import com.masterprojekat.music_online_classes.models.Notification;
 import com.masterprojekat.music_online_classes.models.User;
@@ -39,10 +38,11 @@ import retrofit2.Response;
 
 
 public class NotificationsFragment extends Fragment {
+    private static final String TAG = "NotificationsFragment";
     private final RetrofitService retrofitService = new RetrofitService();
     private final NotificationAPI notificationApi = retrofitService.getRetrofit().create(NotificationAPI.class);
     private User loggedInUser;
-    private List<Notification> notificationsList = new ArrayList<>();
+    private final List<Notification> notificationsList = new ArrayList<>();
     private NotificationAdapter notificationAdapter;
 
     @Override
@@ -106,14 +106,13 @@ public class NotificationsFragment extends Fragment {
                     notificationAdapter.notifyDataSetChanged();
                 }
                 else {
-                    Toast.makeText(requireContext(), "Greska pri pretrazi notifikacija!", Toast.LENGTH_SHORT).show();
+                    Log.w(TAG, "Pretraga obavestenja nije uspesna: " + response.code() + " " + response.message());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Notification>> call, @NonNull Throwable throwable) {
-                Logger.getLogger(NotificationsFragment.class.getName()).log(Level.SEVERE, "Greska! Zahtev za pretragom notifikacija nije uspeo!", throwable);
-            }
+                Log.e(TAG, "Greska! Zahtev za pretragom notifikacija nije uspeo!", throwable);}
         });
     }
 
@@ -129,13 +128,13 @@ public class NotificationsFragment extends Fragment {
                     notificationAdapter.notifyDataSetChanged();
                 }
                 else {
-                    Toast.makeText(requireContext(), "Greska pri dohvatanju notifikacija!", Toast.LENGTH_SHORT).show();
+                    Log.w(TAG, "Dohvatanje obavestenja za studenta nije uspesno: " + response.code() + " " + response.message());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Notification>> call, @NonNull Throwable throwable) {
-                Logger.getLogger(NotificationsFragment.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dohvatanje notifikacija nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za dohvatanje notifikacija nije uspeo!", throwable);
             }
         });
     }
