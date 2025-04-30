@@ -17,7 +17,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2.5"
+            android:layout_weight="1.5"
             android:orientation="vertical"
             android:paddingStart="8dp"
             tools:ignore="RtlSymmetry">
@@ -65,12 +65,42 @@
                 android:textSize="14sp"/>
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/video_call_image"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:contentDescription="@string/no_image"
-            android:src="@drawable/videocam_icon" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="4dp">
+
+            <ImageView
+                android:id="@+id/video_call_image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:contentDescription="@string/no_image"
+                android:src="@drawable/videocam_icon"
+                android:layout_gravity="center_horizontal" />
+
+            <Button
+                android:id="@+id/class_held"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:text="@string/class_held_label"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp"
+                android:visibility="gone"
+                android:backgroundTint="@color/dark_violet"/>
+
+            <Button
+                android:id="@+id/class_not_held"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:text="@string/class_not_held_label"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp"
+                android:visibility="gone"
+                android:backgroundTint="@color/dark_violet"/>
+        </LinearLayout>
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

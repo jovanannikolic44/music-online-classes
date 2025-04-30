@@ -39,5 +39,5 @@ public interface TermAPI {
     Call<List<Term>> getAllConfirmedTermsForStudent(@Query("studentUsername") String studentUsername);
 
     @GET("/term/get-terms-by-date")
-    Call<List<Term>> getTermsByDate(@Query("studentUsername") String studentUsername, @Query("inputDate") String inputDate);
+    Call<List<Term>> getTermsByDate(@Query("username") String username, @Query("type") String type, @Query("inputDate") String inputDate);
 }

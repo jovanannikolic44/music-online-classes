@@ -78,15 +78,22 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Vas nalog jos uvek nije aktiviran!", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if(user.isFirstLogIn()) {
+                    if(user.isFirstLogIn() && user.getType().equals("Ucenik")) {
                         Intent preferencesIntent = new Intent(MainActivity.this, Preferences.class);
                         preferencesIntent.putExtra("loggedInUser", user);
                         startActivity(preferencesIntent);
                     }
                     else {
-                        Intent userProfileIntent = new Intent(MainActivity.this, HomeFragments.class);
-                        userProfileIntent.putExtra("loggedInUser", user);
-                        startActivity(userProfileIntent);
+                        if(user.getType().equals("Ucenik")) {
+                            Intent userProfileIntent = new Intent(MainActivity.this, StudentHomeFragments.class);
+                            userProfileIntent.putExtra("loggedInUser", user);
+                            startActivity(userProfileIntent);
+                        }
+                        else if(user.getType().equals("Profesor")) {
+                            Intent professorProfileIntent = new Intent(MainActivity.this, ProfessorHomeFragments.class);
+                            professorProfileIntent.putExtra("loggedInUser", user);
+                            startActivity(professorProfileIntent);
+                        }
                     }
                 }
                 else {

@@ -10,7 +10,7 @@
     import androidx.fragment.app.FragmentTransaction;
     import androidx.lifecycle.ViewModelProvider;
 
-    import com.masterprojekat.music_online_classes.databinding.ActivityHomeFragmentsBinding;
+    import com.masterprojekat.music_online_classes.databinding.ActivityStudentHomeFragmentsBinding;
     import com.masterprojekat.music_online_classes.fragments.ClassesFragment;
     import com.masterprojekat.music_online_classes.fragments.CoursesFragment;
     import com.masterprojekat.music_online_classes.fragments.NotificationsFragment;
@@ -19,13 +19,13 @@
     import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
     import com.masterprojekat.music_online_classes.models.User;
 
-    public class HomeFragments extends AppCompatActivity {
-        ActivityHomeFragmentsBinding binding;
+    public class StudentHomeFragments extends AppCompatActivity {
+        ActivityStudentHomeFragmentsBinding binding;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            binding = ActivityHomeFragmentsBinding.inflate(getLayoutInflater());
+            binding = ActivityStudentHomeFragmentsBinding.inflate(getLayoutInflater());
             EdgeToEdge.enable(this);
             setContentView(binding.getRoot());
 
@@ -39,7 +39,7 @@
             SharedViewModel viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
             viewModel.setUser(loggedInUser);
 
-            binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            binding.studentBottomNavigationView.setOnItemSelectedListener(item -> {
                 if(item.getItemId() == R.id.profile_nav) {
                     replaceFragment(new ProfileFragment());
                 }

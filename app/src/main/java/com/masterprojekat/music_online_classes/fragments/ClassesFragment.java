@@ -65,7 +65,7 @@ public class ClassesFragment extends Fragment {
     }
 
     private void displayTerms(String chosenDate) {
-        termApi.getTermsByDate(loggedInUser.getUsername(), chosenDate).enqueue(new Callback<List<Term>>() {
+        termApi.getTermsByDate(loggedInUser.getUsername(), loggedInUser.getType(), chosenDate).enqueue(new Callback<List<Term>>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<List<Term>> call, @NonNull Response<List<Term>> response) {
@@ -90,7 +90,7 @@ public class ClassesFragment extends Fragment {
     private void setUpTermAdapter(View view) {
         RecyclerView termRecyclerView = view.findViewById(R.id.scheduled_terms_recycler_view);
         termRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        termAdapter = new TermAdapter(scheduledTermsList);
+        termAdapter = new TermAdapter(scheduledTermsList, loggedInUser);
         termRecyclerView.setAdapter(termAdapter);
         termRecyclerView.setVisibility(View.VISIBLE);
     }

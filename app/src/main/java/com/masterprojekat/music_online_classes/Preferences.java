@@ -54,7 +54,7 @@ public class Preferences extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Intent userProfileIntent = new Intent(Preferences.this, HomeFragments.class);
+                    Intent userProfileIntent = new Intent(Preferences.this, StudentHomeFragments.class);
                     userProfileIntent.putExtra("loggedInUser", loggedInUser);
                     startActivity(userProfileIntent);
                 } else {
