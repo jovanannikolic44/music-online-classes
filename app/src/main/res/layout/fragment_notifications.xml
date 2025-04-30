@@ -1,15 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragments.NotificationsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Notifications fragment"
-        android:layout_gravity="center"/>
+        android:text="@string/notification_label"
+        android:textSize="20sp"
+        android:layout_marginTop="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:textStyle="bold"/>
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        tools:ignore="RtlSymmetry">
+
+        <EditText
+            android:id="@+id/notification_search"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:autofillHints="text"
+            android:hint="@string/notification_search_label"
+            android:background="@drawable/search_edit_text"
+            android:drawableEnd="@drawable/search_icon"
+            android:drawableTint="@color/gray"
+            android:inputType="text"
+            android:textSize="14sp"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/black"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:alpha="0.7"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"/>
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/notification_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"/>
+</LinearLayout>

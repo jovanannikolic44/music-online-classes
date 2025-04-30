@@ -71,6 +71,13 @@
     <string name="reserve_term">Rezervisi termin</string>
     <string name="classes_number">Broj casova:</string>
     <string name="reserve">Rezervisi</string>
+    <string name="date_simple">Datum</string>
+    <string name="notification_message">Obavestenje o rezervaciji termina</string>
+    <string name="time">11:00</string>
+    <string name="notification_label">Obavestenja</string>
+    <string name="notification_search_label">Pretrazite obavestenja</string>
+    <string name="scheduled_terms_label">Zakazani termini</string>
+    <string name="show_scheduled_terms">Prikazi</string>
 
     <string-array name="expertise_array">
         <item>Gitara</item>
