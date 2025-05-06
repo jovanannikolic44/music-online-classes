@@ -14,10 +14,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.masterprojekat.music_online_classes.APIs.CourseProgressAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.TermAPI;
 import com.masterprojekat.music_online_classes.R;
 import com.masterprojekat.music_online_classes.VideoCall;
+import com.masterprojekat.music_online_classes.models.CourseProgress;
 import com.masterprojekat.music_online_classes.models.Term;
 import com.masterprojekat.music_online_classes.models.User;
 
@@ -32,6 +34,7 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     private static final String TAG = "TermAdapter";
     private final RetrofitService retrofitService = new RetrofitService();
     private final TermAPI termApi = retrofitService.getRetrofit().create(TermAPI.class);
+    private final CourseProgressAPI courseProgressAPI = retrofitService.getRetrofit().create(CourseProgressAPI.class);
     private final List<Term> termList;
     private final User loggedInUser;
 
@@ -87,13 +90,51 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
         });
     }
 
-    // Ovo su metode za rezervaciju
     private void classHeld(@NonNull TermViewHolder holder, Term term) {
+        courseProgressAPI.markClassHeld(term.getTermId()).enqueue(new Callback<CourseProgress>() {
+            @Override
+            public void onResponse(@NonNull Call<CourseProgress> call, @NonNull Response<CourseProgress> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(holder.itemView.getContext(), "Odgovor uspesno sacuvan!", Toast.LENGTH_SHORT).show();
+                    removeTermFromList(holder.getBindingAdapterPosition());
+                }
+                else {
+                    Toast.makeText(holder.itemView.getContext(), "Odgovor nije uspesno sacuvan", Toast.LENGTH_SHORT).show();
+                    Log.w(TAG, "Greska! Odgovor nije uspesno sacuvan!" + response.code());
+                }
+            }
 
+            @Override
+            public void onFailure(@NonNull Call<CourseProgress> call, @NonNull Throwable throwable) {
+                Log.e(TAG, "Greska! Odgovor nije uspesno sacuvan!", throwable);
+            }
+        });
     }
 
     private void classNotHeld(@NonNull TermViewHolder holder, Term term) {
+        courseProgressAPI.markClassNotHeld(term.getTermId()).enqueue(new Callback<Term>() {
+            @Override
+            public void onResponse(@NonNull Call<Term> call, @NonNull Response<Term> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(holder.itemView.getContext(), "Odgovor uspesno sacuvan!", Toast.LENGTH_SHORT).show();
+                    removeTermFromList(holder.getBindingAdapterPosition());
+                }
+                else {
+                    Toast.makeText(holder.itemView.getContext(), "Odgovor nije uspesno sacuvan", Toast.LENGTH_SHORT).show();
+                    Log.w(TAG, "Greska! Odgovor nije uspesno sacuvan!" + response.code());
+                }
+            }
 
+            @Override
+            public void onFailure(@NonNull Call<Term> call, @NonNull Throwable throwable) {
+                Log.e(TAG, "Greska! Odgovor nije uspesno sacuvan!", throwable);
+            }
+        });
+    }
+
+    private void removeTermFromList(int position) {
+        termList.remove(position);
+        notifyItemRemoved(position);
     }
 
     @Override
