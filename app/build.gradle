@@ -53,7 +53,7 @@ dependencies {
     implementation libs.glide
     // https://mvnrepository.com/artifact/com.github.bumptech.glide/compiler
 //    runtimeOnly libs.compiler
-
-
+    // https://mvnrepository.com/artifact/io.agora.rtc/full-sdk
+    implementation libs.videouikit.android
 
 }

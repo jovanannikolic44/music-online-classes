@@ -40,4 +40,7 @@ public interface TermAPI {
 
     @GET("/term/get-terms-by-date")
     Call<List<Term>> getTermsByDate(@Query("username") String username, @Query("type") String type, @Query("inputDate") String inputDate);
+
+    @GET("/term/get-channel-name")
+    Call<String> getChannelName(@Query("termId") int termId);
 }

@@ -1,11 +1,13 @@
 package com.masterprojekat.music_online_classes.helpers;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.TermAPI;
 import com.masterprojekat.music_online_classes.R;
+import com.masterprojekat.music_online_classes.VideoCall;
 import com.masterprojekat.music_online_classes.models.Term;
 import com.masterprojekat.music_online_classes.models.User;
 
@@ -74,6 +77,14 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
         holder.classNotHeld.setOnClickListener(v -> {
             declineClassTerm(holder, term);
         });
+
+
+        holder.videoCallButton.setOnClickListener(v -> {
+            Intent videoCallIntent = new Intent(holder.itemView.getContext(), VideoCall.class);
+            videoCallIntent.putExtra("loggedInUser", loggedInUser);
+            videoCallIntent.putExtra("selectedTerm", term.getTermId());
+            holder.itemView.getContext().startActivity(videoCallIntent);
+        });
     }
 
     private void acceptClassTerm(@NonNull TermViewHolder holder, Term term) {
@@ -122,6 +133,7 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     public static class TermViewHolder extends RecyclerView.ViewHolder {
         TextView courseName, professorName, studentName, classesNumber, classDate, classTime;
         Button classHeld, classNotHeld;
+        ImageButton videoCallButton;
 
         public TermViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -133,6 +145,7 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
             classTime = itemView.findViewById(R.id.term_time);
             classHeld = itemView.findViewById(R.id.class_held);
             classNotHeld = itemView.findViewById(R.id.class_not_held);
+            videoCallButton = itemView.findViewById(R.id.video_call_image);
         }
     }
 }
