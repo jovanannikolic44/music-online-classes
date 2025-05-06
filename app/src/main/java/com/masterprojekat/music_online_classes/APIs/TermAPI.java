@@ -15,7 +15,7 @@ import retrofit2.http.Query;
 
 public interface TermAPI {
     @POST("/term/create-new")
-    Call<String> createNewTerm(@Body Term term);
+    Call<ResponseBody> createNewTerm(@Body Term term);
 
     @POST("/term/reserve")
     Call<ResponseBody> requestTerm(@Query("termId") int termId, @Query("studentUsername") String studentUsername, @Query("courseId") int courseId);

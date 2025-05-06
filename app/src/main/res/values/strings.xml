@@ -82,6 +82,9 @@
     <string name="terms_label">Termini</string>
     <string name="class_held_label">Odrzan</string>
     <string name="class_not_held_label">Nije odrzan</string>
+    <string name="add_new_terms_label">Dodavanje novih termina</string>
+    <string name="add">Dodaj</string>
+    <string name="choose_time">Izaberi vreme</string>
 
     <string-array name="expertise_array">
         <item>Gitara</item>
