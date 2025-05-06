@@ -1,6 +1,7 @@
 package com.masterprojekat.music_online_classes.APIs;
 
 import com.masterprojekat.music_online_classes.models.Term;
+import com.masterprojekat.music_online_classes.models.TermStatus;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public interface TermAPI {
     Call<List<Term>> getAllConfirmedTermsForStudent(@Query("studentUsername") String studentUsername);
 
     @GET("/term/get-terms-by-date")
-    Call<List<Term>> getTermsByDate(@Query("username") String username, @Query("type") String type, @Query("inputDate") String inputDate);
+    Call<List<Term>> getTermsByDate(@Query("username") String username, @Query("type") String type, @Query("inputDate") String inputDate, @Query("termStatus") TermStatus termStatus);
 
     @GET("/term/get-channel-name")
     Call<String> getChannelName(@Query("termId") int termId);

@@ -27,6 +27,7 @@ import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
 import com.masterprojekat.music_online_classes.helpers.Spinners;
 import com.masterprojekat.music_online_classes.helpers.TermAdapter;
 import com.masterprojekat.music_online_classes.models.Term;
+import com.masterprojekat.music_online_classes.models.TermStatus;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class ClassesFragment extends Fragment {
     }
 
     private void displayTerms(String chosenDate) {
-        termApi.getTermsByDate(loggedInUser.getUsername(), loggedInUser.getType(), chosenDate).enqueue(new Callback<List<Term>>() {
+        termApi.getTermsByDate(loggedInUser.getUsername(), loggedInUser.getType(), chosenDate, TermStatus.PRIHVACEN).enqueue(new Callback<List<Term>>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<List<Term>> call, @NonNull Response<List<Term>> response) {

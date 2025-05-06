@@ -19,41 +19,37 @@ import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.TermAPI;
 import com.masterprojekat.music_online_classes.R;
 import com.masterprojekat.music_online_classes.VideoCall;
-import com.masterprojekat.music_online_classes.models.CourseProgress;
 import com.masterprojekat.music_online_classes.models.Term;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.List;
 
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
-public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder> {
-    private static final String TAG = "TermAdapter";
+public class ReservationsAdapter extends RecyclerView.Adapter<ReservationsAdapter.ReservationsViewHolder> {
+    private static final String TAG = "ReservationsAdapter";
     private final RetrofitService retrofitService = new RetrofitService();
     private final TermAPI termApi = retrofitService.getRetrofit().create(TermAPI.class);
-    private final CourseProgressAPI courseProgressAPI = retrofitService.getRetrofit().create(CourseProgressAPI.class);
-    private final List<Term> termList;
-    private final User loggedInUser;
+    private final List<Term> reservationsList;
 
-    public TermAdapter(List<Term> termList, User loggedInUser) {
-        this.termList = termList;
-        this.loggedInUser = loggedInUser;
+    public ReservationsAdapter(List<Term> reservationsList) {
+        this.reservationsList = reservationsList;
     }
-
     @NonNull
     @Override
-    public TermViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ReservationsAdapter.ReservationsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.scheduled_term_item, parent, false);
-        return new TermViewHolder(view);
+                .inflate(R.layout.reservation_response_item, parent, false);
+        return new ReservationsViewHolder(view);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull TermViewHolder holder, int position) {
-        Term term = termList.get(position);
+    public void onBindViewHolder(@NonNull ReservationsAdapter.ReservationsViewHolder holder, int position) {
+        Term term = reservationsList.get(position);
         holder.courseName.setText(term.getCourse().getName());
         holder.professorName.setText(term.getCourse().getProfessor().getName() + " " + term.getCourse().getProfessor().getSurname());
         holder.studentName.setText(term.getStudent().getName() + " " + term.getStudent().getSurname());
@@ -63,90 +59,74 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
         String displayTimeFormat = DateTimeFormatParser.changeTimeFormatTo(term.getTime(), "HH:mm:ss", "HH:mm");
         holder.classTime.setText(displayTimeFormat);
 
-        if(loggedInUser.getType().equals("Profesor")) {
-            holder.classHeld.setVisibility(View.VISIBLE);
-            holder.classNotHeld.setVisibility(View.VISIBLE);
-        }
-        else {
-            holder.classHeld.setVisibility(View.GONE);
-            holder.classNotHeld.setVisibility(View.GONE);
-        }
-
-        holder.classHeld.setOnClickListener(v -> {
-            classHeld(holder, term);
+        holder.acceptButton.setOnClickListener(view -> {
+            acceptReservation(holder, term);
         });
 
-        holder.classNotHeld.setOnClickListener(v -> {
-            classNotHeld(holder, term);
-        });
-
-
-        holder.videoCallButton.setOnClickListener(v -> {
-            Intent videoCallIntent = new Intent(holder.itemView.getContext(), VideoCall.class);
-            videoCallIntent.putExtra("loggedInUser", loggedInUser);
-            videoCallIntent.putExtra("selectedTerm", term);
-            holder.itemView.getContext().startActivity(videoCallIntent);
+        holder.declineButton.setOnClickListener(view -> {
+            declineReservation(holder, term);
         });
     }
 
-    private void classHeld(@NonNull TermViewHolder holder, Term term) {
-        courseProgressAPI.markClassHeld(term.getTermId()).enqueue(new Callback<CourseProgress>() {
+    private void acceptReservation(@NonNull ReservationsViewHolder holder, Term term) {
+        termApi.acceptTerm(term.getTermId()).enqueue(new Callback<ResponseBody>() {
+
             @Override
-            public void onResponse(@NonNull Call<CourseProgress> call, @NonNull Response<CourseProgress> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor uspesno sacuvan!", Toast.LENGTH_SHORT).show();
-                    removeTermFromList(holder.getBindingAdapterPosition());
+                    removeReservationFromList(holder.getBindingAdapterPosition());
                 }
                 else {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor nije uspesno sacuvan", Toast.LENGTH_SHORT).show();
-                    Log.w(TAG, "Greska! Odgovor nije uspesno sacuvan!" + response.code());
+                    Log.w(TAG, "Greska pri prihvatanju termina! Odgovor nije uspesno sacuvan!" + response.code());
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<CourseProgress> call, @NonNull Throwable throwable) {
-                Log.e(TAG, "Greska! Odgovor nije uspesno sacuvan!", throwable);
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
+                Log.e(TAG, "Greska pri prihvatanju termina! Odgovor nije uspesno sacuvan!", throwable);
             }
         });
     }
 
-    private void classNotHeld(@NonNull TermViewHolder holder, Term term) {
-        courseProgressAPI.markClassNotHeld(term.getTermId()).enqueue(new Callback<Term>() {
+    private void declineReservation(@NonNull ReservationsViewHolder holder, Term term) {
+        termApi.rejectTerm(term.getTermId()).enqueue(new Callback<ResponseBody>() {
+
             @Override
-            public void onResponse(@NonNull Call<Term> call, @NonNull Response<Term> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor uspesno sacuvan!", Toast.LENGTH_SHORT).show();
-                    removeTermFromList(holder.getBindingAdapterPosition());
+                    removeReservationFromList(holder.getBindingAdapterPosition());
                 }
                 else {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor nije uspesno sacuvan", Toast.LENGTH_SHORT).show();
-                    Log.w(TAG, "Greska! Odgovor nije uspesno sacuvan!" + response.code());
+                    Log.w(TAG, "Greska pri odbijanju termina! Odgovor nije uspesno sacuvan!" + response.code());
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<Term> call, @NonNull Throwable throwable) {
-                Log.e(TAG, "Greska! Odgovor nije uspesno sacuvan!", throwable);
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
+                Log.e(TAG, "Greska pri odbijanju termina! Odgovor nije uspesno sacuvan!", throwable);
             }
         });
     }
 
-    private void removeTermFromList(int position) {
-        termList.remove(position);
+    private void removeReservationFromList(int position) {
+        reservationsList.remove(position);
         notifyItemRemoved(position);
     }
 
     @Override
     public int getItemCount() {
-        return termList.size();
+        return reservationsList.size();
     }
 
-    public static class TermViewHolder extends RecyclerView.ViewHolder {
+    public static class ReservationsViewHolder extends RecyclerView.ViewHolder {
         TextView courseName, professorName, studentName, classesNumber, classDate, classTime;
-        Button classHeld, classNotHeld;
-        ImageButton videoCallButton;
+        Button acceptButton, declineButton;
 
-        public TermViewHolder(@NonNull View itemView) {
+        public ReservationsViewHolder(@NonNull View itemView) {
             super(itemView);
             courseName = itemView.findViewById(R.id.course_name);
             professorName = itemView.findViewById(R.id.professor_name);
@@ -154,9 +134,8 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
             classesNumber = itemView.findViewById(R.id.classes_number);
             classDate = itemView.findViewById(R.id.term_date);
             classTime = itemView.findViewById(R.id.term_time);
-            classHeld = itemView.findViewById(R.id.class_held);
-            classNotHeld = itemView.findViewById(R.id.class_not_held);
-            videoCallButton = itemView.findViewById(R.id.video_call_image);
+            acceptButton = itemView.findViewById(R.id.acceptButton);
+            declineButton = itemView.findViewById(R.id.declineButton);
         }
     }
 }

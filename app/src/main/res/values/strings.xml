@@ -86,6 +86,8 @@
     <string name="add">Dodaj</string>
     <string name="choose_time">Izaberi vreme</string>
     <string name="finished_course_label">Zavrsen kurs</string>
+    <string name="accept_term_label">Prihvati</string>
+    <string name="decline_term_label">Odbij</string>
 
     <string-array name="expertise_array">
         <item>Gitara</item>
