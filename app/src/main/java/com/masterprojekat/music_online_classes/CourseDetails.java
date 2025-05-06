@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,11 +28,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.masterprojekat.music_online_classes.APIs.CommentAPI;
 import com.masterprojekat.music_online_classes.APIs.CourseAPI;
+import com.masterprojekat.music_online_classes.APIs.CourseProgressAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.UserAPI;
 import com.masterprojekat.music_online_classes.helpers.CommentAdapter;
 import com.masterprojekat.music_online_classes.models.Comment;
 import com.masterprojekat.music_online_classes.models.Course;
+import com.masterprojekat.music_online_classes.models.CourseProgress;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.List;
@@ -44,10 +47,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CourseDetails extends AppCompatActivity {
+    private static final String TAG = "CourseDetails";
     private final RetrofitService retrofitService = new RetrofitService();
     private final UserAPI userApi = retrofitService.getRetrofit().create(UserAPI.class);
     private final CourseAPI courseApi = retrofitService.getRetrofit().create(CourseAPI.class);
     private final CommentAPI commentAPI = retrofitService.getRetrofit().create(CommentAPI.class);
+    private final CourseProgressAPI courseProgressApi = retrofitService.getRetrofit().create(CourseProgressAPI.class);
     private User loggedInUser;
     private Course courseToDisplay;
     @Override
@@ -135,38 +140,67 @@ public class CourseDetails extends AppCompatActivity {
                     Button saveCommentButton = findViewById(R.id.course_comment_button);
                     TextView commentsLabel = findViewById(R.id.course_comments_label);
                     RatingBar courseRatingBar = findViewById(R.id.course_rating_bar);
+                    Button finishedCourseButton = findViewById(R.id.finished_course_button);
                     if(!isPurchased) {
                         addToCartButton.setVisibility(View.VISIBLE);
                         reserveTermButton.setVisibility(View.GONE);
                         courseCommentEditText.setVisibility(View.GONE);
                         saveCommentButton.setVisibility(View.GONE);
                         courseRatingBar.setVisibility(View.GONE);
+                        finishedCourseButton.setVisibility(View.GONE);
                         addToCartButton.setOnClickListener(view -> {
                             addCourseToCart();
                         });
                     }
                     else {
-                        addToCartButton.setVisibility(View.GONE);
-                        reserveTermButton.setVisibility(View.VISIBLE);
-                        courseCommentEditText.setVisibility(View.VISIBLE);
-                        saveCommentButton.setVisibility(View.VISIBLE);
-                        courseRatingBar.setVisibility(View.VISIBLE);
-                        courseRatingBar.setProgressTintList(ColorStateList.valueOf(Color.YELLOW));
-                        courseRatingBar.setSecondaryProgressTintList(ColorStateList.valueOf(Color.GRAY));
-                        courseRatingBar.setProgressBackgroundTintList(ColorStateList.valueOf(Color.LTGRAY));
-                        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) commentsLabel.getLayoutParams();
-                        layoutParams.topMargin = 700;
-                        commentsLabel.setLayoutParams(layoutParams);
-                        courseRatingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
-                            if(fromUser) {
-                                saveRating(rating);
+                        courseProgressApi.getCourseProgress(courseToDisplay.getCourseId(), loggedInUser.getUsername()).enqueue(new Callback<CourseProgress>() {
+                            @Override
+                            public void onResponse(@NonNull Call<CourseProgress> call, @NonNull Response<CourseProgress> response) {
+                                if(response.isSuccessful() && response.body() != null) {
+                                    CourseProgress courseProgress = response.body();
+                                    int progress = courseProgress.getProgress();
+                                    int numberOfClasses = courseToDisplay.getNumberOfClasses();
+                                    if(progress == numberOfClasses) {
+                                        reserveTermButton.setVisibility(View.GONE);
+                                        finishedCourseButton.setVisibility(View.VISIBLE);
+                                    }
+                                    else {
+                                        finishedCourseButton.setVisibility(View.GONE);
+                                        reserveTermButton.setVisibility(View.VISIBLE);
+                                    }
+                                    addToCartButton.setVisibility(View.GONE);
+                                    courseCommentEditText.setVisibility(View.VISIBLE);
+                                    saveCommentButton.setVisibility(View.VISIBLE);
+                                    courseRatingBar.setVisibility(View.VISIBLE);
+                                    courseRatingBar.setProgressTintList(ColorStateList.valueOf(Color.YELLOW));
+                                    courseRatingBar.setSecondaryProgressTintList(ColorStateList.valueOf(Color.GRAY));
+                                    courseRatingBar.setProgressBackgroundTintList(ColorStateList.valueOf(Color.LTGRAY));
+                                    ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) commentsLabel.getLayoutParams();
+                                    layoutParams.topMargin = 700;
+                                    commentsLabel.setLayoutParams(layoutParams);
+                                    courseRatingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+                                        if(fromUser) {
+                                            saveRating(rating);
+                                        }
+                                    });
+                                    if(progress < numberOfClasses) {
+                                        reserveTermButton.setOnClickListener(view -> {
+                                            Intent reserveTermIntent = new Intent(CourseDetails.this, ReserveTerm.class);
+                                            reserveTermIntent.putExtra("loggedInUser", loggedInUser);
+                                            reserveTermIntent.putExtra("courseToReserve", courseToDisplay);
+                                            startActivity(reserveTermIntent);
+                                        });
+                                    }
+                                }
+                                else {
+                                    Log.w(TAG, "Greska pri dohvatanju progresa!" + response.code());
+                                }
                             }
-                        });
-                        reserveTermButton.setOnClickListener(view -> {
-                            Intent reserveTermIntent = new Intent(CourseDetails.this, ReserveTerm.class);
-                            reserveTermIntent.putExtra("loggedInUser", loggedInUser);
-                            reserveTermIntent.putExtra("courseToReserve", courseToDisplay);
-                            startActivity(reserveTermIntent);
+
+                            @Override
+                            public void onFailure(@NonNull Call<CourseProgress> call, @NonNull Throwable throwable) {
+                                Log.e(TAG, "Greska! Dohvatanje progresa nije uspelo!", throwable);
+                            }
                         });
                     }
                 }

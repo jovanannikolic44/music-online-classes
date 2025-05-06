@@ -85,6 +85,7 @@
     <string name="add_new_terms_label">Dodavanje novih termina</string>
     <string name="add">Dodaj</string>
     <string name="choose_time">Izaberi vreme</string>
+    <string name="finished_course_label">Zavrsen kurs</string>
 
     <string-array name="expertise_array">
         <item>Gitara</item>
