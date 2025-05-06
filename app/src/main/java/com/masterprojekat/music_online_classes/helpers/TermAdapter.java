@@ -71,58 +71,29 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
         }
 
         holder.classHeld.setOnClickListener(v -> {
-            acceptClassTerm(holder, term);
+            classHeld(holder, term);
         });
 
         holder.classNotHeld.setOnClickListener(v -> {
-            declineClassTerm(holder, term);
+            classNotHeld(holder, term);
         });
 
 
         holder.videoCallButton.setOnClickListener(v -> {
             Intent videoCallIntent = new Intent(holder.itemView.getContext(), VideoCall.class);
             videoCallIntent.putExtra("loggedInUser", loggedInUser);
-            videoCallIntent.putExtra("selectedTerm", term.getTermId());
+            videoCallIntent.putExtra("selectedTerm", term);
             holder.itemView.getContext().startActivity(videoCallIntent);
         });
     }
 
-    private void acceptClassTerm(@NonNull TermViewHolder holder, Term term) {
-        termApi.acceptTerm(term.getTermId()).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if (response.isSuccessful())
-                    Toast.makeText(holder.itemView.getContext(), "Odgovor uspesno sacuvan!", Toast.LENGTH_SHORT).show();
-                else {
-                    Toast.makeText(holder.itemView.getContext(), "Odgovor nije uspesno sacuvan", Toast.LENGTH_SHORT).show();
-                    Log.w(TAG, "Greska pri prihvatanju termina! Odgovor nije uspesno sacuvan!" + response.code());
-                }
-            }
+    // Ovo su metode za rezervaciju
+    private void classHeld(@NonNull TermViewHolder holder, Term term) {
 
-            @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
-                Log.e(TAG, "Greska pri prihvatanju termina! Odgovor nije uspesno sacuvan!", throwable);
-            }
-        });
     }
 
-    private void declineClassTerm(@NonNull TermViewHolder holder, Term term) {
-        termApi.rejectTerm(term.getTermId()).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if (response.isSuccessful())
-                    Toast.makeText(holder.itemView.getContext(), "Odgovor uspesno sacuvan!", Toast.LENGTH_SHORT).show();
-                else {
-                    Toast.makeText(holder.itemView.getContext(), "Odgovor nije uspesno sacuvan", Toast.LENGTH_SHORT).show();
-                    Log.w(TAG, "Greska pri odbijanju termina! Odgovor nije uspesno sacuvan!" + response.code());
-                }
-            }
+    private void classNotHeld(@NonNull TermViewHolder holder, Term term) {
 
-            @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
-                Log.e(TAG, "Greska pri odbijanju termina! Odgovor nije uspesno sacuvan!", throwable);
-            }
-        });
     }
 
     @Override

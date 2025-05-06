@@ -99,6 +99,8 @@ public class VideoCall extends AppCompatActivity {
 
         FrameLayout container = findViewById(R.id.agora_container);
         container.addView(agoraView);
+
+//        agoraView.join("MusicClass", null, null);
         getChannel();
     }
 
@@ -116,9 +118,8 @@ public class VideoCall extends AppCompatActivity {
             public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
                 if(response.isSuccessful() && response.body() != null) {
                     String channelName = response.body();
-                    agoraView.join("MusicClass", null, null);
                     System.out.println("Channel name " + channelName);
-//                    agoraView.join(channelName, null, null);
+                    agoraView.join(channelName, null, null);
                 }
                 else {
                     Log.w(TAG, "Dohvatanje imena kanala nije uspesno: " + response.code() + " " + response.message());

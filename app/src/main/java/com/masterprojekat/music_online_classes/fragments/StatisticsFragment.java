@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.masterprojekat.music_online_classes.APIs.CourseProgressAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.UserAPI;
 import com.masterprojekat.music_online_classes.Cart;
@@ -23,6 +24,7 @@ import com.masterprojekat.music_online_classes.R;
 import com.masterprojekat.music_online_classes.helpers.ProgressAdater;
 import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
 import com.masterprojekat.music_online_classes.models.Course;
+import com.masterprojekat.music_online_classes.models.CourseProgress;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public class StatisticsFragment extends Fragment {
     private static final String TAG = "StatisticsFragment";
     private final RetrofitService retrofitService = new RetrofitService();
     private final UserAPI userApi = retrofitService.getRetrofit().create(UserAPI.class);
+    private final CourseProgressAPI courseProgressAPI = retrofitService.getRetrofit().create(CourseProgressAPI.class);
     private User loggedInUser;
     private final List<Course> purchasedCoursesList = new ArrayList<>();
     private ProgressAdater progressAdapter;
@@ -71,6 +74,31 @@ public class StatisticsFragment extends Fragment {
                     purchasedCoursesList.clear();
                     purchasedCoursesList.addAll(coursesResponseList);
                     progressAdapter.notifyDataSetChanged();
+
+                    for(Course course : coursesResponseList) {
+                        courseProgressAPI.getCourseProgress(course.getCourseId(), loggedInUser.getUsername()).enqueue(new Callback<CourseProgress>() {
+                            @Override
+                            public void onResponse(@NonNull Call<CourseProgress> call, @NonNull Response<CourseProgress> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    CourseProgress courseProgress = response.body();
+                                    float progressPercantage = 0;
+                                    if(course.getNumberOfClasses() != 0) {
+                                        progressPercantage = (float) courseProgress.getProgress() / course.getNumberOfClasses() * 100;
+                                    }
+                                    course.setProgress((int) progressPercantage);
+                                    progressAdapter.notifyDataSetChanged();
+                                }
+                                else {
+                                    Log.w(TAG, "Dohvatanje progresa kurseva nije uspesno: " + response.code() + " " + response.message());
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull Call<CourseProgress> call, @NonNull Throwable throwable) {
+                                Log.e(TAG, "Zahtev za dohvatanjem pogresa kurseva nije uspeo!", throwable);
+                            }
+                        });
+                    }
                 }
                 else {
                     Log.w(TAG, "Dohvatanje kupljenih kurseva nije uspesno: " + response.code() + " " + response.message());
