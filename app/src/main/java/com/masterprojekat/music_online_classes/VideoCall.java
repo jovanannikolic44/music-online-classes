@@ -88,7 +88,7 @@ public class VideoCall extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
         } else {
-            Toast.makeText(this, "Permissions required for video call", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Permisije za kameru i audio su neophodne za video call!", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
