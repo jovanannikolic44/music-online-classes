@@ -88,6 +88,7 @@
     <string name="finished_course_label">Zavrsen kurs</string>
     <string name="accept_term_label">Prihvati</string>
     <string name="decline_term_label">Odbij</string>
+    <string name="professors_courses">Moji kursevi</string>
 
     <string-array name="expertise_array">
         <item>Gitara</item>

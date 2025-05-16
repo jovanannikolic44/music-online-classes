@@ -10,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface CourseAPI {
@@ -36,4 +37,7 @@ public interface CourseAPI {
 
     @GET("/course/get-rating")
     Call<Float> getCourseRating(@Query("courseId") int courseId);
+
+    @GET("/course/professors/{professorUsername}")
+    Call<List<Course>> getAllCoursesByProfessor(@Path("professorUsername") String professorUsername);
 }
