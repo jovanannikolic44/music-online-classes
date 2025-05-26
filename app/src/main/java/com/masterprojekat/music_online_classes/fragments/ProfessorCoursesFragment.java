@@ -1,11 +1,13 @@
 package com.masterprojekat.music_online_classes.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.masterprojekat.music_online_classes.APIs.CourseAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.TermAPI;
+import com.masterprojekat.music_online_classes.AddNewCourse;
+import com.masterprojekat.music_online_classes.AddNewTerms;
 import com.masterprojekat.music_online_classes.R;
 import com.masterprojekat.music_online_classes.helpers.ProfessorsCourseAdapter;
 import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
@@ -50,6 +54,13 @@ public class ProfessorCoursesFragment extends Fragment {
             loggedInUser = user;
             setUpProfessorsCoursesAdapter(view);
             displayProfessorsCourses();
+
+            ImageButton addNewCourses = view.findViewById(R.id.add_new_courses);
+            addNewCourses.setOnClickListener(localView -> {
+                Intent addNewCoursesIntent = new Intent(getContext(), AddNewCourse.class);
+                addNewCoursesIntent.putExtra("loggedInUser", loggedInUser);
+                requireActivity().startActivity(addNewCoursesIntent);
+            });
         });
     }
 

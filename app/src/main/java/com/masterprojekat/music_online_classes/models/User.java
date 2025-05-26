@@ -13,7 +13,7 @@ public class User implements Serializable {
     private String type;
     private String education;
     private String expertise;
-    private String accountStatus;
+    private UserAccountStatus accountStatus;
     private boolean firstLogIn;
 
     public User() {
@@ -27,11 +27,11 @@ public class User implements Serializable {
         this.type = "";
         this.education = "";
         this.expertise = "";
-        this.accountStatus = "";
+        this.accountStatus = UserAccountStatus.NIJE_AKTIVAN;
         this.firstLogIn = true;
     }
 
-    public User(String name, String surname, String username, String password, String date, String email,String phoneNumber, String type, String education, String expertise, String accountStatus, boolean fristLogIn) {
+    public User(String name, String surname, String username, String password, String date, String email,String phoneNumber, String type, String education, String expertise, boolean firstLogIn) {
         this.name = name;
         this.surname = surname;
         this.username = username;
@@ -42,8 +42,8 @@ public class User implements Serializable {
         this.type = type;
         this.education = education;
         this.expertise = expertise;
-        this.accountStatus = accountStatus;
-        this.firstLogIn = fristLogIn;
+        this.accountStatus = UserAccountStatus.NIJE_AKTIVAN;
+        this.firstLogIn = firstLogIn;
     }
 
     public String getName() {
@@ -126,11 +126,11 @@ public class User implements Serializable {
         this.expertise = expertise;
     }
 
-    public String getAccountStatus() {
+    public UserAccountStatus getAccountStatus() {
         return accountStatus;
     }
 
-    public void setAccountStatus(String accountStatus) {
+    public void setAccountStatus(UserAccountStatus accountStatus) {
         this.accountStatus = accountStatus;
     }
 

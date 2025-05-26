@@ -64,12 +64,12 @@ public class Registration extends AppCompatActivity {
         Spinners.showDateSpinner(Registration.this, inputDate);
 
         Spinner inputExpertiseSpinner = (Spinner) findViewById(R.id.input_expertise);
-        Spinners.showExpertiseSpinner(Registration.this, inputExpertiseSpinner);
+        Spinners.showInstrumentSpinner(Registration.this, inputExpertiseSpinner);
 
-        register_new_user();
+        registerNewUser();
     }
 
-    private void register_new_user() {
+    private void registerNewUser() {
         EditText inputName = (EditText) findViewById(R.id.input_name);
         EditText inputSurname = (EditText) findViewById(R.id.input_surname);
         EditText inputUsername = (EditText) findViewById(R.id.input_username);
@@ -90,7 +90,7 @@ public class Registration extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                expertise = "Nije selektovan";
+                expertise = "Ekspertiza nije selektovana!";
             }
         });
 
@@ -150,7 +150,7 @@ public class Registration extends AppCompatActivity {
                                     }
                                 }
                                 else {
-                                    User user = new User(name, surname, username, password, date, email, phoneNumber, type, education, expertise, "neaktivan", true);
+                                    User user = new User(name, surname, username, password, date, email, phoneNumber, type, education, expertise, true);
                                     userApi.saveUser(user).enqueue(new Callback<User>() {
                                         @Override
                                         public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {

@@ -89,8 +89,12 @@
     <string name="accept_term_label">Prihvati</string>
     <string name="decline_term_label">Odbij</string>
     <string name="professors_courses">Moji kursevi</string>
+    <string name="price_label">Cena</string>
+    <string name="course_description_label">Opis kursa</string>
+    <string name="course_content_label">Sadrzaj kursa</string>
+    <string name="classes_number_label">Broj casova</string>
 
-    <string-array name="expertise_array">
+    <string-array name="instrument_array">
         <item>Gitara</item>
         <item>Violina</item>
         <item>Harfa</item>
@@ -100,5 +104,10 @@
         <item>Saksofon</item>
         <item>Bubanj</item>
         <item>Pevanje</item>
+    </string-array>
+
+    <string-array name="level_array">
+        <item>Pocetni</item>
+        <item>Napredni</item>
     </string-array>
 </resources>

@@ -52,8 +52,14 @@ public class Spinners {
         });
     }
 
-    public static void showExpertiseSpinner(android.content.Context context, Spinner inputExpertiseSpinner) {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.expertise_array, android.R.layout.simple_spinner_item);
+    public static void showInstrumentSpinner(android.content.Context context, Spinner inputExpertiseSpinner) {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.instrument_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        inputExpertiseSpinner.setAdapter(adapter);
+    }
+
+    public static void showLevelSpinner(android.content.Context context, Spinner inputExpertiseSpinner) {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.level_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         inputExpertiseSpinner.setAdapter(adapter);
     }

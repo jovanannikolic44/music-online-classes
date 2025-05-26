@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.UserAPI;
 import com.masterprojekat.music_online_classes.models.User;
+import com.masterprojekat.music_online_classes.models.UserAccountStatus;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Lozinka nije validna!", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if("neaktivan".equals(user.getAccountStatus())) {
+                    if(UserAccountStatus.NIJE_AKTIVAN.equals(user.getAccountStatus())) {
                         Toast.makeText(MainActivity.this, "Vas nalog jos uvek nije aktiviran!", Toast.LENGTH_SHORT).show();
                         return;
                     }

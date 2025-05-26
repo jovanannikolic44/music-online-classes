@@ -24,6 +24,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".AddNewCourse"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
             android:name=".AddNewTerms"
             android:exported="false" />
         <activity
@@ -40,9 +44,7 @@
             android:exported="false" />
         <activity
             android:name=".CourseDetails"
-            android:exported="false" /> <!-- <activity -->
-        <!-- android:name=".Courses" -->
-        <!-- android:exported="false" /> -->
+            android:exported="false" />
         <activity
             android:name=".StudentHomeFragments"
             android:exported="false" />
@@ -68,7 +70,7 @@
             android:exported="false" />
         <activity
             android:name=".Registration"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

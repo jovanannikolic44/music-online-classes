@@ -239,7 +239,7 @@ public class ProfileFragment extends Fragment {
             EditText educationInput = dialogView.findViewById(R.id.change_education);
             educationInput.setText(loggedInUser.getEducation());
             Spinner expertiseInput = dialogView.findViewById(R.id.change_expertise);
-            Spinners.showExpertiseSpinner(requireContext(), expertiseInput);
+            Spinners.showInstrumentSpinner(requireContext(), expertiseInput);
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());

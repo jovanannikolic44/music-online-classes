@@ -40,4 +40,7 @@ public interface CourseAPI {
 
     @GET("/course/professors/{professorUsername}")
     Call<List<Course>> getAllCoursesByProfessor(@Path("professorUsername") String professorUsername);
+
+    @POST("/course/add-new")
+    Call<Course> addNewCourse(@Body Course newCourse);
 }

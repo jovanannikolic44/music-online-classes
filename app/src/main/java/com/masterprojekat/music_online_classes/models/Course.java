@@ -18,6 +18,41 @@ public class Course implements Serializable {
     private List<Comment> comments;
     private int progress;
     private int numberOfClasses;
+    private CourseStatus status;
+
+    public Course() {
+        this.professor = null;
+        this.name = "";
+        this.level = "";
+        this.instrument = "";
+        this.description = "";
+        this.rating = 0;
+        this.price = 0;
+        this.content = "";
+        this.courseImage = "";
+        this.comments = null;
+        this.isSelected = false;
+        this.numberOfClasses = 0;
+        this.status = CourseStatus.ZAHTEV_POSLAT;
+        this.progress = 0;
+    }
+
+    public Course(User professor, String name, String level, String instrument, String description, float price, String content, int numberOfClasses) {
+        this.professor = professor;
+        this.name = name;
+        this.level = level;
+        this.instrument = instrument;
+        this.description = description;
+        this.rating = 0;
+        this.price = price;
+        this.content = content;
+        this.courseImage = "";
+        this.comments = null;
+        this.isSelected = false;
+        this.numberOfClasses = numberOfClasses;
+        this.status = CourseStatus.ZAHTEV_POSLAT;
+        this.progress = 0;
+    }
 
     public int getCourseId() {
         return courseId;
