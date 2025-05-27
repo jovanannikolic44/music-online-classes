@@ -13,6 +13,7 @@ import retrofit2.http.GET;
 import retrofit2.http.HTTP;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -31,10 +32,10 @@ public interface UserAPI {
     @POST("/user/save")
     Call<User> saveUser(@Body User user);
 
-    @POST("/user/update-info")
+    @PUT("/user/update-info")
     Call<User> updateUserInfo(@Body User user);
 
-    @POST("/user/update-password")
+    @PUT("/user/update-password")
    Call<User> updateUserPassword(@Query("username") String username, @Query("newPassword") String newPassword);
 
     @Multipart

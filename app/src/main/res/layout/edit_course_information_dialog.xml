@@ -4,111 +4,99 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:gravity="center">
+    android:gravity="start"
+    android:layout_marginTop="40dp">
 
     <EditText
-        android:id="@+id/change_name"
+        android:id="@+id/change_course_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autofillHints="firstName"
-        android:hint="@string/name"
+        android:hint="@string/course_name"
+        android:importantForAutofill="no"
         android:padding="10dp"
         android:layout_marginBottom="15dp"
-        android:inputType="textPersonName"
+        android:inputType="text|textAutoCorrect"
         android:background="@drawable/edit_text_style"
         android:textSize="14sp"
         android:textColorHint="@color/gray"
         android:textColor="@color/black"/>
 
     <EditText
-        android:id="@+id/change_surname"
+        android:id="@+id/change_course_price"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:hint="@string/price_label"
+        android:drawableTint="@color/gray"
+        android:importantForAutofill="no"
+        android:padding="10dp"
+        android:layout_marginBottom="15dp"
+        android:inputType="number"
+        android:background="@drawable/edit_text_style"
+        android:textSize="16sp"
+        android:textColorHint="@color/gray"
+        android:textColor="@color/black" />
+
+    <EditText
+        android:id="@+id/change_course_classes_number"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:hint="@string/classes_number_label"
+        android:drawableTint="@color/gray"
+        android:importantForAutofill="no"
+        android:padding="10dp"
+        android:layout_marginBottom="15dp"
+        android:inputType="number"
+        android:background="@drawable/edit_text_style"
+        android:textSize="16sp"
+        android:textColorHint="@color/gray"
+        android:textColor="@color/black" />
+
+    <EditText
+        android:id="@+id/change_course_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autofillHints="lastName"
-        android:hint="@string/surname"
-        android:padding="10dp"
-        android:layout_marginBottom="15dp"
-        android:inputType="textPersonName"
+        android:hint="@string/course_description_label"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
+        android:gravity="top|start"
+        android:minLines="2"
         android:background="@drawable/edit_text_style"
-        android:textSize="14sp"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:layout_marginBottom="15dp"
         android:textColorHint="@color/gray"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:scrollbars="vertical" />
 
     <EditText
-        android:id="@+id/change_date"
-        android:layout_width="match_parent"
-        android:layout_height="43dp"
-        android:layout_marginBottom="15dp"
-        android:clickable="false"
-        android:cursorVisible="false"
-        android:drawableEnd="@drawable/calendar_icon"
-        android:drawableTint="@color/gray"
-        android:focusable="false"
-        android:hint="@string/date"
-        android:padding="10dp"
-        android:background="@drawable/edit_text_style"
-        android:textSize="14sp"
-        android:textColorHint="@color/gray"
-        android:textColor="@color/black"/>
-
-    <EditText
-        android:id="@+id/change_email"
-        android:layout_width="match_parent"
-        android:layout_height="43dp"
-        android:autofillHints="emailAddress"
-        android:hint="@string/email"
-        android:drawableEnd="@drawable/email_icon"
-        android:drawableTint="@color/gray"
-        android:padding="10dp"
-        android:layout_marginBottom="15dp"
-        android:inputType="textEmailAddress"
-        android:background="@drawable/edit_text_style"
-        android:textSize="14sp"
-        android:textColorHint="@color/gray"
-        android:textColor="@color/black"/>
-
-    <EditText
-        android:id="@+id/change_phone_number"
-        android:layout_width="match_parent"
-        android:layout_height="43dp"
-        android:autofillHints="phone"
-        android:hint="@string/phone_number"
-        android:text="@string/phone_number"
-        android:drawableEnd="@drawable/phone_call_icon"
-        android:drawableTint="@color/gray"
-        android:padding="10dp"
-        android:layout_marginBottom="15dp"
-        android:inputType="phone"
-        android:background="@drawable/edit_text_style"
-        android:textSize="14sp"
-        android:textColorHint="@color/gray"
-        android:textColor="@color/black"/>
-
-    <EditText
-        android:id="@+id/change_education"
+        android:id="@+id/change_course_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autofillHints="text"
-        android:hint="@string/education"
-        android:padding="10dp"
-        android:visibility="gone"
-        android:inputType="text"
-        android:layout_marginBottom="15dp"
+        android:hint="@string/course_content_label"
         android:background="@drawable/edit_text_style"
-        android:textSize="14sp"
+        android:importantForAutofill="no"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:layout_marginBottom="15dp"
+        android:inputType="textMultiLine"
+        android:gravity="top|start"
+        android:minLines="3"
+        android:maxLines="10"
+        android:scrollbars="vertical"
         android:textColorHint="@color/gray"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black" />
 
     <Spinner
-        android:id="@+id/change_expertise"
+        android:id="@+id/change_course_level"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:spinnerMode="dropdown"
         android:padding="10dp"
-        android:visibility="gone"
-        android:layout_marginBottom="30dp"
+        android:visibility="visible"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/edit_text_style"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textColorHint="@color/gray"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black" />
+
 </LinearLayout>

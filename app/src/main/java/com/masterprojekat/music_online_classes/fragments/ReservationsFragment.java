@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -79,6 +80,10 @@ public class ReservationsFragment extends Fragment {
                     reservationsList.clear();
                     reservationsList.addAll(termsResponseList);
                     reservationsAdapter.notifyDataSetChanged();
+
+                    if(termsResponseList.isEmpty()) {
+                        Toast.makeText(getContext(), "Ne postoji ni jedan termin za izabrani datum!", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else {
                     Log.w(TAG, "Dohvatanje rezervacija nije uspesno: " + response.code() + " " + response.message());

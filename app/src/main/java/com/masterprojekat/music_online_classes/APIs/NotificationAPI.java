@@ -14,7 +14,7 @@ public interface NotificationAPI {
     Call<List<Notification>> getAllNotificationsForStudent(@Query("student_username") String student_username);
 
     @POST("/notification/create-new-notification")
-    Call<Void> createNewNotification(@Query("termId") int termId);
+    Call<Void> createNewNotification(@Query("termId") int termId, @Query("acceptOrRejectMessage") String acceptOrRejectMessage);
 
     @GET("/notification/search")
     Call<List<Notification>> searchNotifications(@Query("username") String username, @Query("inputSearch") String inputSearch);

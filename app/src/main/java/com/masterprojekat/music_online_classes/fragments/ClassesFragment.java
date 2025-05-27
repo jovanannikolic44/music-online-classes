@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.TermAPI;
@@ -88,6 +89,10 @@ public class ClassesFragment extends Fragment {
                     scheduledTermsList.clear();
                     scheduledTermsList.addAll(termsResponseList);
                     termAdapter.notifyDataSetChanged();
+
+                    if(termsResponseList.isEmpty()) {
+                        Toast.makeText(getContext(), "Ne postoji ni jedan termin za izabrani datum!", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else {
                     Log.w(TAG, "Dohvatanje zakazanih termina nije uspesno: " + response.code() + " " + response.message());

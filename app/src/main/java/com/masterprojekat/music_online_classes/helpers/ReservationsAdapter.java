@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.masterprojekat.music_online_classes.APIs.CourseProgressAPI;
+import com.masterprojekat.music_online_classes.APIs.NotificationAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
 import com.masterprojekat.music_online_classes.APIs.TermAPI;
 import com.masterprojekat.music_online_classes.R;
@@ -24,15 +25,16 @@ import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.List;
 
-import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ReservationsAdapter extends RecyclerView.Adapter<ReservationsAdapter.ReservationsViewHolder> {
     private static final String TAG = "ReservationsAdapter";
     private final RetrofitService retrofitService = new RetrofitService();
     private final TermAPI termApi = retrofitService.getRetrofit().create(TermAPI.class);
+    private final NotificationAPI notificationAPI = retrofitService.getRetrofit().create(NotificationAPI.class);
     private final List<Term> reservationsList;
 
     public ReservationsAdapter(List<Term> reservationsList) {
@@ -76,6 +78,7 @@ public class ReservationsAdapter extends RecyclerView.Adapter<ReservationsAdapte
                 if (response.isSuccessful()) {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor uspesno sacuvan!", Toast.LENGTH_SHORT).show();
                     removeReservationFromList(holder.getBindingAdapterPosition());
+                    sendNotification(term, "potvrdjena");
                 }
                 else {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor nije uspesno sacuvan", Toast.LENGTH_SHORT).show();
@@ -98,6 +101,7 @@ public class ReservationsAdapter extends RecyclerView.Adapter<ReservationsAdapte
                 if (response.isSuccessful()) {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor uspesno sacuvan!", Toast.LENGTH_SHORT).show();
                     removeReservationFromList(holder.getBindingAdapterPosition());
+                    sendNotification(term, "odbijena");
                 }
                 else {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor nije uspesno sacuvan", Toast.LENGTH_SHORT).show();
@@ -108,6 +112,25 @@ public class ReservationsAdapter extends RecyclerView.Adapter<ReservationsAdapte
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
                 Log.e(TAG, "Greska pri odbijanju termina! Odgovor nije uspesno sacuvan!", throwable);
+            }
+        });
+    }
+
+    private void sendNotification(Term term, String message) {
+        notificationAPI.createNewNotification(term.getTermId(), message).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.i(TAG, "Notifikacija uspesno poslata!" + response.code());
+                }
+                else {
+                    Log.w(TAG, "Greska pri slanju notifikacije!" + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable throwable) {
+                Log.e(TAG, "Greska pri slanju notifikacije!", throwable);
             }
         });
     }
