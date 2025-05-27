@@ -1,5 +1,6 @@
 package com.masterprojekat.music_online_classes.helpers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -57,11 +58,19 @@ public class ProfessorsCourseAdapter extends RecyclerView.Adapter<ProfessorsCour
         displayImage(holder, course.getCourseImage());
 
         holder.editCourse.setOnClickListener(view -> {
-            System.out.println("Opening dialog to edit courses info");
+            editCoursesInfo(course);
         });
     }
 
-    public void displayImage(ProfessorsCourseAdapter.ProfessorsCourseViewHolder holder, String fullImagePath) {
+    private void editCoursesInfo(Course courseToEdit) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.edit_course_information_dialog, null);
+
+        // Set previous fields
+
+    }
+
+    private void displayImage(ProfessorsCourseAdapter.ProfessorsCourseViewHolder holder, String fullImagePath) {
         String imageFile = fullImagePath.substring(fullImagePath.lastIndexOf("/") + 1);
         courseApi.getCourseImage(imageFile).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -79,7 +88,7 @@ public class ProfessorsCourseAdapter extends RecyclerView.Adapter<ProfessorsCour
 
             @Override
             public void onFailure(@NonNull retrofit2.Call<ResponseBody> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CartAdapter.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dohvatanjem slike kursa nije uspeo!", throwable);
+                Logger.getLogger(ProfessorsCourseAdapter.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dohvatanjem slike kursa nije uspeo!", throwable);
             }
         });
     }

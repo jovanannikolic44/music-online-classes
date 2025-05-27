@@ -165,4 +165,12 @@ public class Course implements Serializable {
     public void setNumberOfClasses(int numberOfClasses) {
         this.numberOfClasses = numberOfClasses;
     }
+
+    public CourseStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CourseStatus status) {
+        this.status = status;
+    }
 }

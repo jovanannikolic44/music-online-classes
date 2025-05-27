@@ -93,6 +93,7 @@
     <string name="course_description_label">Opis kursa</string>
     <string name="course_content_label">Sadrzaj kursa</string>
     <string name="classes_number_label">Broj casova</string>
+    <string name="choose_image">Izaberi sliku</string>
 
     <string-array name="instrument_array">
         <item>Gitara</item>

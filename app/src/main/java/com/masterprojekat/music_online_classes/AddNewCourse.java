@@ -1,17 +1,23 @@
 package com.masterprojekat.music_online_classes;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -26,6 +32,16 @@ import com.masterprojekat.music_online_classes.helpers.Spinners;
 import com.masterprojekat.music_online_classes.models.Course;
 import com.masterprojekat.music_online_classes.models.User;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Objects;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,6 +53,10 @@ public class AddNewCourse extends AppCompatActivity {
     private String courseInstrument = "";
     private String courseLevel = "";
     private User loggedInUser;
+    private Uri selectedImageUri;
+    private ImageView imagePreview;
+
+    private ActivityResultLauncher<Intent> pickCourseImageLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +75,26 @@ public class AddNewCourse extends AppCompatActivity {
 
         setUpCourseLevelSpinner();
         setUpCourseInstrumentSpinner();
+        chooseImage();
 
         Button addNewCourseButton = findViewById(R.id.add_new_course_button);
         addNewCourseButton.setOnClickListener(view -> {
             addNewCourse();
+        });
+    }
+
+    private void chooseImage() {
+        Button selectImageButton = findViewById(R.id.select_image_button);
+        imagePreview = findViewById(R.id.selected_image_preview);
+        pickCourseImageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if(result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                selectedImageUri = result.getData().getData();
+                imagePreview.setImageURI(selectedImageUri);
+            }
+        });
+        selectImageButton.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            pickCourseImageLauncher.launch(intent);
         });
     }
 
@@ -82,24 +118,45 @@ public class AddNewCourse extends AppCompatActivity {
         }
 
         Course newCourse = new Course(loggedInUser, inputCourseName, courseLevel, courseInstrument, inputCourseDescription, coursePrice, adaptContentString(inputCourseContent), numberOfClasses);
-        saveCourse(newCourse);
+        uploadCourseWithImage(newCourse);
     }
 
-    private void saveCourse(Course newCourse) {
-        courseApi.addNewCourse(newCourse).enqueue(new Callback<Course>() {
+    private void uploadCourseWithImage(Course newCourse) {
+        File imageFile = new File(getCacheDir(), "_image.jpg");
+        try(InputStream in = getContentResolver().openInputStream(selectedImageUri);
+            FileOutputStream out = new FileOutputStream(imageFile)) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = in.read(buffer)) != -1) {
+                out.write(buffer, 0, length);
+            }
+        } catch (IOException e){
+            throw new RuntimeException(e);
+        }
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse(Objects.requireNonNull(getContentResolver().getType(selectedImageUri))), imageFile);
+        MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", imageFile.getName(), requestFile);
+        RequestBody name = RequestBody.create(MultipartBody.FORM, newCourse.getName());
+        RequestBody price = RequestBody.create(MultipartBody.FORM, String.valueOf(newCourse.getPrice()));
+        RequestBody professorUsername = RequestBody.create(MultipartBody.FORM, newCourse.getProfessor().getUsername());
+        RequestBody level = RequestBody.create(MultipartBody.FORM, newCourse.getLevel());
+        RequestBody instrument = RequestBody.create(MultipartBody.FORM, newCourse.getInstrument());
+        RequestBody description = RequestBody.create(MultipartBody.FORM, newCourse.getDescription());
+        RequestBody content = RequestBody.create(MultipartBody.FORM, newCourse.getContent());
+        RequestBody numberOfClasses = RequestBody.create(MultipartBody.FORM, String.valueOf(newCourse.getNumberOfClasses()));
+
+        saveCourse(name, price, professorUsername, level, instrument, description, content, numberOfClasses, imagePart);
+    }
+
+    private void saveCourse(RequestBody name, RequestBody price, RequestBody professorUsername, RequestBody level, RequestBody instrument, RequestBody description, RequestBody content, RequestBody numberOfClasses, MultipartBody.Part imagePart) {
+        courseApi.addCourse(name, price, professorUsername, level, instrument, description, content, numberOfClasses, imagePart).enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(@NonNull Call<Course> call, @NonNull Response<Course> response) {
-                if(response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(AddNewCourse.this, "Zahtev za dodavanjem kursa je uspesan!", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(AddNewCourse.this, "Zahtev za dodavanjem kursa nije uspesan!", Toast.LENGTH_SHORT).show();
-                    Log.w(TAG, "Greska pri slanju zahteva za dodavanjem kurseva!" + response.code());
-                }
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                Toast.makeText(AddNewCourse.this, "Zahtev za dodavanjem kursa je uspesan!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(@NonNull Call<Course> call, @NonNull Throwable throwable) {
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable throwable) {
                 Log.e(TAG, "Greska! Zahtev za dodavanjem novog kursa nije uspesan!", throwable);
             }
         });

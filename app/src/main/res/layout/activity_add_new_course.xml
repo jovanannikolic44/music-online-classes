@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:padding="16dp"
         android:gravity="start">
 
@@ -122,12 +122,28 @@
             android:textColor="@color/black" />
 
         <Button
+            android:id="@+id/select_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_image"
+            android:backgroundTint="@color/dark_violet"/>
+
+        <ImageView
+            android:id="@+id/selected_image_preview"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="8dp"
+            android:contentDescription="@string/no_image"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
             android:id="@+id/add_new_course_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/dark_violet"
             android:textColor="@color/white"
             android:text="@string/add"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="40dp"/>
     </LinearLayout>
 </ScrollView>
