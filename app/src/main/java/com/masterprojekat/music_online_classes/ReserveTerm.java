@@ -60,7 +60,6 @@ public class ReserveTerm extends AppCompatActivity {
     }
 
     private void displayAvailableTerms() {
-        System.out.println("Professor's username " + courseToReserve.getProfessor().getUsername());
         Spinner termSpinner = findViewById(R.id.term_spinner);
         Button reserveTermButton = findViewById(R.id.reserve_term_button);
         termApi.getAllAvailableTermsForProfessor(courseToReserve.getProfessor().getUsername()).enqueue(new Callback<List<Term>>() {

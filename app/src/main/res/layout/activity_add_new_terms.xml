@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginStart="20dp"
+        android:id="@+id/add_new_terms_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/scheduled_terms_label"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/scheduled_terms_date"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:hint="@string/date"
+            android:padding="10dp"
+            android:background="@drawable/edit_text_style"
+            android:textSize="14sp"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/black"
+            android:drawableEnd="@drawable/calendar_icon"
+            android:drawableTint="@color/gray"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
+        <EditText
+            android:id="@+id/scheduled_terms_time"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:background="@drawable/edit_text_style"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:hint="@string/choose_time"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="14sp"
+            android:drawableTint="@color/gray"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
+
+        <Button
+            android:id="@+id/add_new_terms_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/dark_violet"
+            android:textColor="@color/white"
+            android:text="@string/add"
+            android:layout_marginStart="140dp"/>
+</LinearLayout>

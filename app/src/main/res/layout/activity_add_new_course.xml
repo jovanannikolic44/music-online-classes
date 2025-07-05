@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    android:background="@color/violet"
+    tools:context=".AddNewCourse">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="40dp"
+        android:padding="16dp"
+        android:gravity="start">
+
+        <EditText
+            android:id="@+id/input_course_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="name"
+            android:hint="@string/course_name"
+            android:inputType="textAutoComplete"
+            android:padding="10dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/edit_text_style"
+            android:textSize="16sp"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/input_course_price"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:hint="@string/price_label"
+            android:drawableTint="@color/gray"
+            android:importantForAutofill="no"
+            android:padding="10dp"
+            android:layout_marginBottom="15dp"
+            android:inputType="number"
+            android:background="@drawable/edit_text_style"
+            android:textSize="16sp"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/input_course_classes_number"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:hint="@string/classes_number_label"
+            android:drawableTint="@color/gray"
+            android:importantForAutofill="no"
+            android:padding="10dp"
+            android:layout_marginBottom="15dp"
+            android:inputType="number"
+            android:background="@drawable/edit_text_style"
+            android:textSize="16sp"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/input_course_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/course_description_label"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:gravity="top|start"
+            android:minLines="2"
+            android:background="@drawable/edit_text_style"
+            android:padding="10dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="15dp"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/black"
+            android:scrollbars="vertical" />
+
+        <EditText
+            android:id="@+id/input_course_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/course_content_label"
+            android:background="@drawable/edit_text_style"
+            android:importantForAutofill="no"
+            android:padding="10dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="15dp"
+            android:inputType="textMultiLine"
+            android:gravity="top|start"
+            android:minLines="3"
+            android:maxLines="10"
+            android:scrollbars="vertical"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/black" />
+
+        <Spinner
+            android:id="@+id/input_course_level"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"
+            android:padding="10dp"
+            android:visibility="visible"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/edit_text_style"
+            android:textSize="16sp"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/black" />
+
+        <Spinner
+            android:id="@+id/input_course_instrument"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"
+            android:padding="10dp"
+            android:visibility="visible"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/edit_text_style"
+            android:textSize="16sp"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/select_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_image"
+            android:backgroundTint="@color/dark_violet"/>
+
+        <ImageView
+            android:id="@+id/selected_image_preview"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="8dp"
+            android:contentDescription="@string/no_image"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/add_new_course_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/dark_violet"
+            android:textColor="@color/white"
+            android:text="@string/add"
+            android:layout_marginBottom="40dp"/>
+    </LinearLayout>
+</ScrollView>

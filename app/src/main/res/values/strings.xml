@@ -78,8 +78,24 @@
     <string name="notification_search_label">Pretrazite obavestenja</string>
     <string name="scheduled_terms_label">Zakazani termini</string>
     <string name="show_scheduled_terms">Prikazi</string>
+    <string name="reservations_label">Rezervacije</string>
+    <string name="terms_label">Termini</string>
+    <string name="class_held_label">Odrzan</string>
+    <string name="class_not_held_label">Nije odrzan</string>
+    <string name="add_new_terms_label">Dodavanje novih termina</string>
+    <string name="add">Dodaj</string>
+    <string name="choose_time">Izaberi vreme</string>
+    <string name="finished_course_label">Zavrsen kurs</string>
+    <string name="accept_term_label">Prihvati</string>
+    <string name="decline_term_label">Odbij</string>
+    <string name="professors_courses">Moji kursevi</string>
+    <string name="price_label">Cena</string>
+    <string name="course_description_label">Opis kursa</string>
+    <string name="course_content_label">Sadrzaj kursa</string>
+    <string name="classes_number_label">Broj casova</string>
+    <string name="choose_image">Izaberi sliku</string>
 
-    <string-array name="expertise_array">
+    <string-array name="instrument_array">
         <item>Gitara</item>
         <item>Violina</item>
         <item>Harfa</item>
@@ -89,5 +105,10 @@
         <item>Saksofon</item>
         <item>Bubanj</item>
         <item>Pevanje</item>
+    </string-array>
+
+    <string-array name="level_array">
+        <item>Pocetni</item>
+        <item>Napredni</item>
     </string-array>
 </resources>

@@ -73,37 +73,25 @@
             android:gravity="center_horizontal"
             android:padding="4dp">
 
-            <ImageButton
-                android:id="@+id/video_call_image"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/no_image"
-                android:focusable="true"
-                android:src="@drawable/videocam_icon"
-                android:clickable="true"
-                android:layout_gravity="center_horizontal" />
-
             <Button
-                android:id="@+id/class_held"
+                android:id="@+id/acceptButton"
                 android:layout_width="110dp"
                 android:layout_height="40dp"
-                android:text="@string/class_held_label"
+                android:text="@string/accept_term_label"
                 android:textSize="12sp"
                 android:layout_marginTop="4dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:backgroundTint="@color/dark_violet"/>
 
             <Button
-                android:id="@+id/class_not_held"
+                android:id="@+id/declineButton"
                 android:layout_width="110dp"
                 android:layout_height="40dp"
-                android:text="@string/class_not_held_label"
+                android:text="@string/decline_term_label"
                 android:textSize="12sp"
                 android:layout_marginTop="4dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:backgroundTint="@color/dark_violet"/>
         </LinearLayout>
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>

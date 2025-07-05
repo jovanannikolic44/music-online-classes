@@ -37,8 +37,29 @@ public class Spinners {
         });
     }
 
-    public static void showExpertiseSpinner(android.content.Context context, Spinner inputExpertiseSpinner) {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.expertise_array, android.R.layout.simple_spinner_item);
+    public static void showTimeSpinner(android.content.Context context, EditText inputTime) {
+        inputTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int minute = calendar.get(Calendar.MINUTE);
+
+                new android.app.TimePickerDialog(context, (timePicker, selectedHour, selectedMinute) -> {
+                    String formattedTime = String.format(Locale.US, "%02d:%02d", selectedHour, selectedMinute);
+                    inputTime.setText(formattedTime);
+                }, hour, minute, true).show();
+            }
+        });
+    }
+
+    public static void showInstrumentSpinner(android.content.Context context, Spinner inputExpertiseSpinner) {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.instrument_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        inputExpertiseSpinner.setAdapter(adapter);
+    }
+
+    public static void showLevelSpinner(android.content.Context context, Spinner inputExpertiseSpinner) {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.level_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         inputExpertiseSpinner.setAdapter(adapter);
     }
