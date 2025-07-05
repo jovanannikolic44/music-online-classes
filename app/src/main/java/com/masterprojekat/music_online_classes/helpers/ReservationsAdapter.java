@@ -78,7 +78,7 @@ public class ReservationsAdapter extends RecyclerView.Adapter<ReservationsAdapte
                 if (response.isSuccessful()) {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor uspesno sacuvan!", Toast.LENGTH_SHORT).show();
                     removeReservationFromList(holder.getBindingAdapterPosition());
-                    sendNotification(term, "potvrdjena");
+                    sendNotification(term, "prihvatio/la");
                 }
                 else {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor nije uspesno sacuvan", Toast.LENGTH_SHORT).show();
@@ -101,7 +101,7 @@ public class ReservationsAdapter extends RecyclerView.Adapter<ReservationsAdapte
                 if (response.isSuccessful()) {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor uspesno sacuvan!", Toast.LENGTH_SHORT).show();
                     removeReservationFromList(holder.getBindingAdapterPosition());
-                    sendNotification(term, "odbijena");
+                    sendNotification(term, "odbio/la");
                 }
                 else {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor nije uspesno sacuvan", Toast.LENGTH_SHORT).show();
