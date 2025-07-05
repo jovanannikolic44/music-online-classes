@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/profile_nav"
+        android:title="@string/profile_label"
+        android:icon="@drawable/user_account_icon"/>
+    <item
+        android:id="@+id/new_courses_nav"
+        android:title="@string/new_courses_label"
+        android:icon="@drawable/new_lessons_icon"/>
+    <item
+        android:id="@+id/new_users_nav"
+        android:title="@string/new_users_label"
+        android:icon="@drawable/new_users_icon"/>
+</menu>
