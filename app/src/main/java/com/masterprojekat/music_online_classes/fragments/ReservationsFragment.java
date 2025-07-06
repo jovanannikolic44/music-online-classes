@@ -49,7 +49,6 @@ public class ReservationsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        System.out.println("Calling Resevations fragment");
 
         SharedViewModel viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         viewModel.getUser().observe(getViewLifecycleOwner(), user -> {

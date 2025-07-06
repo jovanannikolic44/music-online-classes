@@ -95,6 +95,11 @@ public class MainActivity extends AppCompatActivity {
                             professorProfileIntent.putExtra("loggedInUser", user);
                             startActivity(professorProfileIntent);
                         }
+                        else if(user.getType().equals("Admin")) {
+                            Intent adminProfileIntent = new Intent(MainActivity.this, AdminHomeFragments.class);
+                            adminProfileIntent.putExtra("loggedInUser", user);
+                            startActivity(adminProfileIntent);
+                        }
                     }
                 }
                 else {

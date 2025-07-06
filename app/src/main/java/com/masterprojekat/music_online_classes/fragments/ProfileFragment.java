@@ -158,7 +158,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onResponse(@NonNull retrofit2.Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    File profilePictureFile = new File(requireActivity().getCacheDir(), "profile_picture.jpg");
+                    File profilePictureFile = new File(requireActivity().getCacheDir(), "profile_pi cture.jpg");
                     try (FileOutputStream outputStream = new FileOutputStream(profilePictureFile)) {
                         outputStream.write(response.body().bytes());
 

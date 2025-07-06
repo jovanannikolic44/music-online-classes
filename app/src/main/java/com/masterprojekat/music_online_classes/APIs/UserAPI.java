@@ -62,4 +62,13 @@ public interface UserAPI {
 
     @GET("/user/is-course-purchased")
     Call<Boolean> isCoursePurchased(@Query("username") String username, @Query("courseId") int courseId);
+
+    @GET("/user/user-account-requests")
+    Call<List<User>> getUserAccountRequests();
+
+    @POST("/user/accept-request")
+    Call<ResponseBody> acceptRequest(@Query("username") String username);
+
+    @POST("/user/decline-request")
+    Call<ResponseBody> declineRequest(@Query("username") String username);
 }
