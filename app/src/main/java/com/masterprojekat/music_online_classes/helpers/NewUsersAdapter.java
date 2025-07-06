@@ -12,12 +12,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.masterprojekat.music_online_classes.APIs.NotificationAPI;
 import com.masterprojekat.music_online_classes.APIs.RetrofitService;
-import com.masterprojekat.music_online_classes.APIs.TermAPI;
 import com.masterprojekat.music_online_classes.APIs.UserAPI;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.models.Term;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.List;
@@ -40,7 +37,7 @@ public class NewUsersAdapter extends RecyclerView.Adapter<NewUsersAdapter.NewUse
     @Override
     public NewUsersAdapter.NewUsersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.new_course_item, parent, false);
+                .inflate(R.layout.new_user_item, parent, false);
         return new NewUsersAdapter.NewUsersViewHolder(view);
     }
 

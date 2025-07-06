@@ -66,9 +66,9 @@ public interface UserAPI {
     @GET("/user/user-account-requests")
     Call<List<User>> getUserAccountRequests();
 
-    @POST("/user/acceptRequest")
+    @POST("/user/accept-request")
     Call<ResponseBody> acceptRequest(@Query("username") String username);
 
-    @POST("/user/declineRequest")
+    @POST("/user/decline-request")
     Call<ResponseBody> declineRequest(@Query("username") String username);
 }

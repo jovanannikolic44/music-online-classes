@@ -1,6 +1,7 @@
 package com.masterprojekat.music_online_classes.APIs;
 
 import com.masterprojekat.music_online_classes.models.Course;
+import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.List;
 import java.util.Set;
@@ -54,4 +55,13 @@ public interface CourseAPI {
 
     @PUT("/course/update-info")
     Call<Course> updateCourseInfo(@Body Course course);
+
+    @GET("/course/new-course-requests")
+    Call<List<Course>> getNewCourseRequests();
+
+    @POST("/course/accept-request")
+    Call<ResponseBody> acceptRequest(@Query("courseId") int courseId);
+
+    @POST("/course/decline-request")
+    Call<ResponseBody> declineRequest(@Query("courseId") int courseId);
 }

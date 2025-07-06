@@ -77,7 +77,7 @@ public class NewUsersFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable throwable) {
-                Log.e(TAG, "Greska! Zahtev za dohvatanjem zahteva za novim nalozima nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za dohvatanje novih naloga nije uspeo!", throwable);
             }
         });
     }
