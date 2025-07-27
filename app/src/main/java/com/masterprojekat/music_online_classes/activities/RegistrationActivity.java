@@ -117,17 +117,18 @@ public class RegistrationActivity extends AppCompatActivity {
                 Validation.validateUserInput(PHONE_NUMBER_REGEX, phoneNumber,"Broj telefona mora biti u formatu +381, sa 8 ili 9 dodatnih cifara.");
             } catch(IllegalArgumentException e) {
                 Toast.makeText(RegistrationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                return;
             }
-            userApi.getUserByUsername(username).enqueue(new Callback<User>() {
+            userApi.getUserByUsername(username).enqueue(new Callback<>() {
                 @Override
                 public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                     if (!response.isSuccessful()) {
                         userApi.checkEmailAndPhoneNumberUniqueness(email, phoneNumber).enqueue(new Callback<ResponseBody>() {
                             @Override
                             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                                if(!response.isSuccessful()) {
+                                if (!response.isSuccessful()) {
                                     try {
-                                        if(response.errorBody() == null) {
+                                        if (response.errorBody() == null) {
                                             Logger.getLogger(RegistrationActivity.class.getName()).log(Level.SEVERE, "Greska pri dohvatanju errorBody()");
                                             return;
                                         }
@@ -137,8 +138,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
                                     }
-                                }
-                                else {
+                                } else {
                                     User user = new User(name, surname, username, password, date, email, phoneNumber, type, education, expertise, true);
                                     userApi.saveUser(user).enqueue(new Callback<User>() {
                                         @Override

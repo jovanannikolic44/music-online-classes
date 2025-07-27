@@ -170,8 +170,6 @@ public class ProfileFragment extends Fragment {
                     } catch (IOException e) {
                         Log.e(TAG, "Greška pri dohvatanju fajla!", e);
                     }
-                } else {
-                    Toast.makeText(requireContext(), "Greška! Profilna slika nije preuzeta!", Toast.LENGTH_SHORT).show();
                 }
             }
 
