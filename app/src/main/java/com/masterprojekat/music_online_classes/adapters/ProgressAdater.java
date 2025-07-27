@@ -1,4 +1,4 @@
-package com.masterprojekat.music_online_classes.adapters.helpers;
+package com.masterprojekat.music_online_classes.adapters;
 
 import android.annotation.SuppressLint;
 import android.util.TypedValue;
@@ -16,7 +16,7 @@ import com.masterprojekat.music_online_classes.models.Course;
 import java.util.List;
 
 public class ProgressAdater extends RecyclerView.Adapter<ProgressAdater.ProgressViewHolder> {
-    private List<Course> courseList;
+    private final List<Course> courseList;
 
     public ProgressAdater(List<Course> courseList) {
         this.courseList = courseList;

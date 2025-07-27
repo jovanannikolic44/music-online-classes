@@ -15,10 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.masterprojekat.music_online_classes.adapters.NewCoursesAdapter;
 import com.masterprojekat.music_online_classes.api.CourseAPI;
 import com.masterprojekat.music_online_classes.api.RetrofitService;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.adapters.helpers.NewCoursesAdapter;
 import com.masterprojekat.music_online_classes.utils.SharedViewModel;
 import com.masterprojekat.music_online_classes.models.Course;
 import com.masterprojekat.music_online_classes.models.User;
@@ -54,21 +54,20 @@ public class NewCoursesFragment extends Fragment {
     }
 
     private void displayCourseRequests() {
-        courseAPI.getNewCourseRequests().enqueue(new Callback<List<Course>>() {
+        courseAPI.getNewCourseRequests().enqueue(new Callback<>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<List<Course>> call, @NonNull Response<List<Course>> response) {
-                if(response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     List<Course> courseRequestsResponseList = response.body();
                     courseRequestsList.clear();
                     courseRequestsList.addAll(courseRequestsResponseList);
                     newCoursesAdapter.notifyDataSetChanged();
 
-                    if(courseRequestsResponseList.isEmpty()) {
+                    if (courseRequestsResponseList.isEmpty()) {
                         Toast.makeText(getContext(), "Ne postoji ni jedan zahtev!", Toast.LENGTH_SHORT).show();
                     }
-                }
-                else {
+                } else {
                     Log.w(TAG, "Dohvatanje zahteva za novim kurseima nije uspesan: " + response.code() + " " + response.message());
                 }
             }

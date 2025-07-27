@@ -1,4 +1,4 @@
-package com.masterprojekat.music_online_classes.adapters.helpers;
+package com.masterprojekat.music_online_classes.adapters;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -35,10 +35,10 @@ public class NewUsersAdapter extends RecyclerView.Adapter<NewUsersAdapter.NewUse
     }
     @NonNull
     @Override
-    public NewUsersAdapter.NewUsersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public NewUsersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.new_user_item, parent, false);
-        return new NewUsersAdapter.NewUsersViewHolder(view);
+        return new NewUsersViewHolder(view);
     }
 
     @SuppressLint("SetTextI18n")
@@ -60,14 +60,13 @@ public class NewUsersAdapter extends RecyclerView.Adapter<NewUsersAdapter.NewUse
     }
 
     private void acceptRequest(@NonNull NewUsersAdapter.NewUsersViewHolder holder, User user) {
-        userAPI.acceptRequest(user.getUsername()).enqueue(new Callback<ResponseBody>() {
+        userAPI.acceptRequest(user.getUsername()).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor uspesno sacuvan!", Toast.LENGTH_SHORT).show();
                     removeUserRequestFromList(holder.getBindingAdapterPosition());
-                }
-                else {
+                } else {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor nije uspesno sacuvan", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "Greska pri odobravanju novog naloga! Odgovor nije uspesno sacuvan!" + response.code());
                 }
@@ -81,14 +80,13 @@ public class NewUsersAdapter extends RecyclerView.Adapter<NewUsersAdapter.NewUse
     }
 
     private void declineRequest(@NonNull NewUsersAdapter.NewUsersViewHolder holder, User user) {
-        userAPI.declineRequest(user.getUsername()).enqueue(new Callback<ResponseBody>() {
+        userAPI.declineRequest(user.getUsername()).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor uspesno sacuvan!", Toast.LENGTH_SHORT).show();
                     removeUserRequestFromList(holder.getBindingAdapterPosition());
-                }
-                else {
+                } else {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor nije uspesno sacuvan", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "Greska pri odbijanju novog naloga! Odgovor nije uspesno sacuvan!" + response.code());
                 }

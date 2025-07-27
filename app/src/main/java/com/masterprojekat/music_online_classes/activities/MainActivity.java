@@ -2,6 +2,7 @@ package com.masterprojekat.music_online_classes.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,14 +18,12 @@ import com.masterprojekat.music_online_classes.api.UserAPI;
 import com.masterprojekat.music_online_classes.models.User;
 import com.masterprojekat.music_online_classes.models.UserAccountStatus;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
     private final RetrofitService retrofitService = new RetrofitService();
     private final UserAPI userApi = retrofitService.getRetrofit().create(UserAPI.class);
 
@@ -53,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void login() {
-        EditText inputUsername = (EditText) findViewById(R.id.username);
-        EditText inputPassword = (EditText) findViewById(R.id.password);
+        EditText inputUsername = findViewById(R.id.username);
+        EditText inputPassword = findViewById(R.id.password);
         String username = String.valueOf(inputUsername.getText());
         String password = String.valueOf(inputPassword.getText());
 
@@ -63,58 +62,55 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        userApi.getUserByUsername(username).enqueue(new Callback<User>() {
+        userApi.getUserByUsername(username).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     User user = response.body();
-                    if(user == null) {
+                    if (user == null) {
                         Toast.makeText(MainActivity.this, "Korisnicko ime nije validno!", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if(!password.equals(user.getPassword())) {
+                    if (!password.equals(user.getPassword())) {
                         Toast.makeText(MainActivity.this, "Lozinka nije validna!", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if(UserAccountStatus.NIJE_AKTIVAN.equals(user.getAccountStatus())) {
+                    if (UserAccountStatus.NIJE_AKTIVAN.equals(user.getAccountStatus())) {
                         Toast.makeText(MainActivity.this, "Vas nalog jos uvek nije aktiviran!", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if(user.isFirstLogIn() && user.getType().equals("Ucenik")) {
+                    if (user.isFirstLogIn() && user.getType().equals("Ucenik")) {
                         Intent preferencesIntent = new Intent(MainActivity.this, PreferencesActivity.class);
                         preferencesIntent.putExtra("loggedInUser", user);
                         startActivity(preferencesIntent);
+                    } else {
+                        switch (user.getType()) {
+                            case "Ucenik":
+                                Intent userProfileIntent = new Intent(MainActivity.this, StudentHomeActivity.class);
+                                userProfileIntent.putExtra("loggedInUser", user);
+                                startActivity(userProfileIntent);
+                                break;
+                            case "Profesor":
+                                Intent professorProfileIntent = new Intent(MainActivity.this, ProfessorHomeActivity.class);
+                                professorProfileIntent.putExtra("loggedInUser", user);
+                                startActivity(professorProfileIntent);
+                                break;
+                            case "Admin":
+                                Intent adminProfileIntent = new Intent(MainActivity.this, AdminHomeActivity.class);
+                                adminProfileIntent.putExtra("loggedInUser", user);
+                                startActivity(adminProfileIntent);
+                                break;
+                        }
                     }
-                    else {
-                        if(user.getType().equals("Ucenik")) {
-                            Intent userProfileIntent = new Intent(MainActivity.this, StudentHomeActivity.class);
-                            userProfileIntent.putExtra("loggedInUser", user);
-                            startActivity(userProfileIntent);
-                        }
-                        else if(user.getType().equals("Profesor")) {
-                            Intent professorProfileIntent = new Intent(MainActivity.this, ProfessorHomeActivity.class);
-                            professorProfileIntent.putExtra("loggedInUser", user);
-                            startActivity(professorProfileIntent);
-                        }
-                        else if(user.getType().equals("Admin")) {
-                            Intent adminProfileIntent = new Intent(MainActivity.this, AdminHomeActivity.class);
-                            adminProfileIntent.putExtra("loggedInUser", user);
-                            startActivity(adminProfileIntent);
-                        }
-                    }
-                }
-                else {
+                } else {
                     Toast.makeText(MainActivity.this, "Korisnicko ime nije validno!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable throwable) {
-                Toast.makeText(MainActivity.this, "Greska! Zahtev za prijavom nije uspeo!", Toast.LENGTH_SHORT).show();
-                Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Greska! Zahtev za prijavom nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za prijavom nije uspeo!", throwable);
             }
         });
-
-
     }
 }

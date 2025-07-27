@@ -2,6 +2,7 @@ package com.masterprojekat.music_online_classes.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,8 +23,6 @@ import com.masterprojekat.music_online_classes.models.User;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -31,6 +30,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ReserveTermActivity extends AppCompatActivity {
+    private static final String TAG = "ReserveTermActivity";
     private final RetrofitService retrofitService = new RetrofitService();
     private final TermAPI termApi = retrofitService.getRetrofit().create(TermAPI.class);
     private User loggedInUser;
@@ -55,10 +55,10 @@ public class ReserveTermActivity extends AppCompatActivity {
     private void displayAvailableTerms() {
         Spinner termSpinner = findViewById(R.id.term_spinner);
         Button reserveTermButton = findViewById(R.id.reserve_term_button);
-        termApi.getAllAvailableTermsForProfessor(courseToReserve.getProfessor().getUsername()).enqueue(new Callback<List<Term>>() {
+        termApi.getAllAvailableTermsForProfessor(courseToReserve.getProfessor().getUsername()).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<List<Term>> call, @NonNull Response<List<Term>> response) {
-                if(response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     List<Term> availableTerms = response.body();
 
                     ArrayAdapter<Term> adapter = new ArrayAdapter<>(ReserveTermActivity.this, android.R.layout.simple_spinner_item, availableTerms);
@@ -73,26 +73,25 @@ public class ReserveTermActivity extends AppCompatActivity {
                             Toast.makeText(ReserveTermActivity.this, "Niste izabrali ni jedan termin!", Toast.LENGTH_SHORT).show();
                         }
                     });
-                }
-                else {
+                } else {
                     Toast.makeText(ReserveTermActivity.this, "Greska pri dohvatanju slobodnih termina!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Term>> call, @NonNull Throwable throwable) {
-                Logger.getLogger(ReserveTermActivity.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dohvatanjem slobodnih termina nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za dohvatanjem slobodnih termina nije uspeo!", throwable);
             }
         });
     }
 
     private void reserveTerm(List<Term> availableTerms, ArrayAdapter<Term> adapter) {
-        termApi.requestTerm(selectedTerm.getTermId(), loggedInUser.getUsername(), courseToReserve.getCourseId()).enqueue(new Callback<ResponseBody>() {
+        termApi.requestTerm(selectedTerm.getTermId(), loggedInUser.getUsername(), courseToReserve.getCourseId()).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if(response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     ResponseBody responseBody = response.body();
-                    String message = null;
+                    String message;
                     try {
                         message = responseBody.string();
                     } catch (IOException e) {
@@ -103,15 +102,14 @@ public class ReserveTermActivity extends AppCompatActivity {
                     availableTerms.remove(selectedTerm);
                     adapter.notifyDataSetChanged();
                     selectedTerm = null;
-                }
-                else {
+                } else {
                     Toast.makeText(ReserveTermActivity.this, "Greska pri rezervaciji termina!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
-                Logger.getLogger(ReserveTermActivity.class.getName()).log(Level.SEVERE, "Greska! Zahtev za rezervaciju termina nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za rezervaciju termina nije uspeo!", throwable);
             }
         });
     }

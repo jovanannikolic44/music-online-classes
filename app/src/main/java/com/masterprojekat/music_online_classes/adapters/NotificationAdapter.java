@@ -1,4 +1,4 @@
-package com.masterprojekat.music_online_classes.adapters.helpers;
+package com.masterprojekat.music_online_classes.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>{
     private final List<Notification> notificationsList;
-    private Context context;
+    private final Context context;
 
     public NotificationAdapter(Context context, List<Notification> notifications) {
         this.context = context;

@@ -1,6 +1,7 @@
 package com.masterprojekat.music_online_classes.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -22,7 +23,6 @@ import com.masterprojekat.music_online_classes.utils.Validation;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,10 +33,10 @@ import retrofit2.Response;
 
 
 public class RegistrationActivity extends AppCompatActivity {
+    private static final String TAG = "RegistrationActivity";
     private final String EMAIL_REGEX = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
     private final String PHONE_NUMBER_REGEX = "^\\+381\\d{8,9}$";
-    final Calendar calendar = Calendar.getInstance();
     private String expertise = "";
 
     private final RetrofitService retrofitService = new RetrofitService();
@@ -59,17 +59,17 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void registerNewUser() {
-        EditText inputName = (EditText) findViewById(R.id.input_name);
-        EditText inputSurname = (EditText) findViewById(R.id.input_surname);
-        EditText inputUsername = (EditText) findViewById(R.id.input_username);
-        EditText inputPassword = (EditText) findViewById(R.id.input_password);
-        EditText inputDate = (EditText) findViewById(R.id.input_date);
-        EditText inputEmail = (EditText) findViewById(R.id.input_email);
-        EditText inputPhoneNumber = (EditText) findViewById(R.id.input_phone_number);
-        RadioGroup inputType = (RadioGroup) findViewById(R.id.radio_type);
-        EditText inputEducation = (EditText) findViewById(R.id.input_education);
-        Spinner inputExpertise = (Spinner) findViewById(R.id.input_expertise);
-        Button registrationButton = (Button) findViewById(R.id.registration_button);
+        EditText inputName = findViewById(R.id.input_name);
+        EditText inputSurname = findViewById(R.id.input_surname);
+        EditText inputUsername = findViewById(R.id.input_username);
+        EditText inputPassword = findViewById(R.id.input_password);
+        EditText inputDate = findViewById(R.id.input_date);
+        EditText inputEmail = findViewById(R.id.input_email);
+        EditText inputPhoneNumber = findViewById(R.id.input_phone_number);
+        RadioGroup inputType = findViewById(R.id.radio_type);
+        EditText inputEducation = findViewById(R.id.input_education);
+        Spinner inputExpertise = findViewById(R.id.input_expertise);
+        Button registrationButton = findViewById(R.id.registration_button);
 
         inputExpertise.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -84,7 +84,7 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
         inputType.setOnCheckedChangeListener((group, checkedId) -> {
-            RadioButton selectedButton = (RadioButton) findViewById(checkedId);
+            RadioButton selectedButton = findViewById(checkedId);
             String type = String.valueOf(selectedButton.getText());
             if ("Profesor".equals(type)) {
                 inputEducation.setVisibility(View.VISIBLE);
@@ -104,7 +104,7 @@ public class RegistrationActivity extends AppCompatActivity {
             String date = String.valueOf(inputDate.getText());
             String email = String.valueOf(inputEmail.getText());
             String phoneNumber = String.valueOf(inputPhoneNumber.getText());
-            RadioButton typeRadioButton = (RadioButton) findViewById(inputType.getCheckedRadioButtonId());
+            RadioButton typeRadioButton = findViewById(inputType.getCheckedRadioButtonId());
             String type = String.valueOf(typeRadioButton.getText());
             String education = String.valueOf(inputEducation.getText());
             if(name.isEmpty() || surname.isEmpty() || username.isEmpty() || password.isEmpty() || email.isEmpty()) {
@@ -156,7 +156,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                                         @Override
                                         public void onFailure(@NonNull Call<User> call, @NonNull Throwable throwable) {
-                                            Logger.getLogger(RegistrationActivity.class.getName()).log(Level.SEVERE, "Greska pri slanju zahteva za registraciju!", throwable);
+                                            Log.e(TAG, "Greska pri slanju zahteva za registraciju!", throwable);
                                         }
                                     });
                                 }
@@ -164,11 +164,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
                             @Override
                             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
-                                Toast.makeText(RegistrationActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                                Logger.getLogger(RegistrationActivity.class.getName()).log(Level.SEVERE, "Greska pri slanju zahteva za proveru jedinstvenosti email-a i broja telefona!", throwable);
+                                Log.e(TAG, "Greska pri slanju zahteva za proveru jedinstvenosti email-a i broja telefona!", throwable);
                             }
                         });
-
                     } else {
                         Toast.makeText(RegistrationActivity.this, "Korisnicko ime je zauzeto.", Toast.LENGTH_SHORT).show();
                     }
@@ -176,11 +174,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(@NonNull Call<User> call, @NonNull Throwable throwable) {
-                    Toast.makeText(RegistrationActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                    Logger.getLogger(RegistrationActivity.class.getName()).log(Level.SEVERE, "Greska pri slanju zahteva za proveru jedinstvenosti email-a i broja telefona!", throwable);
+                    Log.e(TAG, "Greska pri slanju zahteva za proveru jedinstvenosti email-a i broja telefona!", throwable);
                 }
             });
-
         });
     }
 }

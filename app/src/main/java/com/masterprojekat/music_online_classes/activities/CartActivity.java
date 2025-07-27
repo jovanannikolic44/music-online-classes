@@ -3,6 +3,7 @@ package com.masterprojekat.music_online_classes.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,8 +24,6 @@ import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -32,10 +31,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CartActivity extends AppCompatActivity {
+    private static final String TAG = "CartActivity";
     private final RetrofitService retrofitService = new RetrofitService();
     private final UserAPI userApi = retrofitService.getRetrofit().create(UserAPI.class);
     private CartAdapter cartAdapter;
-    private List<Course> cartCoursesList = new ArrayList<>();
+    private final List<Course> cartCoursesList = new ArrayList<>();
     private User loggedInUser;
 
     @Override
@@ -81,21 +81,21 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void removeCoursesFromCart(List<Integer> purchasedIds) {
-        userApi.removeCoursesFromCart(loggedInUser.getUsername(), purchasedIds).enqueue(new Callback<Void>() {
+        userApi.removeCoursesFromCart(loggedInUser.getUsername(), purchasedIds).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                Logger.getLogger(CartActivity.class.getName()).log(Level.INFO, "Kurs je uspesno obrisan!");
+                Log.i(TAG, "Kurs je uspesno obrisan!");
             }
 
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CartActivity.class.getName()).log(Level.SEVERE, "Greska! Zahtev za brisanje kurseva nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za brisanje kurseva nije uspeo!", throwable);
             }
         });
     }
 
     private void purchaseCourse(int courseId) {
-        userApi.purchaseCourse(loggedInUser.getUsername(), courseId).enqueue(new Callback<ResponseBody>() {
+        userApi.purchaseCourse(loggedInUser.getUsername(), courseId).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 Toast.makeText(CartActivity.this, "Kurs je uspesno kupljen!", Toast.LENGTH_SHORT).show();
@@ -103,11 +103,12 @@ public class CartActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CartActivity.class.getName()).log(Level.SEVERE, "Greska! Zahtev za kupovinom kursa nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za kupovinom kursa nije uspeo!", throwable);
             }
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void setUpAdapter() {
         RecyclerView cartCourses = findViewById(R.id.cart_recycler_view);
         cartCourses.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -122,13 +123,14 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void getCoursesFromCart() {
-        userApi.getCoursesFromCart(loggedInUser.getUsername()).enqueue(new Callback<List<Course>>() {
+        userApi.getCoursesFromCart(loggedInUser.getUsername()).enqueue(new Callback<>() {
+            @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
             @Override
             public void onResponse(@NonNull Call<List<Course>> call, @NonNull Response<List<Course>> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     List<Course> courses = response.body();
                     cartCoursesList.clear();
-                    if(courses == null) {
+                    if (courses == null) {
                         Toast.makeText(CartActivity.this, "Nije nadjen ni jedan kurs!", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -144,7 +146,7 @@ public class CartActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<List<Course>> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CartActivity.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dohvatanjem kurseva iz korpe nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za dohvatanjem kurseva iz korpe nije uspeo!", throwable);
             }
         });
     }

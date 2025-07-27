@@ -39,8 +39,6 @@ import com.masterprojekat.music_online_classes.models.CourseProgress;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -48,7 +46,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CourseDetailsActivity extends AppCompatActivity {
-    private static final String TAG = "CourseDetails";
+    private static final String TAG = "CourseDetailsActivity";
     private final RetrofitService retrofitService = new RetrofitService();
     private final UserAPI userApi = retrofitService.getRetrofit().create(UserAPI.class);
     private final CourseAPI courseApi = retrofitService.getRetrofit().create(CourseAPI.class);
@@ -91,30 +89,29 @@ public class CourseDetailsActivity extends AppCompatActivity {
     }
 
     private void saveComment(Comment commentToAdd) {
-        commentAPI.saveComment(commentToAdd).enqueue(new Callback<Void>() {
+        commentAPI.saveComment(commentToAdd).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(CourseDetailsActivity.this, "Komentar uspesno sacuvan!", Toast.LENGTH_SHORT).show();
                     getAllCommentsForCourse();
-                }
-                else {
+                } else {
                     Toast.makeText(CourseDetailsActivity.this, "Greska pri cuvanju komentara!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CourseDetailsActivity.class.getName()).log(Level.SEVERE, "Greska! Zahtev za cuvanjem komentara nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za cuvanjem komentara nije uspeo!", throwable);
             }
         });
     }
 
     private void getAllCommentsForCourse() {
-        commentAPI.getAllCommentsForCourse(courseToDisplay.getCourseId()).enqueue(new Callback<List<Comment>>() {
+        commentAPI.getAllCommentsForCourse(courseToDisplay.getCourseId()).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<List<Comment>> call, @NonNull Response<List<Comment>> response) {
-                if(response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     courseToDisplay.setComments(response.body());
                     displayCourseComments();
                 } else {
@@ -124,7 +121,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<List<Comment>> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CourseDetailsActivity.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dohvatanje komentara nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za dohvatanje komentara nije uspeo!", throwable);
             }
         });
     }
@@ -212,17 +209,17 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<Boolean> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CourseDetailsActivity.class.getName()).log(Level.SEVERE, "Greska! Zahtev za proverom obavljene kupovine nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za proverom obavljene kupovine nije uspeo!", throwable);
             }
         });
     }
 
     private void getRating() {
-        courseApi.getCourseRating(courseToDisplay.getCourseId()).enqueue(new Callback<Float>() {
+        courseApi.getCourseRating(courseToDisplay.getCourseId()).enqueue(new Callback<>() {
             @SuppressLint("DefaultLocale")
             @Override
             public void onResponse(@NonNull Call<Float> call, @NonNull Response<Float> response) {
-                if(response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     final float newCourseRating = response.body();
                     courseToDisplay.setRating(newCourseRating);
 
@@ -238,16 +235,16 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<Float> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CourseDetailsActivity.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dodavanjem ocene nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za dodavanjem ocene nije uspeo!", throwable);
             }
         });
     }
 
     private void saveRating(float rating_input) {
-        courseApi.saveCourseRating(courseToDisplay.getCourseId(), rating_input).enqueue(new Callback<Void>() {
+        courseApi.saveCourseRating(courseToDisplay.getCourseId(), rating_input).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     Toast.makeText(CourseDetailsActivity.this, "Ocena je uspesno sacuvana!", Toast.LENGTH_SHORT).show();
                     getRating();
                 }
@@ -255,26 +252,25 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CourseDetailsActivity.class.getName()).log(Level.SEVERE, "Greska! Zahtev za cuvanjem ocene nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za cuvanjem ocene nije uspeo!", throwable);
             }
         });
     }
 
     private void addCourseToCart() {
-        userApi.addCourseToCart(loggedInUser.getUsername(), courseToDisplay.getCourseId()).enqueue(new Callback<ResponseBody>() {
+        userApi.addCourseToCart(loggedInUser.getUsername(), courseToDisplay.getCourseId()).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     Toast.makeText(CourseDetailsActivity.this, "Kurs uspesno dodat u korpu!", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     Toast.makeText(CourseDetailsActivity.this, "Greska! Kurs nije dodat u korpu!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CourseDetailsActivity.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dodavanjem kursa u korpu nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za dodavanjem kursa u korpu nije uspeo!", throwable);
             }
         });
     }
@@ -322,12 +318,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
         courseContentListView.setText(content.toString());
     }
 
-
     public void displayCourseImage() {
         ImageView courseImageView = findViewById(R.id.course_image);
         String fullImagePath = courseToDisplay.getCourseImage();
         String imageFile = fullImagePath.substring(fullImagePath.lastIndexOf("/") + 1);
-        courseApi.getCourseImage(imageFile).enqueue(new Callback<ResponseBody>() {
+        courseApi.getCourseImage(imageFile).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -343,7 +338,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull retrofit2.Call<ResponseBody> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CourseDetailsActivity.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dohvatanjem slike kursa nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za dohvatanjem slike kursa nije uspeo!", throwable);
             }
         });
     }

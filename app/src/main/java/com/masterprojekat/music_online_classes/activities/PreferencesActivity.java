@@ -3,6 +3,7 @@ package com.masterprojekat.music_online_classes.activities;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -22,8 +23,6 @@ import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -31,6 +30,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PreferencesActivity extends AppCompatActivity {
+    private static final String TAG = "PreferencesActivity";
     private final RetrofitService retrofitService = new RetrofitService();
     private final PreferencesAPI preferencesAPI = retrofitService.getRetrofit().create(PreferencesAPI.class);
     private final Set<String> clickedInstruments = new HashSet<>();
@@ -51,7 +51,7 @@ public class PreferencesActivity extends AppCompatActivity {
         User loggedInUser = (User) intent.getSerializableExtra("loggedInUser");
         if(loggedInUser == null)
             return;
-        preferencesAPI.savePreferences(loggedInUser.getUsername(), clickedInstruments).enqueue(new Callback<ResponseBody>() {
+        preferencesAPI.savePreferences(loggedInUser.getUsername(), clickedInstruments).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
@@ -65,8 +65,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
-                Toast.makeText(PreferencesActivity.this, "Greska! Neuspesan zahtev za cuvanje preferencija!", Toast.LENGTH_SHORT).show();
-                Logger.getLogger(PreferencesActivity.class.getName()).log(Level.SEVERE, "Greska! Neuspesan zahtev za cuvanje preferencija!", throwable);
+                Log.e(TAG, "Greska! Neuspesan zahtev za cuvanje preferencija!", throwable);
             }
         });
     }
@@ -99,14 +98,14 @@ public class PreferencesActivity extends AppCompatActivity {
                 if(imageView == null)
                     return;
 
-                final String instrmentName = (String) imageView.getTag();
+                final String instrumentName = (String) imageView.getTag();
                 TextView finalTextView = textView;
                 imageView.setOnClickListener(v -> {
-                    if(clickedInstruments.contains(instrmentName)) {
-                        clickedInstruments.remove(instrmentName);
+                    if(clickedInstruments.contains(instrumentName)) {
+                        clickedInstruments.remove(instrumentName);
                     }
                     else {
-                        clickedInstruments.add(instrmentName);
+                        clickedInstruments.add(instrumentName);
                     }
 
                     if (finalTextView != null) {
@@ -121,10 +120,8 @@ public class PreferencesActivity extends AppCompatActivity {
                             finalTextView.setTextSize(14);
                         }
                     } else {
-                        System.out.println("TextView is null or has no Typeface: " + instrmentName);
+                        Log.d(TAG, "TextView is null or has no Typeface: " + instrumentName);
                     }
-
-
                 });
             }
         }

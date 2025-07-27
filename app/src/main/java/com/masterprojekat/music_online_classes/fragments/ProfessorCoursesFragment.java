@@ -19,7 +19,7 @@ import com.masterprojekat.music_online_classes.api.CourseAPI;
 import com.masterprojekat.music_online_classes.api.RetrofitService;
 import com.masterprojekat.music_online_classes.activities.AddNewCourseActivity;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.adapters.helpers.ProfessorsCourseAdapter;
+import com.masterprojekat.music_online_classes.adapters.ProfessorsCourseAdapter;
 import com.masterprojekat.music_online_classes.utils.SharedViewModel;
 import com.masterprojekat.music_online_classes.models.Course;
 import com.masterprojekat.music_online_classes.models.User;
@@ -61,17 +61,16 @@ public class ProfessorCoursesFragment extends Fragment {
     }
 
     private void displayProfessorsCourses() {
-        courseAPI.getAllCoursesByProfessor(loggedInUser.getUsername()).enqueue(new Callback<List<Course>>() {
+        courseAPI.getAllCoursesByProfessor(loggedInUser.getUsername()).enqueue(new Callback<>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<List<Course>> call, @NonNull Response<List<Course>> response) {
-                if(response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     List<Course> coursesResponseList = response.body();
                     allProfessorsCourses.clear();
                     allProfessorsCourses.addAll(coursesResponseList);
                     professorsCourseAdapter.notifyDataSetChanged();
-                }
-                else {
+                } else {
                     Log.w(TAG, "Dohvatanje kurseva nije uspesno: " + response.code() + " " + response.message());
                 }
             }

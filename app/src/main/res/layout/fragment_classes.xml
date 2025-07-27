@@ -70,7 +70,6 @@
             android:layout_marginStart="10dp"/>
     </LinearLayout>
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/scheduled_terms_recycler_view"
         android:layout_width="match_parent"

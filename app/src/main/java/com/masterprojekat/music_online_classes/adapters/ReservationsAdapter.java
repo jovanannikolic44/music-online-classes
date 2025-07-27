@@ -1,4 +1,4 @@
-package com.masterprojekat.music_online_classes.adapters.helpers;
+package com.masterprojekat.music_online_classes.adapters;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -38,7 +38,7 @@ public class ReservationsAdapter extends RecyclerView.Adapter<ReservationsAdapte
     }
     @NonNull
     @Override
-    public ReservationsAdapter.ReservationsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ReservationsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.reservation_response_item, parent, false);
         return new ReservationsViewHolder(view);
@@ -67,7 +67,7 @@ public class ReservationsAdapter extends RecyclerView.Adapter<ReservationsAdapte
     }
 
     private void acceptReservation(@NonNull ReservationsViewHolder holder, Term term) {
-        termApi.acceptTerm(term.getTermId()).enqueue(new Callback<ResponseBody>() {
+        termApi.acceptTerm(term.getTermId()).enqueue(new Callback<>() {
 
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
@@ -75,8 +75,7 @@ public class ReservationsAdapter extends RecyclerView.Adapter<ReservationsAdapte
                     Toast.makeText(holder.itemView.getContext(), "Odgovor uspesno sacuvan!", Toast.LENGTH_SHORT).show();
                     removeReservationFromList(holder.getBindingAdapterPosition());
                     sendNotification(term, "prihvatio/la");
-                }
-                else {
+                } else {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor nije uspesno sacuvan", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "Greska pri prihvatanju termina! Odgovor nije uspesno sacuvan!" + response.code());
                 }
@@ -90,7 +89,7 @@ public class ReservationsAdapter extends RecyclerView.Adapter<ReservationsAdapte
     }
 
     private void declineReservation(@NonNull ReservationsViewHolder holder, Term term) {
-        termApi.rejectTerm(term.getTermId()).enqueue(new Callback<ResponseBody>() {
+        termApi.rejectTerm(term.getTermId()).enqueue(new Callback<>() {
 
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
@@ -98,8 +97,7 @@ public class ReservationsAdapter extends RecyclerView.Adapter<ReservationsAdapte
                     Toast.makeText(holder.itemView.getContext(), "Odgovor uspesno sacuvan!", Toast.LENGTH_SHORT).show();
                     removeReservationFromList(holder.getBindingAdapterPosition());
                     sendNotification(term, "odbio/la");
-                }
-                else {
+                } else {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor nije uspesno sacuvan", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "Greska pri odbijanju termina! Odgovor nije uspesno sacuvan!" + response.code());
                 }

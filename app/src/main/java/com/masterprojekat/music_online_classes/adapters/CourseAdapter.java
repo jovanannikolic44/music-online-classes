@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +25,6 @@ import com.masterprojekat.music_online_classes.models.Course;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -33,6 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
+    private static final String TAG = "CourseAdapter";
     private final RetrofitService retrofitService = new RetrofitService();
     private final CourseAPI courseApi = retrofitService.getRetrofit().create(CourseAPI.class);
     private final Context context;
@@ -86,11 +86,11 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     }
 
     private void getCourseRating(CourseViewHolder holder, Course course) {
-        courseApi.getCourseRating(course.getCourseId()).enqueue(new Callback<Float>() {
+        courseApi.getCourseRating(course.getCourseId()).enqueue(new Callback<>() {
             @SuppressLint("DefaultLocale")
             @Override
             public void onResponse(@NonNull Call<Float> call, @NonNull Response<Float> response) {
-                if(response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     final float newCourseRating = response.body();
                     course.setRating(newCourseRating);
                     holder.courseRating.setText(String.format("%.2f", newCourseRating));
@@ -99,14 +99,14 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
             @Override
             public void onFailure(@NonNull Call<Float> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CourseAdapter.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dodavanjem ocene nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za dodavanjem ocene nije uspeo!", throwable);
             }
         });
     }
 
     public void displayImage(CourseViewHolder holder, String fullImagePath) {
         String imageFile = fullImagePath.substring(fullImagePath.lastIndexOf("/") + 1);
-        courseApi.getCourseImage(imageFile).enqueue(new Callback<ResponseBody>() {
+        courseApi.getCourseImage(imageFile).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -122,7 +122,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
             @Override
             public void onFailure(@NonNull retrofit2.Call<ResponseBody> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CourseAdapter.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dohvatanjem slike kursa nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za dohvatanjem slike kursa nije uspeo!", throwable);
             }
         });
     }

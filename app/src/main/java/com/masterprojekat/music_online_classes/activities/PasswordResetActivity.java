@@ -1,6 +1,7 @@
 package com.masterprojekat.music_online_classes.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,14 +15,12 @@ import com.masterprojekat.music_online_classes.api.PasswordResetAPI;
 import com.masterprojekat.music_online_classes.api.RetrofitService;
 import com.masterprojekat.music_online_classes.utils.Validation;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PasswordResetActivity extends AppCompatActivity {
+    private static final String TAG = "PasswordResetActivity";
     private final String EMAIL_REGEX = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     private final RetrofitService retrofitService = new RetrofitService();
     private final PasswordResetAPI passwordResetApi = retrofitService.getRetrofit().create(PasswordResetAPI.class);
@@ -36,8 +35,8 @@ public class PasswordResetActivity extends AppCompatActivity {
     }
 
     private void resetForgottenPassword() {
-        EditText inputEmail = (EditText) findViewById(R.id.reactivation_email);
-        Button sendEmail = (Button) findViewById(R.id.change_forgotten_password);
+        EditText inputEmail = findViewById(R.id.reactivation_email);
+        Button sendEmail = findViewById(R.id.change_forgotten_password);
 
         sendEmail.setOnClickListener(view -> {
             String toEmail = String.valueOf(inputEmail.getText());
@@ -47,7 +46,7 @@ public class PasswordResetActivity extends AppCompatActivity {
             }
             Validation.validateUserInput(EMAIL_REGEX, toEmail, "Neispravan email format.");
 
-            passwordResetApi.requestPasswordReset(toEmail).enqueue(new Callback<Void>() {
+            passwordResetApi.requestPasswordReset(toEmail).enqueue(new Callback<>() {
                 @Override
                 public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                     Toast.makeText(PasswordResetActivity.this, "Mail je uspesno poslat!", Toast.LENGTH_LONG).show();
@@ -56,8 +55,7 @@ public class PasswordResetActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(@NonNull Call<Void> call, @NonNull Throwable throwable) {
-                    Toast.makeText(PasswordResetActivity.this, "Greska! Mejl nije poslat!", Toast.LENGTH_LONG).show();
-                    Logger.getLogger(PasswordResetActivity.class.getName()).log(Level.SEVERE, "Greska! Mejl nije poslat!", throwable);
+                    Log.e(TAG, "Greska! Mejl nije poslat!", throwable);
                     inputEmail.setText("");
                 }
             });

@@ -80,21 +80,20 @@ public class ClassesFragment extends Fragment {
     }
 
     private void displayTerms(String chosenDate) {
-        termApi.getTermsByDate(loggedInUser.getUsername(), loggedInUser.getType(), chosenDate, TermStatus.PRIHVACEN).enqueue(new Callback<List<Term>>() {
+        termApi.getTermsByDate(loggedInUser.getUsername(), loggedInUser.getType(), chosenDate, TermStatus.PRIHVACEN).enqueue(new Callback<>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<List<Term>> call, @NonNull Response<List<Term>> response) {
-                if(response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     List<Term> termsResponseList = response.body();
                     scheduledTermsList.clear();
                     scheduledTermsList.addAll(termsResponseList);
                     termAdapter.notifyDataSetChanged();
 
-                    if(termsResponseList.isEmpty()) {
+                    if (termsResponseList.isEmpty()) {
                         Toast.makeText(getContext(), "Ne postoji ni jedan termin za izabrani datum!", Toast.LENGTH_SHORT).show();
                     }
-                }
-                else {
+                } else {
                     Log.w(TAG, "Dohvatanje zakazanih termina nije uspesno: " + response.code() + " " + response.message());
                 }
             }

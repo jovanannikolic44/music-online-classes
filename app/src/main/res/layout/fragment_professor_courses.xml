@@ -35,7 +35,6 @@
             android:contentDescription="@string/no_image"/>
     </LinearLayout>
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/professors_courses_recycler_view"
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.masterprojekat.music_online_classes.adapters.helpers;
+package com.masterprojekat.music_online_classes.adapters;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -35,10 +35,10 @@ public class NewCoursesAdapter extends RecyclerView.Adapter<NewCoursesAdapter.Ne
     }
     @NonNull
     @Override
-    public NewCoursesAdapter.NewCoursesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public NewCoursesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.new_course_item, parent, false);
-        return new NewCoursesAdapter.NewCoursesViewHolder(view);
+        return new NewCoursesViewHolder(view);
     }
 
     @SuppressLint("SetTextI18n")
@@ -61,14 +61,13 @@ public class NewCoursesAdapter extends RecyclerView.Adapter<NewCoursesAdapter.Ne
     }
 
     private void acceptRequest(@NonNull NewCoursesAdapter.NewCoursesViewHolder holder, Course course) {
-        courseAPI.acceptRequest(course.getCourseId()).enqueue(new Callback<ResponseBody>() {
+        courseAPI.acceptRequest(course.getCourseId()).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor uspesno sacuvan!", Toast.LENGTH_SHORT).show();
                     removeCourseRequestFromList(holder.getBindingAdapterPosition());
-                }
-                else {
+                } else {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor nije uspesno sacuvan", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "Greska pri odobravanju novog kursa! Odgovor nije uspesno sacuvan!" + response.code());
                 }

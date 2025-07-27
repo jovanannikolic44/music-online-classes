@@ -2,6 +2,7 @@ package com.masterprojekat.music_online_classes.activities;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,15 +16,13 @@ import com.masterprojekat.music_online_classes.api.PasswordResetAPI;
 import com.masterprojekat.music_online_classes.api.RetrofitService;
 import com.masterprojekat.music_online_classes.utils.Validation;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PasswordUpdateActivity extends AppCompatActivity {
+    private static final String TAG = "PasswordUpdateActivity";
     private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
     private final RetrofitService retrofitService = new RetrofitService();
     private final PasswordResetAPI passwordResetApi = retrofitService.getRetrofit().create(PasswordResetAPI.class);
@@ -70,7 +69,7 @@ public class PasswordUpdateActivity extends AppCompatActivity {
     }
 
     private void updatePasswordApiCall(String token, String password) {
-        passwordResetApi.updatePassword(token, password).enqueue(new Callback<ResponseBody>() {
+        passwordResetApi.updatePassword(token, password).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
@@ -83,8 +82,7 @@ public class PasswordUpdateActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
-                Toast.makeText(PasswordUpdateActivity.this, "Greska pri slanju zahteva za azuriranje lozinke!", Toast.LENGTH_SHORT).show();
-                Logger.getLogger(PasswordUpdateActivity.class.getName()).log(Level.SEVERE, "Greska pri slanju zahteva za azuriranje lozinke!", throwable);
+                Log.e(TAG, "Greska! Zahtev za azuriranje lozinke nije poslat!", throwable);
             }
         });
     }

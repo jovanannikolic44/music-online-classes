@@ -1,4 +1,4 @@
-package com.masterprojekat.music_online_classes.adapters.helpers;
+package com.masterprojekat.music_online_classes.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -33,8 +33,6 @@ import com.masterprojekat.music_online_classes.models.Course;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -124,18 +122,17 @@ public class ProfessorsCourseAdapter extends RecyclerView.Adapter<ProfessorsCour
             courseToEdit.setContent(newContentWithCommas);
             courseToEdit.setLevel(newLevel);
 
-            courseApi.updateCourseInfo(courseToEdit).enqueue(new Callback<Course>() {
+            courseApi.updateCourseInfo(courseToEdit).enqueue(new Callback<>() {
                 @Override
                 public void onResponse(@NonNull Call<Course> call, @NonNull Response<Course> response) {
-                    if(response.isSuccessful() && response.body() != null) {
+                    if (response.isSuccessful() && response.body() != null) {
                         Toast.makeText(context, "Podaci o kursu su uspesno izmenjeni!", Toast.LENGTH_SHORT).show();
                         Log.i(TAG, "Podaci o kursu su uspesno izmenjeni!" + response.code());
-                        
+
                         coursesList.set(position, courseToEdit);
                         notifyItemChanged(position);
                         dialog.dismiss();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(context, "Greska pri izmeni podataka o kursu!", Toast.LENGTH_SHORT).show();
                         Log.w(TAG, "Greska pri izmeni podataka o kursu!" + response.code());
                         dialog.dismiss();
@@ -153,7 +150,7 @@ public class ProfessorsCourseAdapter extends RecyclerView.Adapter<ProfessorsCour
 
     private void displayImage(ProfessorsCourseAdapter.ProfessorsCourseViewHolder holder, String fullImagePath) {
         String imageFile = fullImagePath.substring(fullImagePath.lastIndexOf("/") + 1);
-        courseApi.getCourseImage(imageFile).enqueue(new Callback<ResponseBody>() {
+        courseApi.getCourseImage(imageFile).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -169,7 +166,7 @@ public class ProfessorsCourseAdapter extends RecyclerView.Adapter<ProfessorsCour
 
             @Override
             public void onFailure(@NonNull retrofit2.Call<ResponseBody> call, @NonNull Throwable throwable) {
-                Logger.getLogger(ProfessorsCourseAdapter.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dohvatanjem slike kursa nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za dohvatanjem slike kursa nije uspeo!", throwable);
             }
         });
     }

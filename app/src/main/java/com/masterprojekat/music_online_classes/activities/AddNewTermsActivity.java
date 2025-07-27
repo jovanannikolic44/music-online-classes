@@ -25,7 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddNewTermsActivity extends AppCompatActivity {
-    private static final String TAG = "AddNewTerms";
+    private static final String TAG = "AddNewTermsActivity";
     private final RetrofitService retrofitService = new RetrofitService();
     private final TermAPI termApi = retrofitService.getRetrofit().create(TermAPI.class);
     private User loggedInUser;
@@ -69,13 +69,12 @@ public class AddNewTermsActivity extends AppCompatActivity {
         newTerm.setTime(formattedNewTermTime);
         newTerm.setProfessor(loggedInUser);
 
-        termApi.createNewTerm(newTerm).enqueue(new Callback<ResponseBody>() {
+        termApi.createNewTerm(newTerm).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if(response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(AddNewTermsActivity.this, "Termin uspesno dodat!", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     Toast.makeText(AddNewTermsActivity.this, "Termin nije dodat!", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "Greska pri dodavanju novog termina!" + response.code());
                 }

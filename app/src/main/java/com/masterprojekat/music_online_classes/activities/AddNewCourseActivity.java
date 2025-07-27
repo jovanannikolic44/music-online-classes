@@ -41,7 +41,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddNewCourseActivity extends AppCompatActivity {
-    private static final String TAG = "AddNewCourse";
+    private static final String TAG = "AddNewCourseActivity";
     private final RetrofitService retrofitService = new RetrofitService();
     private final CourseAPI courseApi = retrofitService.getRetrofit().create(CourseAPI.class);
     private String courseInstrument = "";

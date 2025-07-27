@@ -91,14 +91,13 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     }
 
     private void classHeld(@NonNull TermViewHolder holder, Term term) {
-        courseProgressAPI.markClassHeld(term.getTermId()).enqueue(new Callback<CourseProgress>() {
+        courseProgressAPI.markClassHeld(term.getTermId()).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<CourseProgress> call, @NonNull Response<CourseProgress> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor uspesno sacuvan!", Toast.LENGTH_SHORT).show();
                     removeTermFromList(holder.getBindingAdapterPosition());
-                }
-                else {
+                } else {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor nije uspesno sacuvan", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "Greska! Odgovor nije uspesno sacuvan!" + response.code());
                 }
@@ -112,14 +111,13 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     }
 
     private void classNotHeld(@NonNull TermViewHolder holder, Term term) {
-        courseProgressAPI.markClassNotHeld(term.getTermId()).enqueue(new Callback<Term>() {
+        courseProgressAPI.markClassNotHeld(term.getTermId()).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<Term> call, @NonNull Response<Term> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor uspesno sacuvan!", Toast.LENGTH_SHORT).show();
                     removeTermFromList(holder.getBindingAdapterPosition());
-                }
-                else {
+                } else {
                     Toast.makeText(holder.itemView.getContext(), "Odgovor nije uspesno sacuvan", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "Greska! Odgovor nije uspesno sacuvan!" + response.code());
                 }

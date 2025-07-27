@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +24,6 @@ import com.masterprojekat.music_online_classes.models.Course;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -32,11 +31,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
-
+    private static final String TAG = "CartAdapter";
     private final RetrofitService retrofitService = new RetrofitService();
     private final CourseAPI courseApi = retrofitService.getRetrofit().create(CourseAPI.class);
     private final Context context;
-    private List<Course> courseList;
+    private final List<Course> courseList;
     private OnSelectionChangedListener selectionChangedListener;
 
     public CartAdapter(Context context, List<Course> courseList) {
@@ -49,7 +48,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     }
 
     public interface OnSelectionChangedListener {
-        // Callback interface to communicate the total price change from adapter to Cart
         void onSelectionChanged(float totalPrice);
     }
 
@@ -119,11 +117,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
             @Override
             public void onFailure(@NonNull retrofit2.Call<ResponseBody> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CartAdapter.class.getName()).log(Level.SEVERE, "Greska! Zahtev za dohvatanjem slike kursa nije uspeo!", throwable);
+                Log.e(TAG, "Greska! Zahtev za dohvatanjem slike kursa nije uspeo!", throwable);
             }
         });
     }
-
 
     @Override
     public int getItemCount() {
@@ -131,7 +128,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     }
 
     public static class CartViewHolder extends RecyclerView.ViewHolder {
-
         ImageView courseImage;
         TextView courseName, professorName, coursePrice;
         CheckBox selectCourseCheckbox;
@@ -146,4 +142,3 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         }
     }
 }
-
