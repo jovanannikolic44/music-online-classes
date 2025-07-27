@@ -16,13 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import com.masterprojekat.music_online_classes.APIs.CourseProgressAPI;
-import com.masterprojekat.music_online_classes.APIs.RetrofitService;
-import com.masterprojekat.music_online_classes.APIs.UserAPI;
-import com.masterprojekat.music_online_classes.Cart;
+import com.masterprojekat.music_online_classes.api.CourseProgressAPI;
+import com.masterprojekat.music_online_classes.api.RetrofitService;
+import com.masterprojekat.music_online_classes.api.UserAPI;
+import com.masterprojekat.music_online_classes.activities.CartActivity;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.helpers.ProgressAdater;
-import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
+import com.masterprojekat.music_online_classes.adapters.ProgressAdater;
+import com.masterprojekat.music_online_classes.utils.SharedViewModel;
 import com.masterprojekat.music_online_classes.models.Course;
 import com.masterprojekat.music_online_classes.models.CourseProgress;
 import com.masterprojekat.music_online_classes.models.User;
@@ -57,7 +57,7 @@ public class StatisticsFragment extends Fragment {
 
             ImageButton currentCoursesCartButton = view.findViewById(R.id.current_courses_cart);
             currentCoursesCartButton.setOnClickListener(localView -> {
-                Intent cartIntent = new Intent(getActivity(), Cart.class);
+                Intent cartIntent = new Intent(getActivity(), CartActivity.class);
                 cartIntent.putExtra("loggedInUser", loggedInUser);
                 startActivity(cartIntent);
             });
@@ -65,30 +65,29 @@ public class StatisticsFragment extends Fragment {
     }
 
     private void getPurchasedCourses() {
-        userApi.getPurchasedCourses(loggedInUser.getUsername()).enqueue(new Callback<List<Course>>() {
+        userApi.getPurchasedCourses(loggedInUser.getUsername()).enqueue(new Callback<>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<List<Course>> call, @NonNull Response<List<Course>> response) {
-                if(response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     List<Course> coursesResponseList = response.body();
                     purchasedCoursesList.clear();
                     purchasedCoursesList.addAll(coursesResponseList);
                     progressAdapter.notifyDataSetChanged();
 
-                    for(Course course : coursesResponseList) {
-                        courseProgressAPI.getCourseProgress(course.getCourseId(), loggedInUser.getUsername()).enqueue(new Callback<CourseProgress>() {
+                    for (Course course : coursesResponseList) {
+                        courseProgressAPI.getCourseProgress(course.getCourseId(), loggedInUser.getUsername()).enqueue(new Callback<>() {
                             @Override
                             public void onResponse(@NonNull Call<CourseProgress> call, @NonNull Response<CourseProgress> response) {
                                 if (response.isSuccessful() && response.body() != null) {
                                     CourseProgress courseProgress = response.body();
                                     float progressPercantage = 0;
-                                    if(course.getNumberOfClasses() != 0) {
+                                    if (course.getNumberOfClasses() != 0) {
                                         progressPercantage = (float) courseProgress.getProgress() / course.getNumberOfClasses() * 100;
                                     }
                                     course.setProgress((int) progressPercantage);
                                     progressAdapter.notifyDataSetChanged();
-                                }
-                                else {
+                                } else {
                                     Log.w(TAG, "Dohvatanje progresa kurseva nije uspesno: " + response.code() + " " + response.message());
                                 }
                             }
@@ -99,8 +98,7 @@ public class StatisticsFragment extends Fragment {
                             }
                         });
                     }
-                }
-                else {
+                } else {
                     Log.w(TAG, "Dohvatanje kupljenih kurseva nije uspesno: " + response.code() + " " + response.message());
                 }
             }

@@ -17,20 +17,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.masterprojekat.music_online_classes.APIs.NotificationAPI;
-import com.masterprojekat.music_online_classes.APIs.RetrofitService;
+import com.masterprojekat.music_online_classes.api.NotificationAPI;
+import com.masterprojekat.music_online_classes.api.RetrofitService;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.helpers.NotificationAdapter;
-import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
+import com.masterprojekat.music_online_classes.adapters.NotificationAdapter;
+import com.masterprojekat.music_online_classes.utils.SharedViewModel;
 import com.masterprojekat.music_online_classes.models.Notification;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -95,39 +92,38 @@ public class NotificationsFragment extends Fragment {
     }
 
     public void searchNotifications(String inputSearch) {
-        notificationApi.searchNotifications(loggedInUser.getUsername(), inputSearch).enqueue(new Callback<List<Notification>>() {
+        notificationApi.searchNotifications(loggedInUser.getUsername(), inputSearch).enqueue(new Callback<>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<List<Notification>> call, @NonNull Response<List<Notification>> response) {
-                if(response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     List<Notification> allNotifications = response.body();
                     notificationsList.clear();
                     notificationsList.addAll(allNotifications);
                     notificationAdapter.notifyDataSetChanged();
-                }
-                else {
+                } else {
                     Log.w(TAG, "Pretraga obavestenja nije uspesna: " + response.code() + " " + response.message());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Notification>> call, @NonNull Throwable throwable) {
-                Log.e(TAG, "Greska! Zahtev za pretragom notifikacija nije uspeo!", throwable);}
+                Log.e(TAG, "Greska! Zahtev za pretragom notifikacija nije uspeo!", throwable);
+            }
         });
     }
 
     private void getAllNotifications() {
-        notificationApi.getAllNotificationsForStudent(loggedInUser.getUsername()).enqueue(new Callback<List<Notification>>() {
+        notificationApi.getAllNotificationsForStudent(loggedInUser.getUsername()).enqueue(new Callback<>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<List<Notification>> call, @NonNull Response<List<Notification>> response) {
-                if(response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     List<Notification> allNotifications = response.body();
                     notificationsList.clear();
                     notificationsList.addAll(allNotifications);
                     notificationAdapter.notifyDataSetChanged();
-                }
-                else {
+                } else {
                     Log.w(TAG, "Dohvatanje obavestenja za studenta nije uspesno: " + response.code() + " " + response.message());
                 }
             }

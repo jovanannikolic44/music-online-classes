@@ -8,4 +8,3 @@ public enum TermStatus {
     NIJE_ODRZAN,
     ODRZAN
 }
-

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,27 +22,26 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.masterprojekat.music_online_classes.APIs.CourseAPI;
-import com.masterprojekat.music_online_classes.APIs.PreferencesAPI;
-import com.masterprojekat.music_online_classes.APIs.RetrofitService;
-import com.masterprojekat.music_online_classes.Cart;
+import com.masterprojekat.music_online_classes.api.CourseAPI;
+import com.masterprojekat.music_online_classes.api.PreferencesAPI;
+import com.masterprojekat.music_online_classes.api.RetrofitService;
+import com.masterprojekat.music_online_classes.activities.CartActivity;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.helpers.CourseAdapter;
-import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
+import com.masterprojekat.music_online_classes.adapters.CourseAdapter;
+import com.masterprojekat.music_online_classes.utils.SharedViewModel;
 import com.masterprojekat.music_online_classes.models.Course;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CoursesFragment extends Fragment {
+    private static final String TAG = "CoursesFragment";
     private final RetrofitService retrofitService = new RetrofitService();
     private final CourseAPI courseApi = retrofitService.getRetrofit().create(CourseAPI.class);
     private final PreferencesAPI preferencesApi = retrofitService.getRetrofit().create(PreferencesAPI.class);
@@ -95,7 +95,7 @@ public class CoursesFragment extends Fragment {
 
             ImageButton cartButton = view.findViewById(R.id.courses_buy);
             cartButton.setOnClickListener(v -> {
-                Intent cartIntent = new Intent(getActivity(), Cart.class);
+                Intent cartIntent = new Intent(getActivity(), CartActivity.class);
                 cartIntent.putExtra("loggedInUser", loggedInUser);
                 startActivity(cartIntent);
             });
@@ -126,12 +126,12 @@ public class CoursesFragment extends Fragment {
     }
 
     private void getCheapestCourses(CourseAdapter courseAdapter, List<Course> cheapestCoursesList) {
-        courseApi.getCheapestCourses().enqueue(new Callback<List<Course>>() {
+        courseApi.getCheapestCourses().enqueue(new Callback<>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<List<Course>> call, @NonNull Response<List<Course>> response) {
                 List<Course> cheapestCourses = response.body();
-                if(cheapestCourses == null) {
+                if (cheapestCourses == null) {
                     Toast.makeText(requireContext(), "Nije nadjen ni jedan kurs!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -142,7 +142,7 @@ public class CoursesFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<List<Course>> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CoursesFragment.class.getName()).log(Level.SEVERE, "Greška! Dohvatanje najjeftinijih kurseva ne funkcionise!", throwable);
+                Log.e(TAG, "Greška! Dohvatanje najjeftinijih kurseva ne funkcionise!", throwable);
             }
         });
     }
@@ -176,7 +176,7 @@ public class CoursesFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<List<Course>> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CoursesFragment.class.getName()).log(Level.SEVERE, "Greška! Dohvatanje najboljih kurseva ne funkcionise!", throwable);
+                Log.e(TAG, "Greška! Dohvatanje najboljih kurseva ne funkcionise!", throwable);
             }
         });
     }
@@ -218,14 +218,14 @@ public class CoursesFragment extends Fragment {
 
                     @Override
                     public void onFailure(@NonNull Call<List<Course>> call, @NonNull Throwable throwable) {
-                        Logger.getLogger(CoursesFragment.class.getName()).log(Level.SEVERE, "Greška! Dohvatanje kurseva na osnovu preferencija ne funkcionise!", throwable);
+                        Log.e(TAG, "Greška! Dohvatanje kurseva na osnovu preferencija ne funkcionise!" ,throwable);
                     }
                 });
             }
 
             @Override
             public void onFailure(@NonNull Call<Set<String>> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CoursesFragment.class.getName()).log(Level.SEVERE, "Greška! Dohvatanje preferencija ne funkcionise!", throwable);
+                Log.e(TAG,  "Greška! Dohvatanje preferencija ne funkcionise!" ,throwable);
             }
         });
     }
@@ -278,7 +278,7 @@ public class CoursesFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<List<Course>> call, @NonNull Throwable throwable) {
-                Logger.getLogger(CoursesFragment.class.getName()).log(Level.SEVERE, "Greška! Pretraga kurseva ne funkcionise!", throwable);
+                Log.e(TAG,  "Greška! Pretraga kurseva ne funkcionise!" ,throwable);
             }
         });
     }

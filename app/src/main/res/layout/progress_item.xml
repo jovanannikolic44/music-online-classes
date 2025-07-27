@@ -30,7 +30,6 @@
         android:text="@string/course_level"
         android:textSize="16sp"/>
 
-
     <TextView
         android:id="@+id/progress_text"
         android:layout_width="wrap_content"

@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,13 +29,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.masterprojekat.music_online_classes.APIs.RetrofitService;
-import com.masterprojekat.music_online_classes.APIs.UserAPI;
-import com.masterprojekat.music_online_classes.MainActivity;
+import com.masterprojekat.music_online_classes.api.RetrofitService;
+import com.masterprojekat.music_online_classes.api.UserAPI;
+import com.masterprojekat.music_online_classes.activities.MainActivity;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
-import com.masterprojekat.music_online_classes.helpers.Spinners;
-import com.masterprojekat.music_online_classes.helpers.Validation;
+import com.masterprojekat.music_online_classes.utils.SharedViewModel;
+import com.masterprojekat.music_online_classes.utils.Spinners;
+import com.masterprojekat.music_online_classes.utils.Validation;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.io.File;
@@ -42,8 +43,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -52,6 +51,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Callback;
 
 public class ProfileFragment extends Fragment {
+    private static final String TAG = "ProfileFragment";
     private final String EMAIL_REGEX = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
     private final String PHONE_NUMBER_REGEX = "^\\+381\\d{8,9}$";
@@ -114,8 +114,7 @@ public class ProfileFragment extends Fragment {
                 outputStream.write(buffer, 0, bytesRead);
             }
         } catch(IOException e) {
-            e.printStackTrace();
-            Toast.makeText(requireContext(), "Greska pri procesiranju fajla!", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Greska pri procesiranju fajla!", e);
         }
 
         RequestBody requestFile = RequestBody.create(MediaType.parse(Objects.requireNonNull(requireContext().getContentResolver().getType(imageUri))), imageFile);
@@ -130,7 +129,7 @@ public class ProfileFragment extends Fragment {
         if(loggedInUser == null)
             return;
 
-        userApi.uploadProfilePicture(body, loggedInUser.getUsername()).enqueue(new Callback<ResponseBody>() {
+        userApi.uploadProfilePicture(body, loggedInUser.getUsername()).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull retrofit2.Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
                 System.out.println(response);
@@ -141,7 +140,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull retrofit2.Call<ResponseBody> call, @NonNull Throwable throwable) {
-                Logger.getLogger(ProfileFragment.class.getName()).log(Level.SEVERE, "Greška! Profilna slika nije dobro sačuvana na serveru!", throwable);
+                Log.e(TAG, "Greška! Profilna slika nije dobro sačuvana na serveru!", throwable);
             }
         });
     }
@@ -154,7 +153,7 @@ public class ProfileFragment extends Fragment {
             return;
         }
 
-        userApi.getProfilePicture(loggedInUser.getUsername()).enqueue(new Callback<ResponseBody>() {
+        userApi.getProfilePicture(loggedInUser.getUsername()).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull retrofit2.Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -169,17 +168,14 @@ public class ProfileFragment extends Fragment {
                                 .into(profilePicture);
 
                     } catch (IOException e) {
-                        e.printStackTrace();
-                        Toast.makeText(requireContext(), "Greška pri dohvatanju fajla!", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Greška pri dohvatanju fajla!", e);
                     }
-                } else {
-                    Toast.makeText(requireContext(), "Greška! Profilna slika nije preuzeta!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull retrofit2.Call<ResponseBody> call, @NonNull Throwable throwable) {
-                Logger.getLogger(ProfileFragment.class.getName()).log(Level.SEVERE, "Greška! Profilna slika nije dohvaćena sa servera!", throwable);
+                Log.e(TAG, "Greška! Profilna slika nije dohvaćena sa servera!", throwable);
             }
         });
     }
@@ -278,7 +274,7 @@ public class ProfileFragment extends Fragment {
             loggedInUser.setEmail(email);
             loggedInUser.setPhoneNumber(phone_number);
 
-            userApi.updateUserInfo(loggedInUser).enqueue(new Callback<User>() {
+            userApi.updateUserInfo(loggedInUser).enqueue(new Callback<>() {
                 @Override
                 public void onResponse(@NonNull retrofit2.Call<User> call, @NonNull retrofit2.Response<User> response) {
                     dialog.dismiss();
@@ -287,7 +283,7 @@ public class ProfileFragment extends Fragment {
 
                 @Override
                 public void onFailure(@NonNull retrofit2.Call<User> call, @NonNull Throwable throwable) {
-                    Logger.getLogger(ProfileFragment.class.getName()).log(Level.SEVERE, "Greska! Korisnicki podaci nisu uspesno azurirani!", throwable);
+                    Log.e(TAG, "Greska! Korisnicki podaci nisu uspesno azurirani!", throwable);
                 }
             });
         });
@@ -340,7 +336,7 @@ public class ProfileFragment extends Fragment {
                 return;
             }
 
-            userApi.updateUserPassword(loggedInUser.getUsername(), newPassword).enqueue(new Callback<User>() {
+            userApi.updateUserPassword(loggedInUser.getUsername(), newPassword).enqueue(new Callback<>() {
                 @Override
                 public void onResponse(@NonNull retrofit2.Call<User> call, @NonNull retrofit2.Response<User> response) {
                     Toast.makeText(requireContext(), "Lozinka je azurirana!", Toast.LENGTH_SHORT).show();

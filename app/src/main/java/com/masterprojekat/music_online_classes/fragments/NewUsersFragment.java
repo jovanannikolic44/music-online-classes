@@ -15,14 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.masterprojekat.music_online_classes.APIs.RetrofitService;
-import com.masterprojekat.music_online_classes.APIs.TermAPI;
-import com.masterprojekat.music_online_classes.APIs.UserAPI;
+import com.masterprojekat.music_online_classes.adapters.NewUsersAdapter;
+import com.masterprojekat.music_online_classes.api.RetrofitService;
+import com.masterprojekat.music_online_classes.api.UserAPI;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.helpers.NewUsersAdapter;
-import com.masterprojekat.music_online_classes.helpers.ReservationsAdapter;
-import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
-import com.masterprojekat.music_online_classes.models.Term;
+import com.masterprojekat.music_online_classes.utils.SharedViewModel;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.ArrayList;
@@ -56,21 +53,20 @@ public class NewUsersFragment extends Fragment {
     }
 
     private void displayUserRequests() {
-        userAPI.getUserAccountRequests().enqueue(new Callback<List<User>>() {
+        userAPI.getUserAccountRequests().enqueue(new Callback<>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
-                if(response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     List<User> userRequestsResponseList = response.body();
                     userRequestsList.clear();
                     userRequestsList.addAll(userRequestsResponseList);
                     newUsersAdapter.notifyDataSetChanged();
 
-                    if(userRequestsResponseList.isEmpty()) {
+                    if (userRequestsResponseList.isEmpty()) {
                         Toast.makeText(getContext(), "Ne postoji ni jedan zahtev!", Toast.LENGTH_SHORT).show();
                     }
-                }
-                else {
+                } else {
                     Log.w(TAG, "Dohvatanje zahteva za novim nalozima nije uspesan: " + response.code() + " " + response.message());
                 }
             }

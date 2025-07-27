@@ -1,7 +1,6 @@
 package com.masterprojekat.music_online_classes.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,15 +16,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.masterprojekat.music_online_classes.APIs.RetrofitService;
-import com.masterprojekat.music_online_classes.APIs.TermAPI;
-import com.masterprojekat.music_online_classes.AddNewTerms;
+import com.masterprojekat.music_online_classes.api.RetrofitService;
+import com.masterprojekat.music_online_classes.api.TermAPI;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.helpers.DateTimeFormatParser;
-import com.masterprojekat.music_online_classes.helpers.ReservationsAdapter;
-import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
-import com.masterprojekat.music_online_classes.helpers.Spinners;
-import com.masterprojekat.music_online_classes.helpers.TermAdapter;
+import com.masterprojekat.music_online_classes.utils.DateTimeFormatParser;
+import com.masterprojekat.music_online_classes.adapters.ReservationsAdapter;
+import com.masterprojekat.music_online_classes.utils.SharedViewModel;
+import com.masterprojekat.music_online_classes.utils.Spinners;
 import com.masterprojekat.music_online_classes.models.Term;
 import com.masterprojekat.music_online_classes.models.TermStatus;
 import com.masterprojekat.music_online_classes.models.User;
@@ -39,7 +35,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ReservationsFragment extends Fragment {
-    private static final String TAG = "ClassesFragment";
+    private static final String TAG = "ReservationsFragment";
     private final RetrofitService retrofitService = new RetrofitService();
     private final TermAPI termApi = retrofitService.getRetrofit().create(TermAPI.class);
     private User loggedInUser;
@@ -70,21 +66,20 @@ public class ReservationsFragment extends Fragment {
     }
 
     public void displayReservations(String chosenDate) {
-        termApi.getTermsByDate(loggedInUser.getUsername(), loggedInUser.getType(), chosenDate, TermStatus.ZAHTEV_POSLAT).enqueue(new Callback<List<Term>>() {
+        termApi.getTermsByDate(loggedInUser.getUsername(), loggedInUser.getType(), chosenDate, TermStatus.ZAHTEV_POSLAT).enqueue(new Callback<>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<List<Term>> call, @NonNull Response<List<Term>> response) {
-                if(response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     List<Term> termsResponseList = response.body();
                     reservationsList.clear();
                     reservationsList.addAll(termsResponseList);
                     reservationsAdapter.notifyDataSetChanged();
 
-                    if(termsResponseList.isEmpty()) {
+                    if (termsResponseList.isEmpty()) {
                         Toast.makeText(getContext(), "Ne postoji ni jedan termin za izabrani datum!", Toast.LENGTH_SHORT).show();
                     }
-                }
-                else {
+                } else {
                     Log.w(TAG, "Dohvatanje rezervacija nije uspesno: " + response.code() + " " + response.message());
                 }
             }
