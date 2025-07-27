@@ -19,14 +19,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.masterprojekat.music_online_classes.APIs.RetrofitService;
-import com.masterprojekat.music_online_classes.APIs.TermAPI;
-import com.masterprojekat.music_online_classes.AddNewTerms;
+import com.masterprojekat.music_online_classes.api.RetrofitService;
+import com.masterprojekat.music_online_classes.api.TermAPI;
+import com.masterprojekat.music_online_classes.activities.AddNewTermsActivity;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.helpers.DateTimeFormatParser;
-import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
-import com.masterprojekat.music_online_classes.helpers.Spinners;
-import com.masterprojekat.music_online_classes.helpers.TermAdapter;
+import com.masterprojekat.music_online_classes.utils.DateTimeFormatParser;
+import com.masterprojekat.music_online_classes.utils.SharedViewModel;
+import com.masterprojekat.music_online_classes.utils.Spinners;
+import com.masterprojekat.music_online_classes.adapters.TermAdapter;
 import com.masterprojekat.music_online_classes.models.Term;
 import com.masterprojekat.music_online_classes.models.TermStatus;
 import com.masterprojekat.music_online_classes.models.User;
@@ -71,7 +71,7 @@ public class ClassesFragment extends Fragment {
                 ImageButton addNewTerms = view.findViewById(R.id.add_new_terms);
                 addNewTerms.setVisibility(View.VISIBLE);
                 addNewTerms.setOnClickListener(localView -> {
-                    Intent addNewTermssIntent = new Intent(getContext(), AddNewTerms.class);
+                    Intent addNewTermssIntent = new Intent(getContext(), AddNewTermsActivity.class);
                     addNewTermssIntent.putExtra("loggedInUser", loggedInUser);
                     requireActivity().startActivity(addNewTermssIntent);
                 });

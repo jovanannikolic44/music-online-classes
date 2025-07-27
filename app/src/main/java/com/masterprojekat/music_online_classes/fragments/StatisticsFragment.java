@@ -16,13 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import com.masterprojekat.music_online_classes.APIs.CourseProgressAPI;
-import com.masterprojekat.music_online_classes.APIs.RetrofitService;
-import com.masterprojekat.music_online_classes.APIs.UserAPI;
-import com.masterprojekat.music_online_classes.Cart;
+import com.masterprojekat.music_online_classes.api.CourseProgressAPI;
+import com.masterprojekat.music_online_classes.api.RetrofitService;
+import com.masterprojekat.music_online_classes.api.UserAPI;
+import com.masterprojekat.music_online_classes.activities.CartActivity;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.helpers.ProgressAdater;
-import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
+import com.masterprojekat.music_online_classes.adapters.helpers.ProgressAdater;
+import com.masterprojekat.music_online_classes.utils.SharedViewModel;
 import com.masterprojekat.music_online_classes.models.Course;
 import com.masterprojekat.music_online_classes.models.CourseProgress;
 import com.masterprojekat.music_online_classes.models.User;
@@ -57,7 +57,7 @@ public class StatisticsFragment extends Fragment {
 
             ImageButton currentCoursesCartButton = view.findViewById(R.id.current_courses_cart);
             currentCoursesCartButton.setOnClickListener(localView -> {
-                Intent cartIntent = new Intent(getActivity(), Cart.class);
+                Intent cartIntent = new Intent(getActivity(), CartActivity.class);
                 cartIntent.putExtra("loggedInUser", loggedInUser);
                 startActivity(cartIntent);
             });

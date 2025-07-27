@@ -21,13 +21,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.masterprojekat.music_online_classes.APIs.CourseAPI;
-import com.masterprojekat.music_online_classes.APIs.PreferencesAPI;
-import com.masterprojekat.music_online_classes.APIs.RetrofitService;
-import com.masterprojekat.music_online_classes.Cart;
+import com.masterprojekat.music_online_classes.api.CourseAPI;
+import com.masterprojekat.music_online_classes.api.PreferencesAPI;
+import com.masterprojekat.music_online_classes.api.RetrofitService;
+import com.masterprojekat.music_online_classes.activities.CartActivity;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.helpers.CourseAdapter;
-import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
+import com.masterprojekat.music_online_classes.adapters.CourseAdapter;
+import com.masterprojekat.music_online_classes.utils.SharedViewModel;
 import com.masterprojekat.music_online_classes.models.Course;
 import com.masterprojekat.music_online_classes.models.User;
 
@@ -95,7 +95,7 @@ public class CoursesFragment extends Fragment {
 
             ImageButton cartButton = view.findViewById(R.id.courses_buy);
             cartButton.setOnClickListener(v -> {
-                Intent cartIntent = new Intent(getActivity(), Cart.class);
+                Intent cartIntent = new Intent(getActivity(), CartActivity.class);
                 cartIntent.putExtra("loggedInUser", loggedInUser);
                 startActivity(cartIntent);
             });

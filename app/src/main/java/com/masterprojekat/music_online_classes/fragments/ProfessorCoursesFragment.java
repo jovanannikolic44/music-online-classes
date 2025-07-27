@@ -15,17 +15,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.masterprojekat.music_online_classes.APIs.CourseAPI;
-import com.masterprojekat.music_online_classes.APIs.RetrofitService;
-import com.masterprojekat.music_online_classes.APIs.TermAPI;
-import com.masterprojekat.music_online_classes.AddNewCourse;
-import com.masterprojekat.music_online_classes.AddNewTerms;
+import com.masterprojekat.music_online_classes.api.CourseAPI;
+import com.masterprojekat.music_online_classes.api.RetrofitService;
+import com.masterprojekat.music_online_classes.activities.AddNewCourseActivity;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.helpers.ProfessorsCourseAdapter;
-import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
-import com.masterprojekat.music_online_classes.helpers.TermAdapter;
+import com.masterprojekat.music_online_classes.adapters.helpers.ProfessorsCourseAdapter;
+import com.masterprojekat.music_online_classes.utils.SharedViewModel;
 import com.masterprojekat.music_online_classes.models.Course;
-import com.masterprojekat.music_online_classes.models.Term;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.ArrayList;
@@ -57,7 +53,7 @@ public class ProfessorCoursesFragment extends Fragment {
 
             ImageButton addNewCourses = view.findViewById(R.id.add_new_courses);
             addNewCourses.setOnClickListener(localView -> {
-                Intent addNewCoursesIntent = new Intent(getContext(), AddNewCourse.class);
+                Intent addNewCoursesIntent = new Intent(getContext(), AddNewCourseActivity.class);
                 addNewCoursesIntent.putExtra("loggedInUser", loggedInUser);
                 requireActivity().startActivity(addNewCoursesIntent);
             });

@@ -1,7 +1,6 @@
 package com.masterprojekat.music_online_classes.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,15 +16,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.masterprojekat.music_online_classes.APIs.RetrofitService;
-import com.masterprojekat.music_online_classes.APIs.TermAPI;
-import com.masterprojekat.music_online_classes.AddNewTerms;
+import com.masterprojekat.music_online_classes.api.RetrofitService;
+import com.masterprojekat.music_online_classes.api.TermAPI;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.helpers.DateTimeFormatParser;
-import com.masterprojekat.music_online_classes.helpers.ReservationsAdapter;
-import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
-import com.masterprojekat.music_online_classes.helpers.Spinners;
-import com.masterprojekat.music_online_classes.helpers.TermAdapter;
+import com.masterprojekat.music_online_classes.utils.DateTimeFormatParser;
+import com.masterprojekat.music_online_classes.adapters.helpers.ReservationsAdapter;
+import com.masterprojekat.music_online_classes.utils.SharedViewModel;
+import com.masterprojekat.music_online_classes.utils.Spinners;
 import com.masterprojekat.music_online_classes.models.Term;
 import com.masterprojekat.music_online_classes.models.TermStatus;
 import com.masterprojekat.music_online_classes.models.User;

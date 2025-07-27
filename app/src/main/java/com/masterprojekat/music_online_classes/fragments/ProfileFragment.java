@@ -28,13 +28,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.masterprojekat.music_online_classes.APIs.RetrofitService;
-import com.masterprojekat.music_online_classes.APIs.UserAPI;
-import com.masterprojekat.music_online_classes.MainActivity;
+import com.masterprojekat.music_online_classes.api.RetrofitService;
+import com.masterprojekat.music_online_classes.api.UserAPI;
+import com.masterprojekat.music_online_classes.activities.MainActivity;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
-import com.masterprojekat.music_online_classes.helpers.Spinners;
-import com.masterprojekat.music_online_classes.helpers.Validation;
+import com.masterprojekat.music_online_classes.utils.SharedViewModel;
+import com.masterprojekat.music_online_classes.utils.Spinners;
+import com.masterprojekat.music_online_classes.utils.Validation;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.io.File;

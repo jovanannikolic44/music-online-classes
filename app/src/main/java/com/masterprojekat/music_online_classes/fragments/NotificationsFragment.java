@@ -17,20 +17,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.masterprojekat.music_online_classes.APIs.NotificationAPI;
-import com.masterprojekat.music_online_classes.APIs.RetrofitService;
+import com.masterprojekat.music_online_classes.api.NotificationAPI;
+import com.masterprojekat.music_online_classes.api.RetrofitService;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.helpers.NotificationAdapter;
-import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
+import com.masterprojekat.music_online_classes.adapters.helpers.NotificationAdapter;
+import com.masterprojekat.music_online_classes.utils.SharedViewModel;
 import com.masterprojekat.music_online_classes.models.Notification;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import retrofit2.Call;
 import retrofit2.Callback;

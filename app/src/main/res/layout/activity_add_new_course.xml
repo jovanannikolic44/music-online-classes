@@ -6,7 +6,7 @@
     android:fillViewport="true"
     android:fitsSystemWindows="true"
     android:background="@color/violet"
-    tools:context=".AddNewCourse">
+    tools:context=".activities.AddNewCourseActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

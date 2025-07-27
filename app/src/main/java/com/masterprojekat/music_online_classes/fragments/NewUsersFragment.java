@@ -15,14 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.masterprojekat.music_online_classes.APIs.RetrofitService;
-import com.masterprojekat.music_online_classes.APIs.TermAPI;
-import com.masterprojekat.music_online_classes.APIs.UserAPI;
+import com.masterprojekat.music_online_classes.api.RetrofitService;
+import com.masterprojekat.music_online_classes.api.UserAPI;
 import com.masterprojekat.music_online_classes.R;
-import com.masterprojekat.music_online_classes.helpers.NewUsersAdapter;
-import com.masterprojekat.music_online_classes.helpers.ReservationsAdapter;
-import com.masterprojekat.music_online_classes.helpers.SharedViewModel;
-import com.masterprojekat.music_online_classes.models.Term;
+import com.masterprojekat.music_online_classes.adapters.helpers.NewUsersAdapter;
+import com.masterprojekat.music_online_classes.utils.SharedViewModel;
 import com.masterprojekat.music_online_classes.models.User;
 
 import java.util.ArrayList;
