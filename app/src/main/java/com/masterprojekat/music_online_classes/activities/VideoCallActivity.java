@@ -19,8 +19,12 @@ import com.masterprojekat.music_online_classes.api.TermAPI;
 import com.masterprojekat.music_online_classes.models.Term;
 import com.masterprojekat.music_online_classes.models.User;
 
+import java.io.IOException;
+
 import io.agora.agorauikit_android.AgoraConnectionData;
 import io.agora.agorauikit_android.AgoraVideoViewer;
+import io.agora.rtc2.RtcEngine;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,7 +43,6 @@ public class VideoCallActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_video_call);
 
         Intent intent = getIntent();
@@ -98,7 +101,6 @@ public class VideoCallActivity extends AppCompatActivity {
         FrameLayout container = findViewById(R.id.agora_container);
         container.addView(agoraView);
 
-//        agoraView.join("MusicClass", null, null);
         getChannel();
     }
 
@@ -107,17 +109,26 @@ public class VideoCallActivity extends AppCompatActivity {
         super.onDestroy();
         if (agoraView != null) {
             agoraView.leaveChannel();
+            agoraView = null;
+        }
+        try {
+            RtcEngine.destroy();
+        } catch (Exception e) {
+            Log.e(TAG, "Greska pri oslobadjanju resursa pri video pozivu!", e);
         }
     }
 
     private void getChannel() {
-        termApi.getChannelName(selectedTerm.getTermId()).enqueue(new Callback<String>() {
+        termApi.getChannelName(selectedTerm.getTermId()).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if(response.isSuccessful() && response.body() != null) {
-                    String channelName = response.body();
-                    System.out.println("Channel name " + channelName);
-                    agoraView.join(channelName, null, null);
+                    try {
+                        String channelName = response.body().string();
+                        agoraView.join(channelName, null, null);
+                    } catch(IOException e) {
+                        Log.e(TAG, "Greska pri čitanju odgovora sa servera", e);
+                    }
                 }
                 else {
                     Log.w(TAG, "Dohvatanje imena kanala nije uspesno: " + response.code() + " " + response.message());
@@ -125,7 +136,7 @@ public class VideoCallActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<String> call, @NonNull Throwable throwable) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
                 Log.e(TAG, "Greska! Zahtev za dohvatanjem imena kanala nije uspeo!", throwable);
             }
         });

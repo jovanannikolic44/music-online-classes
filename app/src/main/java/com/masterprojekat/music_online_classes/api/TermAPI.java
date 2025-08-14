@@ -41,5 +41,5 @@ public interface TermAPI {
     Call<List<Term>> getTermsByDate(@Query("username") String username, @Query("type") String type, @Query("inputDate") String inputDate, @Query("termStatus") TermStatus termStatus);
 
     @GET("/term/get-channel-name")
-    Call<String> getChannelName(@Query("termId") int termId);
+    Call<ResponseBody> getChannelName(@Query("termId") int termId);
 }

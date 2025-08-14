@@ -55,5 +55,6 @@ dependencies {
 //    runtimeOnly libs.compiler
     // https://mvnrepository.com/artifact/io.agora.rtc/full-sdk
     implementation libs.videouikit.android
-
+    // Core RTC SDK
+    implementation libs.full.sdk.v426
 }
